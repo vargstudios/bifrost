@@ -1,0 +1,10 @@
+.progressbar {
+  border-radius: var(--size-1);
+  border: 1px solid var(--grey-7);
+  height: var(--size-6);
+  padding: var(--size-1);
+}
+.progressbar .fill {
+  background: var(--grey-7);
+  height: 100%;
+}

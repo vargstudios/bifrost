@@ -1,0 +1,16 @@
+.textbox label {
+  display: block;
+  margin-bottom: var(--size-1);
+}
+
+.textbox input {
+  display: block;
+  width: 100%;
+  padding: calc(var(--size-1) - 1px) calc(var(--size-2) - 1px);
+  border-radius: var(--size-1);
+  border: 1px solid var(--grey-7);
+}
+
+.textbox input:focus {
+  border: 1px solid var(--grey-8);
+}

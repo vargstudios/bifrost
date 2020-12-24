@@ -1,0 +1,10 @@
+button {
+  padding: var(--size-1) var(--size-3);
+  background: var(--grey-1);
+  border-radius: var(--size-1);
+  cursor: pointer;
+}
+
+button:hover {
+  background: var(--grey-2);
+}

@@ -1,0 +1,8 @@
+body {
+  font-family: "Ubuntu", sans-serif;
+  font-size: var(--font-normal);
+  font-weight: 400;
+
+  color: var(--grey-9);
+  text-shadow: 0 0 2px var(--grey-1);
+}

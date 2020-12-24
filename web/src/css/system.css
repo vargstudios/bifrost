@@ -1,0 +1,26 @@
+/* Margins are 12px, text lines are 24px, buttons/inputs are 36px */
+html {
+  --size-1: 6px;
+  --size-2: 12px;
+  --size-3: 18px;
+  --size-4: 24px;
+  --size-5: 30px;
+  --size-6: 36px;
+  --size-7: 42px;
+  --size-8: 48px;
+
+  --font-normal: 16px;
+  --font-large: 20px;
+  --font-huge: 24px;
+
+  /* Munsell: Chroma 0 */
+  --grey-9: rgb(227, 227, 227);
+  --grey-8: rgb(200, 200, 200);
+  --grey-7: rgb(173, 173, 173);
+  --grey-6: rgb(147, 147, 147);
+  --grey-5: rgb(121, 121, 121);
+  --grey-4: rgb(96, 96, 96);
+  --grey-3: rgb(72, 72, 72);
+  --grey-2: rgb(49, 49, 49);
+  --grey-1: rgb(28, 28, 28);
+}

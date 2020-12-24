@@ -1,0 +1,31 @@
+.layout {
+  min-width: 100vw;
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas:
+    "header header"
+    "aside main"
+    "aside footer";
+  background: var(--grey-3);
+}
+
+.layout > header {
+  grid-area: header;
+  background: var(--grey-1);
+}
+
+.layout > aside {
+  grid-area: aside;
+  background: var(--grey-2);
+}
+
+.layout > main {
+  grid-area: main;
+}
+
+.layout > footer {
+  grid-area: footer;
+  padding: var(--size-4);
+}

@@ -1,0 +1,24 @@
+.sidebar {
+  padding: var(--size-2) 0;
+}
+
+.sidebar .heading {
+  padding: var(--size-2) var(--size-4);
+  font-size: var(--font-large);
+  font-weight: 500;
+}
+
+.sidebar .button {
+  padding: var(--size-1) var(--size-6);
+  font-weight: 500;
+  cursor: pointer;
+  color: var(--grey-9);
+}
+
+.sidebar .button.active {
+  background: var(--grey-4);
+}
+
+.sidebar .button:hover {
+  background: var(--grey-4);
+}

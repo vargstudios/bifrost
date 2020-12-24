@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "jsx": "react",
+    "lib": ["DOM", "ES2018"],
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "noEmit": true,
+    "strict": true
+  },
+  "include": ["src/**/*"]
+}

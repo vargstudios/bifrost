@@ -1,0 +1,9 @@
+# Dev/Build
+.idea
+.gradle
+build
+out
+
+# Test data
+data
+*.db

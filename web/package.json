@@ -1,0 +1,35 @@
+{
+  "name": "bifrost",
+  "version": "0.1.0",
+  "license": "GPL-3.0-or-later",
+  "scripts": {
+    "dev": "tsc && parcel src/index.html",
+    "build": "tsc && parcel build src/index.html",
+    "format": "prettier --write 'src/**/*' '*.json'",
+    "clean": "rimraf dist",
+    "test": "mocha -r ts-node/register src/**/*.test.ts"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.32",
+    "@fortawesome/free-solid-svg-icons": "^5.15.1",
+    "@fortawesome/react-fontawesome": "^0.1.13",
+    "fontsource-ubuntu": "^3.0.9",
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0",
+    "react-router-dom": "^5.2.0"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.2.14",
+    "@types/mocha": "^8.2.0",
+    "@types/react": "^16.9.56",
+    "@types/react-dom": "^16.9.9",
+    "@types/react-router-dom": "^5.1.6",
+    "chai": "^4.2.0",
+    "mocha": "^8.2.1",
+    "parcel-bundler": "^1.12.4",
+    "prettier": "^2.1.2",
+    "rimraf": "^3.0.2",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.0.5"
+  }
+}

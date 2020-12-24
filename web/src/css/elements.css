@@ -1,0 +1,29 @@
+.elements {
+  display: flex;
+  flex-wrap: wrap;
+  padding: var(--size-2);
+}
+
+.element .title {
+  font-size: var(--font-large);
+}
+
+.element {
+  width: 360px;
+  margin: var(--size-2);
+}
+
+.element .preview {
+  margin: var(--size-1) 0;
+  background: black;
+  padding-bottom: 50%;
+  position: relative;
+}
+
+.element .preview > * {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
