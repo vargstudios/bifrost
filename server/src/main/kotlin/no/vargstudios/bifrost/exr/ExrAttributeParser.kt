@@ -29,16 +29,16 @@ class ExrAttributeParser(private val bytes: ByteArray) {
         skip(1)
 
         return ExrAttributes(
-                channels = find(attributes, "channels"),
-                compression = find(attributes, "compression"),
-                dataWindow = find(attributes, "dataWindow"),
-                displayWindow = find(attributes, "displayWindow"),
-                lineOrder = find(attributes, "lineOrder"),
-                pixelAspectRatio = find(attributes, "pixelAspectRatio"),
-                screenWindowCenter = find(attributes, "screenWindowCenter"),
-                screenWindowWidth = find(attributes, "screenWindowWidth"),
-                // TODO: more non-standard attributes?
-                framesPerSecond = find(attributes, "framesPerSecond")
+            channels = find(attributes, "channels"),
+            compression = find(attributes, "compression"),
+            dataWindow = find(attributes, "dataWindow"),
+            displayWindow = find(attributes, "displayWindow"),
+            lineOrder = find(attributes, "lineOrder"),
+            pixelAspectRatio = find(attributes, "pixelAspectRatio"),
+            screenWindowCenter = find(attributes, "screenWindowCenter"),
+            screenWindowWidth = find(attributes, "screenWindowWidth"),
+            // TODO: more non-standard attributes?
+            framesPerSecond = find(attributes, "framesPerSecond")
         )
     }
 

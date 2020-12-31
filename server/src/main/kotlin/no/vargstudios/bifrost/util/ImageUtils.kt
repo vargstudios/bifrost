@@ -17,13 +17,13 @@ fun isExr(data: ByteArray): Boolean {
 fun resize(source: File, target: File, width: Int, height: Int) {
     logDuration("resize") {
         val exitCode = ProcessBuilder()
-                .command(
-                        "oiiotool", source.absolutePath,
-                        "--resize", "${width}x${height}",
-                        "-o", target.absolutePath
-                )
-                .start()
-                .waitFor()
+            .command(
+                "oiiotool", source.absolutePath,
+                "--resize", "${width}x${height}",
+                "-o", target.absolutePath
+            )
+            .start()
+            .waitFor()
 
         if (exitCode != 0) {
             throw RuntimeException("oiiotool exited with status $exitCode")
@@ -34,15 +34,15 @@ fun resize(source: File, target: File, width: Int, height: Int) {
 fun resizeToSRGB(source: File, target: File, width: Int, height: Int) {
     logDuration("resizeToSRGB") {
         val exitCode = ProcessBuilder()
-                .command(
-                        "oiiotool", source.absolutePath,
-                        "--resize", "${width}x${height}",
-                        "--ch", "R,G,B",
-                        "--tocolorspace", "sRGB",
-                        "-o", target.absolutePath
-                )
-                .start()
-                .waitFor()
+            .command(
+                "oiiotool", source.absolutePath,
+                "--resize", "${width}x${height}",
+                "--ch", "R,G,B",
+                "--tocolorspace", "sRGB",
+                "-o", target.absolutePath
+            )
+            .start()
+            .waitFor()
 
         if (exitCode != 0) {
             throw RuntimeException("oiiotool exited with status $exitCode")
@@ -53,19 +53,19 @@ fun resizeToSRGB(source: File, target: File, width: Int, height: Int) {
 fun createVideo(sources: File, target: File, framerate: Int) {
     logDuration("createVideo") {
         val exitCode = ProcessBuilder()
-                .command(
-                        "ffmpeg",
-                        "-framerate", "$framerate",
-                        "-pattern_type", "glob",
-                        "-i", sources.absolutePath,
-                        "-c:v", "libx264",
-                        "-preset", "slow",
-                        "-pix_fmt", "yuv420p",
-                        "-crf", "12",
-                        "-y", target.absolutePath
-                )
-                .start()
-                .waitFor()
+            .command(
+                "ffmpeg",
+                "-framerate", "$framerate",
+                "-pattern_type", "glob",
+                "-i", sources.absolutePath,
+                "-c:v", "libx264",
+                "-preset", "slow",
+                "-pix_fmt", "yuv420p",
+                "-crf", "12",
+                "-y", target.absolutePath
+            )
+            .start()
+            .waitFor()
 
         if (exitCode != 0) {
             throw RuntimeException("oiiotool exited with status $exitCode")
@@ -76,12 +76,12 @@ fun createVideo(sources: File, target: File, framerate: Int) {
 fun convert(source: File, target: File) {
     logDuration("convert") {
         val exitCode = ProcessBuilder()
-                .command(
-                        "oiiotool", source.absolutePath,
-                        "-o", target.absolutePath
-                )
-                .start()
-                .waitFor()
+            .command(
+                "oiiotool", source.absolutePath,
+                "-o", target.absolutePath
+            )
+            .start()
+            .waitFor()
 
         if (exitCode != 0) {
             throw RuntimeException("oiiotool exited with status $exitCode")

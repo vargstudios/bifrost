@@ -21,11 +21,11 @@ class AnalysisApi() {
         try {
             val attributes = ExrAttributeParser(data).parse();
             return ExrAnalysis(
-                    width = attributes.displayWindow.width,
-                    height = attributes.displayWindow.height,
-                    framerate = attributes.framesPerSecond?.toFloat() ?: 24.0F,
-                    linear = attributes.channels.all { it.linear },
-                    alpha = attributes.channels.any { it.name == "A" }
+                width = attributes.displayWindow.width,
+                height = attributes.displayWindow.height,
+                framerate = attributes.framesPerSecond?.toFloat() ?: 24.0F,
+                linear = attributes.channels.all { it.linear },
+                alpha = attributes.channels.any { it.name == "A" }
             )
         } catch (e: IllegalArgumentException) {
             logger.warn("Invalid OpenEXR-file", e)

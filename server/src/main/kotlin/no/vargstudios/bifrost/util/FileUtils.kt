@@ -18,7 +18,7 @@ fun fileName(element: ElementRow, version: ElementVersionRow, frameNumber: Int):
 
 fun normalize(name: String): String {
     return name.replace(" ", "_")
-            .replace(Regex("[^A-Za-z0-9_-]"), "")
+        .replace(Regex("[^A-Za-z0-9_-]"), "")
 }
 
 private fun format(number: Int): String {

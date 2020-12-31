@@ -20,8 +20,8 @@ class JdbiConfiguration {
     @ApplicationScoped
     fun jdbi(dataSource: DataSource): Jdbi {
         return Jdbi.create(dataSource)
-                .installPlugin(KotlinPlugin())
-                .installPlugin(KotlinSqlObjectPlugin())
+            .installPlugin(KotlinPlugin())
+            .installPlugin(KotlinSqlObjectPlugin())
     }
 
     @Produces

@@ -6,10 +6,12 @@ import org.jdbi.v3.sqlobject.statement.SqlUpdate
 
 interface ElementDao {
 
-    @SqlUpdate("""
+    @SqlUpdate(
+        """
         insert into elements (id, category_id, name, framecount, framerate, alpha, created)
         values (:element.id, :element.categoryId, :element.name, :element.framecount, :element.framerate, :element.alpha, :element.created)
-        """)
+        """
+    )
     fun insert(element: ElementRow)
 
     @SqlQuery("select * from elements")

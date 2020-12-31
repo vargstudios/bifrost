@@ -24,7 +24,7 @@ class CategoryApi(val elementCategoryDao: ElementCategoryDao) {
     @POST
     fun createCategory(createCategory: CreateElementCategory): ElementCategory {
         val category = ElementCategoryRow(
-                name = createCategory.name
+            name = createCategory.name
         )
         elementCategoryDao.insert(category)
         logger.info("Created category ${category.id}")
@@ -40,8 +40,8 @@ class CategoryApi(val elementCategoryDao: ElementCategoryDao) {
 
     private fun mapCategory(category: ElementCategoryRow): ElementCategory {
         return ElementCategory(
-                id = category.id,
-                name = category.name
+            id = category.id,
+            name = category.name
         )
     }
 

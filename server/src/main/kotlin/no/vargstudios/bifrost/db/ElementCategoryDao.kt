@@ -6,10 +6,12 @@ import org.jdbi.v3.sqlobject.statement.SqlUpdate
 
 interface ElementCategoryDao {
 
-    @SqlUpdate("""
+    @SqlUpdate(
+        """
         insert into element_categories (id, name, created)
         values (:category.id, :category.name, :category.created)
-        """)
+        """
+    )
     fun insert(category: ElementCategoryRow)
 
     @SqlQuery("select * from element_categories")

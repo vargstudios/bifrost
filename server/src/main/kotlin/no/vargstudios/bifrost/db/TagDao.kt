@@ -6,10 +6,12 @@ import org.jdbi.v3.sqlobject.statement.SqlUpdate
 
 interface TagDao {
 
-    @SqlUpdate("""
+    @SqlUpdate(
+        """
         insert into tags (id, name)
         values (:tag.id, :tag.name)
-        """)
+        """
+    )
     fun insert(tag: TagRow)
 
     @SqlQuery("select * from tags")

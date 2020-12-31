@@ -6,10 +6,12 @@ import org.jdbi.v3.sqlobject.statement.SqlUpdate
 
 interface ElementVersionDao {
 
-    @SqlUpdate("""
+    @SqlUpdate(
+        """
         insert into element_versions (id, element_id, name, width, height, filetype, bytes)
         values (:version.id, :version.elementId, :version.name, :version.width, :version.height, :version.filetype, :version.bytes)
-        """)
+        """
+    )
     fun insert(version: ElementVersionRow)
 
     @SqlQuery("select * from element_versions where id = :id")

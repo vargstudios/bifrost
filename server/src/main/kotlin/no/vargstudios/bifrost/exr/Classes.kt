@@ -1,11 +1,11 @@
 package no.vargstudios.bifrost.exr
 
 data class Channel(
-        val name: String,
-        val pixelType: PixelType,
-        val linear: Boolean,
-        val xSampling: Int,
-        val ySampling: Int
+    val name: String,
+    val pixelType: PixelType,
+    val linear: Boolean,
+    val xSampling: Int,
+    val ySampling: Int
 )
 
 data class Rational(val numerator: Int, val denominator: Int) {
