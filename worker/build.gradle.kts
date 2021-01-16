@@ -20,11 +20,8 @@ dependencies {
     implementation("io.quarkus:quarkus-rest-client-jackson")
     implementation("io.quarkus:quarkus-resteasy")
     implementation("io.quarkus:quarkus-resteasy-jackson")
-    implementation("io.quarkus:quarkus-flyway")
     implementation("io.quarkus:quarkus-arc")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    implementation("org.jdbi:jdbi3-kotlin-sqlobject:3.18.0")
-    implementation("org.xerial:sqlite-jdbc:3.32.3.3")
     testImplementation("io.quarkus:quarkus-junit5")
     testImplementation("io.rest-assured:rest-assured")
 }
