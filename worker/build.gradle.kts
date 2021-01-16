@@ -20,6 +20,7 @@ dependencies {
     implementation("io.quarkus:quarkus-rest-client-jackson")
     implementation("io.quarkus:quarkus-resteasy")
     implementation("io.quarkus:quarkus-resteasy-jackson")
+    implementation("io.quarkus:quarkus-scheduler")
     implementation("io.quarkus:quarkus-arc")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     testImplementation("io.quarkus:quarkus-junit5")
