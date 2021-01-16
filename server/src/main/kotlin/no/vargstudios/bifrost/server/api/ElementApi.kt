@@ -4,10 +4,14 @@ import no.vargstudios.bifrost.server.api.model.CreateElement
 import no.vargstudios.bifrost.server.api.model.Element
 import no.vargstudios.bifrost.server.api.model.ElementVersion
 import no.vargstudios.bifrost.server.db.ElementDao
+import no.vargstudios.bifrost.server.db.ElementFrameDao
 import no.vargstudios.bifrost.server.db.ElementVersionDao
+import no.vargstudios.bifrost.server.db.model.ElementFrameRow
 import no.vargstudios.bifrost.server.db.model.ElementRow
 import no.vargstudios.bifrost.server.db.model.ElementVersionRow
-import no.vargstudios.bifrost.server.util.*
+import no.vargstudios.bifrost.server.exr.ExrAttributeParser
+import no.vargstudios.bifrost.server.util.fileName
+import no.vargstudios.bifrost.server.util.folderName
 import org.eclipse.microprofile.config.inject.ConfigProperty
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -22,6 +26,7 @@ import javax.ws.rs.core.MediaType.WILDCARD
 class ElementApi(
     val elementDao: ElementDao,
     val elementVersionDao: ElementVersionDao,
+    val elementFrameDao: ElementFrameDao,
     @ConfigProperty(name = "data.path.local")
     val dataPathLocal: String
 ) {
@@ -154,86 +159,36 @@ class ElementApi(
         @PathParam("frameNumber") frameNumber: Int,
         data: ByteArray
     ) {
-        if (!isExr(data)) {
-            logger.warn("Invalid OpenEXR-file")
+        try {
+            ExrAttributeParser(data).parse();
+            // TODO: Check size, linear, alpha
+        } catch (e: IllegalArgumentException) {
+            logger.warn("Invalid OpenEXR-file", e)
             throw NotSupportedException()
         }
 
         val element = elementDao.get(elementId) ?: throw NotFoundException()
-        val versions = elementVersionDao.listForElement(elementId)
+        val version = elementVersionDao.listForElement(elementId)[0] // TODO: Assumes original is first
 
         logger.info("Importing frame $frameNumber/${element.framecount} for element ${element.id}")
 
-        // Original
-        val originalVersion = versions[0]
-        val original = Paths.get(
+        val file = Paths.get(
             dataPathLocal,
             folderName(element),
-            folderName(originalVersion),
-            fileName(element, originalVersion, frameNumber)
+            folderName(version),
+            fileName(element, version, frameNumber)
         ).toFile()
 
-        original.parentFile.mkdirs()
-        original.writeBytes(data)
+        file.parentFile.mkdirs()
+        file.writeBytes(data)
 
-        if (false) {
-            return;
-        }
-
-        // Other versions
-        versions.filter { version -> version.name != originalName }.forEach { version ->
-            val target = Paths.get(
-                dataPathLocal,
-                folderName(element),
-                folderName(version),
-                fileName(element, version, frameNumber)
-            ).toFile()
-
-            target.parentFile.mkdirs()
-            target.createNewFile()
-
-            if (version.filetype == "exr") {
-                resize(original, target, version.width, version.height)
-            } else {
-                resizeToSRGB(original, target, version.width, version.height)
-            }
-        }
-
-        // Create previews
-        if (frameNumber == element.framecount) {
-            versions.filter { version -> version.name == previewName }.forEach { version ->
-                run {
-                    // Video
-                    val sources = Paths.get(
-                        dataPathLocal,
-                        folderName(element),
-                        folderName(version),
-                        "*.jpg"
-                    ).toFile()
-                    val target = Paths.get(
-                        dataPathLocal,
-                        folderName(element),
-                        previewVideoName
-                    ).toFile()
-                    createVideo(sources, target, element.framerate)
-                }
-                run {
-                    // Image
-                    val source = Paths.get(
-                        dataPathLocal,
-                        folderName(element),
-                        folderName(version),
-                        fileName(element, version, element.framecount / 2) // TODO: Allow selection
-                    ).toFile()
-                    val target = Paths.get(
-                        dataPathLocal,
-                        folderName(element),
-                        previewImageName
-                    ).toFile()
-                    convert(source, target)
-                }
-            }
-        }
+        elementFrameDao.insert(
+            ElementFrameRow(
+                elementId = element.id,
+                number = frameNumber,
+                transcoded = false
+            )
+        )
     }
 
     private fun mapElement(element: ElementRow, versions: List<ElementVersionRow>): Element {
