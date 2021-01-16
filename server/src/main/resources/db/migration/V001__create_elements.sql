@@ -23,8 +23,7 @@ create table element_versions
     name       text not null,
     width      int  not null,
     height     int  not null,
-    filetype   text not null,
-    bytes      int  not null
+    filetype   text not null
 );
 
 create table element_frames
@@ -32,7 +31,7 @@ create table element_frames
     id         text not null primary key,
     element_id text not null references elements (id),
     number     int  not null,
-    state      text not null
+    transcoded int  not null
 );
 
 -- Testdata

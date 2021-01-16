@@ -60,16 +60,14 @@ class ElementApi(
                 name = originalName,
                 width = createElement.width,
                 height = createElement.height,
-                filetype = "exr",
-                bytes = 0
+                filetype = "exr"
             ),
             ElementVersionRow(
                 elementId = element.id,
                 name = previewName,
                 width = 480,
                 height = 480 * createElement.height / createElement.width,
-                filetype = "jpg",
-                bytes = 0
+                filetype = "jpg"
             )
         )
         if (createElement.width > 4096 * 1.25) {
@@ -79,8 +77,7 @@ class ElementApi(
                     name = "4K",
                     width = 4096,
                     height = 4096 * createElement.height / createElement.width,
-                    filetype = "exr",
-                    bytes = 0
+                    filetype = "exr"
                 )
             )
         }
@@ -91,8 +88,7 @@ class ElementApi(
                     name = "2K",
                     width = 2048,
                     height = 2048 * createElement.height / createElement.width,
-                    filetype = "exr",
-                    bytes = 0
+                    filetype = "exr"
                 )
             )
         }
@@ -103,8 +99,7 @@ class ElementApi(
                     name = "1K",
                     width = 1024,
                     height = 1024 * createElement.height / createElement.width,
-                    filetype = "exr",
-                    bytes = 0
+                    filetype = "exr"
                 )
             )
         }

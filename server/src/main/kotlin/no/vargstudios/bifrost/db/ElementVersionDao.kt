@@ -8,8 +8,8 @@ interface ElementVersionDao {
 
     @SqlUpdate(
         """
-        insert into element_versions (id, element_id, name, width, height, filetype, bytes)
-        values (:version.id, :version.elementId, :version.name, :version.width, :version.height, :version.filetype, :version.bytes)
+        insert into element_versions (id, element_id, name, width, height, filetype)
+        values (:version.id, :version.elementId, :version.name, :version.width, :version.height, :version.filetype)
         """
     )
     fun insert(version: ElementVersionRow)
