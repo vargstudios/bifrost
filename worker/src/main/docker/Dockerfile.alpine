@@ -1,0 +1,19 @@
+FROM alpine:edge
+
+# Install dependencies
+RUN echo "https://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
+ && apk update \
+ && apk upgrade \
+ && apk add ffmpeg openimageio-tools
+
+# Install app
+WORKDIR /work/
+RUN chown 1001 /work \
+    && chmod "g+rwX" /work \
+    && chown 1001:root /work
+COPY --chown=1001:root build/*-runner /work/application
+
+EXPOSE 3201
+USER 1001
+
+CMD ["./application"]

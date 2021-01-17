@@ -1,0 +1,17 @@
+FROM ubuntu:20.04
+
+RUN export DEBIAN_FRONTEND=noninteractive \
+ && apt update \
+ && apt upgrade --yes \
+ && apt install --yes openimageio-tools ffmpeg
+
+WORKDIR /work/
+RUN chown 1001 /work \
+    && chmod "g+rwX" /work \
+    && chown 1001:root /work
+COPY --chown=1001:root build/*-runner /work/application
+
+EXPOSE 3201
+USER 1001
+
+CMD ["./application"]
