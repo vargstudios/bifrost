@@ -1,9 +1,6 @@
 package no.vargstudios.bifrost.server.config
 
-import no.vargstudios.bifrost.server.db.ElementCategoryDao
-import no.vargstudios.bifrost.server.db.ElementDao
-import no.vargstudios.bifrost.server.db.ElementVersionDao
-import no.vargstudios.bifrost.server.db.TagDao
+import no.vargstudios.bifrost.server.db.*
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.kotlin.KotlinPlugin
 import org.jdbi.v3.sqlobject.kotlin.KotlinSqlObjectPlugin
@@ -39,6 +36,12 @@ class JdbiConfiguration {
     @Produces
     @ApplicationScoped
     fun elementVersionDao(jdbi: Jdbi): ElementVersionDao {
+        return jdbi.onDemand()
+    }
+
+    @Produces
+    @ApplicationScoped
+    fun elementFrameDao(jdbi: Jdbi): ElementFrameDao {
         return jdbi.onDemand()
     }
 

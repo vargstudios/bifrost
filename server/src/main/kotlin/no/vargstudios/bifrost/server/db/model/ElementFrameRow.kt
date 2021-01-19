@@ -6,5 +6,5 @@ data class ElementFrameRow(
     val id: String = randomId(),
     val elementId: String,
     val number: Int,
-    val transcoded: Boolean
+    val transcoded: Boolean = false
 )

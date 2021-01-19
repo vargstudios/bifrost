@@ -26,12 +26,12 @@ class TranscodeApi() {
         val dir = createTempDir("images")
         try {
             logger.info("Input image is ${request.image.spec}")
-            val source = dir.resolve("source" + request.image.spec.format.extension)
+            val source = dir.resolve("source.${request.image.spec.format.extension}")
             source.writeBytes(request.image.data)
 
             return request.specs.map { spec ->
                 logger.info("Transcoding to $spec")
-                val target = dir.resolve("target-${spec.width}x${spec.height}${spec.format.extension}")
+                val target = dir.resolve("target-${spec.width}x${spec.height}.${spec.format.extension}")
                 if (spec.format == ImageFormat.EXR) {
                     // EXR to EXR: Resize only
                     resize(source, target, spec.width, spec.height)
@@ -64,12 +64,12 @@ class TranscodeApi() {
         try {
             logger.info("Saving ${request.images.size} images...")
             request.images.mapIndexed { index, image ->
-                val frame = dir.resolve("%06d".format(index) + image.spec.format.extension)
+                val frame = dir.resolve("%06d".format(index) + "." + image.spec.format.extension)
                 frame.writeBytes(image.data)
             }
 
             logger.info("Creating video...")
-            val sources = dir.resolve("*" + request.images[0].spec.format.extension)
+            val sources = dir.resolve("*.${request.images[0].spec.format.extension}")
             val target = dir.resolve("video.mp4")
             createVideo(sources, target, request.framerate)
 

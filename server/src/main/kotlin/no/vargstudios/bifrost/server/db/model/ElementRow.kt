@@ -10,5 +10,6 @@ data class ElementRow(
     val framecount: Int,
     val framerate: Int,
     val alpha: Boolean,
+    val previews: Boolean = false,
     val created: Long = OffsetDateTime.now().toEpochSecond()
 )

@@ -20,4 +20,10 @@ interface ElementFrameDao {
     @SqlQuery("select * from element_frames where element_id = :elementId")
     fun listForElement(elementId: String): List<ElementFrameRow>
 
+    @SqlQuery("select * from element_frames where transcoded = false")
+    fun listNotTranscoded(): List<ElementFrameRow>
+
+    @SqlUpdate("update element_frames set transcoded = true where id = :id")
+    fun setTranscoded(id: String)
+
 }

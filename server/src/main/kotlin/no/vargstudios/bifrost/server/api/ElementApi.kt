@@ -10,12 +10,11 @@ import no.vargstudios.bifrost.server.db.model.ElementFrameRow
 import no.vargstudios.bifrost.server.db.model.ElementRow
 import no.vargstudios.bifrost.server.db.model.ElementVersionRow
 import no.vargstudios.bifrost.server.exr.ExrAttributeParser
-import no.vargstudios.bifrost.server.util.fileName
-import no.vargstudios.bifrost.server.util.folderName
-import org.eclipse.microprofile.config.inject.ConfigProperty
+import no.vargstudios.bifrost.server.service.PathResolver
+import no.vargstudios.bifrost.worker.api.model.ImageFormat.EXR
+import no.vargstudios.bifrost.worker.api.model.ImageFormat.JPEG
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import java.nio.file.Paths
 import javax.ws.rs.*
 import javax.ws.rs.core.MediaType.APPLICATION_JSON
 import javax.ws.rs.core.MediaType.WILDCARD
@@ -27,8 +26,7 @@ class ElementApi(
     val elementDao: ElementDao,
     val elementVersionDao: ElementVersionDao,
     val elementFrameDao: ElementFrameDao,
-    @ConfigProperty(name = "data.path.local")
-    val dataPathLocal: String
+    val pathResolver: PathResolver
 ) {
 
     val logger: Logger = LoggerFactory.getLogger(this::class.java)
@@ -59,55 +57,37 @@ class ElementApi(
         elementDao.insert(element)
         logger.info("Created element ${element.id}")
 
+        // Required versions
         val versions = mutableListOf(
             ElementVersionRow(
                 elementId = element.id,
                 name = originalName,
                 width = createElement.width,
                 height = createElement.height,
-                filetype = "exr"
+                filetype = EXR.extension
             ),
             ElementVersionRow(
                 elementId = element.id,
                 name = previewName,
                 width = 480,
                 height = 480 * createElement.height / createElement.width,
-                filetype = "jpg"
+                filetype = JPEG.extension
             )
         )
-        if (createElement.width > 4096 * 1.25) {
-            versions.add(
+
+        // Conditional versions
+        listOf(8192, 4096, 2048, 1024)
+            .filter { width -> width * 1.5 < createElement.width }
+            .map { width ->
                 ElementVersionRow(
                     elementId = element.id,
-                    name = "4K",
-                    width = 4096,
-                    height = 4096 * createElement.height / createElement.width,
-                    filetype = "exr"
+                    name = "${width/1024}K",
+                    width = width,
+                    height = width * createElement.height / createElement.width,
+                    filetype = EXR.extension
                 )
-            )
-        }
-        if (createElement.width > 2048 * 1.25) {
-            versions.add(
-                ElementVersionRow(
-                    elementId = element.id,
-                    name = "2K",
-                    width = 2048,
-                    height = 2048 * createElement.height / createElement.width,
-                    filetype = "exr"
-                )
-            )
-        }
-        if (createElement.width > 1024 * 1.25) {
-            versions.add(
-                ElementVersionRow(
-                    elementId = element.id,
-                    name = "1K",
-                    width = 1024,
-                    height = 1024 * createElement.height / createElement.width,
-                    filetype = "exr"
-                )
-            )
-        }
+            }
+            .forEach { versions.add(it) }
 
         versions.forEach { elementVersionDao.insert(it) }
         logger.info("Created ${versions.size} versions for element ${element.id}")
@@ -129,7 +109,7 @@ class ElementApi(
     @Produces("image/jpeg")
     fun getElementPreviewImage(@PathParam("elementId") elementId: String): ByteArray {
         val element = elementDao.get(elementId) ?: throw NotFoundException()
-        val file = Paths.get(dataPathLocal, folderName(element), previewImageName).toFile()
+        val file = pathResolver.local(element).resolve(previewImageName).toFile()
         if (!file.exists()) {
             logger.warn("Element $elementId has no preview image")
             throw NotFoundException()
@@ -143,7 +123,7 @@ class ElementApi(
     @Produces("video/mp4")
     fun getElementPreviewVideo(@PathParam("elementId") elementId: String): ByteArray {
         val element = elementDao.get(elementId) ?: throw NotFoundException()
-        val file = Paths.get(dataPathLocal, folderName(element), previewVideoName).toFile()
+        val file = pathResolver.local(element).resolve(previewVideoName).toFile()
         if (!file.exists()) {
             logger.warn("Element $elementId has no preview video")
             throw NotFoundException()
@@ -168,27 +148,20 @@ class ElementApi(
         }
 
         val element = elementDao.get(elementId) ?: throw NotFoundException()
-        val version = elementVersionDao.listForElement(elementId)[0] // TODO: Assumes original is first
+        val version = elementVersionDao.listForElement(elementId)[0] // FIXME: Assumes first is original
+        val frame = ElementFrameRow(
+            elementId = element.id,
+            number = frameNumber
+        )
 
         logger.info("Importing frame $frameNumber/${element.framecount} for element ${element.id}")
 
-        val file = Paths.get(
-            dataPathLocal,
-            folderName(element),
-            folderName(version),
-            fileName(element, version, frameNumber)
-        ).toFile()
+        val file = pathResolver.local(element, version, frame).toFile()
 
         file.parentFile.mkdirs()
         file.writeBytes(data)
 
-        elementFrameDao.insert(
-            ElementFrameRow(
-                elementId = element.id,
-                number = frameNumber,
-                transcoded = false
-            )
-        )
+        elementFrameDao.insert(frame)
     }
 
     private fun mapElement(element: ElementRow, versions: List<ElementVersionRow>): Element {
