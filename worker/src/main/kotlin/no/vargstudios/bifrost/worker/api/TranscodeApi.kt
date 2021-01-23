@@ -7,6 +7,9 @@ import no.vargstudios.bifrost.worker.api.model.TranscodeVideoRequest
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.io.File
+import java.lang.ProcessBuilder.Redirect.DISCARD
+import java.lang.ProcessBuilder.Redirect.INHERIT
+import java.util.concurrent.TimeUnit.SECONDS
 import javax.ws.rs.*
 import javax.ws.rs.core.MediaType.APPLICATION_JSON
 
@@ -81,44 +84,34 @@ class TranscodeApi() {
 
     private fun resize(source: File, target: File, width: Int, height: Int) {
         logDuration("resize") {
-            val exitCode = ProcessBuilder()
-                .command(
+            runCommand(
+                listOf(
                     "oiiotool", source.absolutePath,
                     "--resize", "${width}x${height}",
                     "-o", target.absolutePath
                 )
-                .start()
-                .waitFor()
-
-            if (exitCode != 0) {
-                throw RuntimeException("oiiotool exited with status $exitCode")
-            }
+            )
         }
     }
 
     private fun resizeToSRGB(source: File, target: File, width: Int, height: Int) {
         logDuration("resizeToSRGB") {
-            val exitCode = ProcessBuilder()
-                .command(
+            runCommand(
+                listOf(
                     "oiiotool", source.absolutePath,
                     "--resize", "${width}x${height}",
                     "--ch", "R,G,B",
                     "--tocolorspace", "sRGB",
                     "-o", target.absolutePath
                 )
-                .start()
-                .waitFor()
-
-            if (exitCode != 0) {
-                throw RuntimeException("oiiotool exited with status $exitCode")
-            }
+            )
         }
     }
 
     private fun createVideo(sources: File, target: File, framerate: Int) {
         logDuration("createVideo") {
-            val exitCode = ProcessBuilder()
-                .command(
+            runCommand(
+                listOf(
                     "ffmpeg",
                     "-framerate", "$framerate",
                     "-i", sources.absolutePath,
@@ -128,12 +121,27 @@ class TranscodeApi() {
                     "-crf", "12",
                     "-y", target.absolutePath
                 )
-                .start()
-                .waitFor()
+            )
+        }
+    }
 
-            if (exitCode != 0) {
-                throw RuntimeException("ffmpeg exited with status $exitCode")
-            }
+    private fun runCommand(command: List<String>) {
+        logger.debug("Running $command")
+
+        val process = ProcessBuilder()
+            .command(command)
+            .redirectOutput(if (logger.isDebugEnabled) INHERIT else DISCARD)
+            .redirectError(if (logger.isDebugEnabled) INHERIT else DISCARD)
+            .start()
+
+        if (!process.waitFor(30, SECONDS)) {
+            logger.info("${command.first()} timed out")
+            process.destroy()
+        }
+
+        if (process.exitValue() != 0) {
+            logger.info("${command.first()} exited with status ${process.exitValue()}")
+            throw RuntimeException("Exit status ${process.exitValue()}")
         }
     }
 
