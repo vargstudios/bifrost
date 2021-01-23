@@ -3,7 +3,7 @@
 # Create builder image with support for static linking
 podman build \
   --file src/main/docker/Dockerfile.native-image \
-  --tag localhost/native-image:custom \
+  --tag localhost/native-image:latest \
   .
 
 # Build native app
@@ -11,7 +11,7 @@ podman build \
 ./gradlew build --info \
   -Dquarkus.package.type=native \
   -Dquarkus.native.container-runtime=podman \
-  -Dquarkus.native.builder-image=localhost/native-image:custom \
+  -Dquarkus.native.builder-image=localhost/native-image:latest \
   -Dquarkus.native.additional-build-args=--static
 
 # Create app image

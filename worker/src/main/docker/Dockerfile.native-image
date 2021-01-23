@@ -1,6 +1,5 @@
 # Replacement for quarkus/ubi-quarkus-native-image
 # Has support for static linking
-FROM oracle/graalvm-ce:20.3.0-java11
-RUN gu install native-image
+FROM springci/graalvm-ce:21.0-dev-java11
 WORKDIR /project
 ENTRYPOINT ["native-image"]
