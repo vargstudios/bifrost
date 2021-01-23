@@ -69,7 +69,7 @@ class TranscodeApi() {
             }
 
             logger.info("Creating video...")
-            val sources = dir.resolve("*.${request.images[0].spec.format.extension}")
+            val sources = dir.resolve("%06d.${request.images[0].spec.format.extension}")
             val target = dir.resolve("video.mp4")
             createVideo(sources, target, request.framerate)
 
@@ -121,7 +121,6 @@ class TranscodeApi() {
                 .command(
                     "ffmpeg",
                     "-framerate", "$framerate",
-                    "-pattern_type", "glob",
                     "-i", sources.absolutePath,
                     "-c:v", "libx264",
                     "-preset", "slow",
@@ -133,7 +132,7 @@ class TranscodeApi() {
                 .waitFor()
 
             if (exitCode != 0) {
-                throw RuntimeException("oiiotool exited with status $exitCode")
+                throw RuntimeException("ffmpeg exited with status $exitCode")
             }
         }
     }
