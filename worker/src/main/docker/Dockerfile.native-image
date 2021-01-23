@@ -1,5 +1,0 @@
-# Replacement for quarkus/ubi-quarkus-native-image
-# Has support for static linking
-FROM springci/graalvm-ce:21.0-dev-java11
-WORKDIR /project
-ENTRYPOINT ["native-image"]

@@ -1,9 +1,7 @@
 #!/bin/bash
 
 # Build native app
-./gradlew build --info \
-  -Dquarkus.package.type=native \
-  -Dquarkus.native.container-runtime=podman
+./gradlew build --info
 
 # Create app image
 podman build \
