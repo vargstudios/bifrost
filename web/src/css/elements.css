@@ -18,6 +18,7 @@
   background: black;
   padding-bottom: 50%;
   position: relative;
+  border-radius: var(--size-1);
 }
 
 .element .preview > * {
