@@ -72,7 +72,7 @@ class WorkerScheduler(
             pathResolver.local(element).resolve("preview.mp4").toFile().writeBytes(video)
 
             // Copy image
-            val image = toFile(element, version, frames.find { it.number == element.framecount/2 }!!).readBytes()
+            val image = toFile(element, version, frames.find { it.number == element.framecount/2+1 }!!).readBytes()
             pathResolver.local(element).resolve("preview.jpg").toFile().writeBytes(image)
 
             // Mark previews generated
