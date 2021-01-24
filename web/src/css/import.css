@@ -2,7 +2,7 @@
   padding: var(--size-2) var(--size-4);
 }
 
-.import section > * {
+.import > * {
   display: block;
   margin: var(--size-2) 0;
 }
