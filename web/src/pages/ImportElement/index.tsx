@@ -12,6 +12,7 @@ import { Textbox } from "../../components/Textbox";
 import { Selectbox } from "../../components/Selectbox";
 import { Progressbar } from "../../components/Progressbar";
 import { DefineElement, Importing, State } from "./state";
+import { parseFilename } from "../../utils/FilenameUtils";
 
 export function ImportElementPage(props: RouteComponentProps): JSX.Element {
   const fileRef = useRef<HTMLInputElement>(null);
@@ -37,7 +38,7 @@ export function ImportElementPage(props: RouteComponentProps): JSX.Element {
           type: "DefineElement",
           files: files,
           analysis: analysis,
-          name: files[0].name, // TODO
+          name: parseFilename(files[0].name)!.name, // TODO
           categoryId: categories[0].id, // TODO
         });
       })

@@ -1,42 +1,30 @@
 import { describe, it } from "mocha";
 import { expect } from "chai";
-import { commonPrefix, commonSuffix, reverse } from "./StringUtils";
+import { parseFilename } from "./FilenameUtils";
 
-describe("commonSuffix", () => {
-  it("returns empty string when no strings", () => {
-    expect(commonSuffix([])).to.equal("");
+describe("parseFilename", () => {
+  it("returns null when invalid format", () => {
+    expect(parseFilename("")).to.be.null;
   });
-  it("returns full string when one string", () => {
-    expect(commonSuffix(["Test"])).to.equal("Test");
+  it("handles sequence after hyphen", () => {
+    expect(parseFilename("Fire-003.exr")).to.eql({
+      name: "Fire",
+      sequence: 3,
+      extension: "exr",
+    });
   });
-  it("returns common when multiple strings", () => {
-    expect(commonSuffix(["Crocodile", "Beetle"])).to.equal("le");
+  it("handles sequence after underscore", () => {
+    expect(parseFilename("Bloody_Axe_0017.exr")).to.eql({
+      name: "Bloody_Axe",
+      sequence: 17,
+      extension: "exr",
+    });
   });
-  it("returns common when many strings", () => {
-    expect(commonSuffix(["Nyancat", "Longcat", "Hovercat"])).to.equal("cat");
-  });
-});
-
-describe("commonPrefix", () => {
-  it("returns empty string when no strings", () => {
-    expect(commonPrefix([])).to.equal("");
-  });
-  it("returns full string when one string", () => {
-    expect(commonPrefix(["Test"])).to.equal("Test");
-  });
-  it("returns common when multiple strings", () => {
-    expect(commonPrefix(["Milo", "Mila"])).to.equal("Mil");
-  });
-  it("returns common when many strings", () => {
-    expect(commonPrefix(["Alpha", "Alphabet", "Alpine", "Alf"])).to.equal("Al");
-  });
-});
-
-describe("reverse", () => {
-  it("reverses abc", () => {
-    expect(reverse("abc")).to.equal("cba");
-  });
-  it("reverses onomatopoeia", () => {
-    expect(reverse("onomatopoeia")).to.equal("aieopotamono");
+  it("handles sequence after dot", () => {
+    expect(parseFilename("Water-Droplets.01017.jpg")).to.eql({
+      name: "Water-Droplets",
+      sequence: 1017,
+      extension: "jpg",
+    });
   });
 });

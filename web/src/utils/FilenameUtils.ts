@@ -1,12 +1,18 @@
-enum CheckResult {
-  NoFiles,
-  MultipleSequences,
-  Ok,
-}
+export type Filename = {
+  name: string;
+  sequence: number;
+  extension: string;
+};
 
-function checkSelectedFiles(files: File[]): string | null {
-  if (files.length === 0) {
-    return "No files selected";
+export function parseFilename(filename: string): Filename | null {
+  const re = /^(.+?)[._-]([0-9]+)\.([^.]+)$/;
+  const match = re.exec(filename);
+  if (!match) {
+    return null;
   }
-  return "Multiple sequences";
+  return {
+    name: match[1],
+    sequence: parseInt(match[2]),
+    extension: match[3],
+  };
 }
