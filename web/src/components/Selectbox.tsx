@@ -23,7 +23,9 @@ export function Selectbox(props: Props): JSX.Element {
         onChange={(e) => props.onChange(e.target.value)}
       >
         {props.options.map((option) => (
-          <option value={option.value}>{option.name}</option>
+          <option key={option.value} value={option.value}>
+            {option.name}
+          </option>
         ))}
       </select>
     </div>
