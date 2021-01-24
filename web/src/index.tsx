@@ -1,13 +1,13 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
+import { HashRouter, Redirect, Route, Switch } from "react-router-dom";
 import { BrowseElementsPage } from "./pages/BrowseElementsPage";
 import { ImportElementsPage } from "./pages/ImportElementsPage";
 import "./css/all";
 
 function Router() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Switch>
         <Route exact path="/browse/elements" component={BrowseElementsPage} />
         <Route exact path="/import/element" component={ImportElementsPage} />
@@ -15,7 +15,7 @@ function Router() {
           <Redirect to="/browse/elements" />
         </Route>
       </Switch>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 
