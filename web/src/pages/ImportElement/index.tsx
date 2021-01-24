@@ -159,7 +159,8 @@ export function ImportElementPage(props: RouteComponentProps): JSX.Element {
             />
             <div>
               {state.files.length} Frames, {state.analysis.framerate} FPS,{" "}
-              {state.analysis.alpha ? "RGBA" : "RGB"}
+              {state.analysis.alpha ? "RGBA" : "RGB"}, {state.analysis.width}x
+              {state.analysis.height} Pixels
             </div>
             <div>
               <button onClick={onImportClicked}>Import element</button>
