@@ -7,7 +7,3 @@ build/
 *.ipr
 *.iml
 *.iws
-
-# Test data
-data/
-*.db
