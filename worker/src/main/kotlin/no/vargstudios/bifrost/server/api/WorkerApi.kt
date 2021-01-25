@@ -15,6 +15,6 @@ interface WorkerApi {
 
     @POST
     @Path("/register")
-    fun register()
+    fun registerWorker()
 
 }

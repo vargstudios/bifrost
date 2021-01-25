@@ -1,4 +1,4 @@
-package no.vargstudios.bifrost.worker.registry
+package no.vargstudios.bifrost.server.api.model
 
 enum class WorkerState {
     NEW,

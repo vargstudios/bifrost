@@ -1,4 +1,5 @@
 import * as React from "react";
+import { NavLink } from "react-router-dom";
 import { Category } from "../api/categories";
 
 type Props = {
@@ -9,14 +10,14 @@ export function ElementsSidebar(props: Props): JSX.Element {
   return (
     <aside className="sidebar">
       <div className="heading">CATEGORY</div>
-      <div className="button active">All</div>
+      <NavLink to="/browse/elements">All</NavLink>
       {props.categories.map((category) => (
-        <div className="button" key={category.id}>
+        <NavLink to="/browse/elements/category" key={category.id}>
           {category.name}
-        </div>
+        </NavLink>
       ))}
       <div className="heading">ORDER BY</div>
-      <div className="button active">Latest</div>
+      <NavLink to="/browse/elements/latest">Latest</NavLink>
     </aside>
   );
 }

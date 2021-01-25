@@ -8,17 +8,18 @@
   font-weight: 500;
 }
 
-.sidebar .button {
+.sidebar a {
+  display: block;
   padding: var(--size-1) var(--size-6);
   font-weight: 500;
   cursor: pointer;
   color: var(--grey-9);
 }
 
-.sidebar .button.active {
+.sidebar a.active {
   background: var(--grey-4);
 }
 
-.sidebar .button:hover {
+.sidebar a:hover {
   background: var(--grey-4);
 }

@@ -3,7 +3,7 @@ import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { RouteComponentProps } from "react-router";
 import { Category, listCategories } from "../../api/categories";
 import { Header } from "../../components/Header";
-import { ImportSidebar } from "../../components/ImportSidebar";
+import { ConfigSidebar } from "../../components/ConfigSidebar";
 import { Footer } from "../../components/Footer";
 import { toList } from "../../utils/FileUtils";
 import { analyseExr } from "../../api/analysis";
@@ -212,7 +212,7 @@ export function ImportElementPage(props: RouteComponentProps): JSX.Element {
   return (
     <div className="layout">
       <Header />
-      <ImportSidebar />
+      <ConfigSidebar />
       <main className="import">
         <div className="title">IMPORT ELEMENT</div>
         {renderDynamic()}

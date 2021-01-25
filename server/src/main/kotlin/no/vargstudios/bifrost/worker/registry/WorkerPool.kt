@@ -1,8 +1,10 @@
 package no.vargstudios.bifrost.worker.registry
 
+import no.vargstudios.bifrost.server.api.model.Worker
+import no.vargstudios.bifrost.server.api.model.WorkerState
+import no.vargstudios.bifrost.server.api.model.WorkerState.*
 import no.vargstudios.bifrost.worker.api.PingApi
 import no.vargstudios.bifrost.worker.api.TranscodeApi
-import no.vargstudios.bifrost.worker.registry.WorkerState.*
 import org.eclipse.microprofile.rest.client.RestClientBuilder
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -21,14 +23,20 @@ class WorkerPool {
 
     private val logger: Logger = LoggerFactory.getLogger(this::class.java)
 
-    private val tasks: Queue<(Worker) -> Unit> = ConcurrentLinkedQueue<(Worker) -> Unit>()
+    private val tasks: Queue<(WorkerApis) -> Unit> = ConcurrentLinkedQueue<(WorkerApis) -> Unit>()
     private val workers: ConcurrentMap<String, WorkerState> = ConcurrentHashMap<String, WorkerState>()
+
+    fun list(): List<Worker> {
+        return workers.map { (url, state) ->
+            Worker(url = url, state = state)
+        }
+    }
 
     fun isIdle(): Boolean {
         return tasks.isEmpty() && workers.none { (_, state) -> state == BUSY }
     }
 
-    fun addTask(task: (Worker) -> Unit) {
+    fun addTask(task: (WorkerApis) -> Unit) {
         tasks.add(task)
     }
 
@@ -39,8 +47,7 @@ class WorkerPool {
         }
 
         // Create worker
-        val worker = Worker(
-            url = url,
+        val worker = WorkerApis(
             pingApi = RestClientBuilder.newBuilder()
                 .baseUrl(URL(url))
                 .connectTimeout(3, SECONDS)

@@ -20,7 +20,7 @@ class RegistrationJob(
     @Scheduled(every = "60s", concurrentExecution = SKIP)
     fun register() {
         try {
-            workerApi.register()
+            workerApi.registerWorker()
             logger.info("Successfully registered with $serverUrl")
         } catch (e: Exception) {
             logger.warn("Failed to register with $serverUrl: ${e.message}")
