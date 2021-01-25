@@ -2,6 +2,8 @@ import * as React from "react";
 import { useRef, useState } from "react";
 import { baseUrl } from "../api/server";
 import { Element } from "../api/elements";
+import { faCogs } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 type Props = {
   element: Element;
@@ -15,17 +17,18 @@ export function ElementPreview(props: Props): JSX.Element {
   const elementUrl = baseUrl() + `/api/v1/elements/${element.id}`;
 
   function onEnter() {
-    let video = videoRef.current!;
-    video.currentTime = 0;
-    video
+    if (!videoRef.current) {
+      return;
+    }
+    videoRef.current.currentTime = 0;
+    videoRef.current
       .play()
       .then(() => setPlaying(true))
       .catch((e) => console.log("Play", e));
   }
 
   function onLeave() {
-    let video = videoRef.current!;
-    video.pause();
+    videoRef.current?.pause();
     setPlaying(false);
   }
 
@@ -40,9 +43,18 @@ export function ElementPreview(props: Props): JSX.Element {
     return `${width}x${height}`;
   }
 
-  return (
-    <div className="element">
-      <div className="title">{element.name}</div>
+  function processing() {
+    return (
+      <div className="preview">
+        <div className="center" title="Processing...">
+          <FontAwesomeIcon icon={faCogs} size="2x" />
+        </div>
+      </div>
+    );
+  }
+
+  function preview() {
+    return (
       <div className="preview" onMouseEnter={onEnter} onMouseLeave={onLeave}>
         <div
           className="image"
@@ -65,6 +77,13 @@ export function ElementPreview(props: Props): JSX.Element {
           style={{ display: playing ? "block" : "none" }}
         />
       </div>
+    );
+  }
+
+  return (
+    <div className="element">
+      <div className="title">{element.name}</div>
+      {element.previews ? preview() : processing()}
       <div className="details">
         {element.framecount} Frames, {element.framerate} FPS
         {element.alpha ? ", Alpha" : ""}

@@ -16,6 +16,7 @@ export type Element = {
   framecount: number;
   framerate: number;
   alpha: boolean;
+  previews: boolean;
   versions: ElementVersion[];
 };
 

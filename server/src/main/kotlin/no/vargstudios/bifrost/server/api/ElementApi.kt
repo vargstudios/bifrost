@@ -171,6 +171,7 @@ class ElementApi(
             framecount = element.framecount,
             framerate = element.framerate,
             alpha = element.alpha,
+            previews = element.previews,
             versions = versions.map { mapVersion(it) }
         )
     }

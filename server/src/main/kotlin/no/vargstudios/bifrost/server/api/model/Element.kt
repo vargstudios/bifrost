@@ -6,5 +6,6 @@ data class Element(
     val framecount: Int,
     val framerate: Int,
     val alpha: Boolean,
+    val previews: Boolean,
     val versions: List<ElementVersion>
 )
