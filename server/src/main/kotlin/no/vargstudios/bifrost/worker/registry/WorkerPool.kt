@@ -48,6 +48,7 @@ class WorkerPool {
 
         // Create worker
         val worker = WorkerApis(
+            url = url,
             pingApi = RestClientBuilder.newBuilder()
                 .baseUrl(URL(url))
                 .connectTimeout(3, SECONDS)
