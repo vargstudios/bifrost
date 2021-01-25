@@ -5,6 +5,7 @@ import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
 import { ConfigSidebar } from "../components/ConfigSidebar";
 import { Worker, listWorkers } from "../api/workers";
+import { useInterval } from "../hooks/useInterval";
 
 export function ManageWorkersPage(props: RouteComponentProps): JSX.Element {
   const [workers, setWorkers] = useState<Worker[]>([]);
@@ -12,6 +13,10 @@ export function ManageWorkersPage(props: RouteComponentProps): JSX.Element {
   useEffect(() => {
     listWorkers().then(setWorkers);
   }, []);
+
+  useInterval(() => {
+    listWorkers().then(setWorkers);
+  }, 1000);
 
   function workerTable(): JSX.Element {
     if (workers.length < 1) {
