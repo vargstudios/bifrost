@@ -10,6 +10,7 @@ import "./textbox.css";
 import "./selectbox.css";
 import "./progressbar.css";
 import "./import.css";
+import "./table.css";
 
 import "fontsource-ubuntu/400-normal.css";
 import "fontsource-ubuntu/500-normal.css";

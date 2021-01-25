@@ -1,0 +1,9 @@
+table th {
+    border-bottom: 1px solid var(--grey-7);
+    padding: var(--size-1) var(--size-2);
+}
+
+table td {
+    border-bottom: 1px solid var(--grey-5);
+    padding: var(--size-1) var(--size-2);
+}

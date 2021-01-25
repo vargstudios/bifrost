@@ -13,17 +13,37 @@ export function ManageCategoriesPage(props: RouteComponentProps): JSX.Element {
     listCategories().then(setCategory);
   }, []);
 
+  function categoryTable(): JSX.Element {
+    if (categories.length < 1) {
+      return <></>;
+    }
+    return (
+      <table>
+        <thead>
+          <tr>
+            <th>Id</th>
+            <th>Name</th>
+          </tr>
+        </thead>
+        <tbody>
+          {categories.map((category) => (
+            <tr key={category.id}>
+              <td>{category.id}</td>
+              <td>{category.name}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    );
+  }
+
   return (
     <div className="layout">
       <Header />
       <ConfigSidebar />
       <main className="import">
         <div className="title">MANAGE CATEGORIES</div>
-        {categories.map((category) => (
-          <div>
-            {category.id} – {category.name}
-          </div>
-        ))}
+        {categoryTable()}
       </main>
       <Footer />
     </div>

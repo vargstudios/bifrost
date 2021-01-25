@@ -13,17 +13,37 @@ export function ManageWorkersPage(props: RouteComponentProps): JSX.Element {
     listWorkers().then(setWorkers);
   }, []);
 
+  function workerTable(): JSX.Element {
+    if (workers.length < 1) {
+      return <></>;
+    }
+    return (
+      <table>
+        <thead>
+          <tr>
+            <th>Url</th>
+            <th>State</th>
+          </tr>
+        </thead>
+        <tbody>
+          {workers.map((worker) => (
+            <tr key={worker.url}>
+              <td>{worker.url}</td>
+              <td>{worker.state}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    );
+  }
+
   return (
     <div className="layout">
       <Header />
       <ConfigSidebar />
       <main className="import">
         <div className="title">MANAGE WORKERS</div>
-        {workers.map((worker) => (
-          <div>
-            {worker.url} – {worker.state}
-          </div>
-        ))}
+        {workerTable()}
       </main>
       <Footer />
     </div>
