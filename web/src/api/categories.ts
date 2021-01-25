@@ -24,7 +24,7 @@ export function listCategories(): Promise<Category[]> {
 }
 
 export function createCategory(category: CreateCategory): Promise<Category> {
-  return fetch(baseUrl() + "/api/v1/elements", {
+  return fetch(baseUrl() + "/api/v1/categories", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
