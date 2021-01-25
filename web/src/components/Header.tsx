@@ -9,9 +9,6 @@ export function Header(): JSX.Element {
       <Link to="/" className="title">
         BIFROST
       </Link>
-      <Link to="/user" className="button">
-        <FontAwesomeIcon icon={faUser} size="2x" />
-      </Link>
       <Link to="/import/element" className="button">
         <FontAwesomeIcon icon={faCog} size="2x" />
       </Link>
