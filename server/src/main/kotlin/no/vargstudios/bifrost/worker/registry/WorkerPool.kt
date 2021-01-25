@@ -33,7 +33,7 @@ class WorkerPool {
     }
 
     fun isIdle(): Boolean {
-        return tasks.isEmpty() && workers.none { (_, state) -> state == BUSY }
+        return tasks.isEmpty() && workers.none { (_, state) -> state == WORKING }
     }
 
     fun addTask(task: (WorkerApis) -> Unit) {
@@ -82,9 +82,9 @@ class WorkerPool {
                         break
                     }
 
-                    // Busy while there are tasks
+                    // Working while there are tasks
                     try {
-                        workers[url] = BUSY
+                        workers[url] = WORKING
                         task(worker)
                     } catch (e: Exception) {
                         logger.error("Worker $url failed", e)

@@ -5,7 +5,7 @@ export type Worker = {
   state: WorkerState;
 };
 
-export type WorkerState = "NEW" | "UNREACHABLE" | "IDLE" | "BUSY";
+export type WorkerState = "NEW" | "UNREACHABLE" | "IDLE" | "WORKING";
 
 export function listWorkers(): Promise<Worker[]> {
   return fetch(baseUrl() + "/api/v1/workers", {

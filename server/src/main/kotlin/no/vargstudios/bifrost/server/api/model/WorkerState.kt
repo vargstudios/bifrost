@@ -4,5 +4,5 @@ enum class WorkerState {
     NEW,
     UNREACHABLE,
     IDLE,
-    BUSY
+    WORKING
 }
