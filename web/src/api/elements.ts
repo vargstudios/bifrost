@@ -18,6 +18,7 @@ export type Element = {
   alpha: boolean;
   previews: boolean;
   versions: ElementVersion[];
+  category: ElementCategory;
 };
 
 export type ElementVersion = {
@@ -25,6 +26,11 @@ export type ElementVersion = {
   name: string;
   width: number;
   height: number;
+};
+
+export type ElementCategory = {
+  id: string;
+  name: string;
 };
 
 export function listElements(): Promise<Element[]> {

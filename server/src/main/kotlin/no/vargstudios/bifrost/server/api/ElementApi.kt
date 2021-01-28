@@ -2,10 +2,13 @@ package no.vargstudios.bifrost.server.api
 
 import no.vargstudios.bifrost.server.api.model.CreateElement
 import no.vargstudios.bifrost.server.api.model.Element
+import no.vargstudios.bifrost.server.api.model.ElementCategory
 import no.vargstudios.bifrost.server.api.model.ElementVersion
+import no.vargstudios.bifrost.server.db.ElementCategoryDao
 import no.vargstudios.bifrost.server.db.ElementDao
 import no.vargstudios.bifrost.server.db.ElementFrameDao
 import no.vargstudios.bifrost.server.db.ElementVersionDao
+import no.vargstudios.bifrost.server.db.model.ElementCategoryRow
 import no.vargstudios.bifrost.server.db.model.ElementFrameRow
 import no.vargstudios.bifrost.server.db.model.ElementRow
 import no.vargstudios.bifrost.server.db.model.ElementVersionRow
@@ -25,6 +28,7 @@ import javax.ws.rs.core.MediaType.WILDCARD
 class ElementApi(
     val elementDao: ElementDao,
     val elementVersionDao: ElementVersionDao,
+    val elementCategoryDao: ElementCategoryDao,
     val elementFrameDao: ElementFrameDao,
     val pathResolver: PathResolver
 ) {
@@ -41,7 +45,11 @@ class ElementApi(
         return elementDao.list()
             .map { element ->
                 val versions = elementVersionDao.listForElement(element.id)
-                mapElement(element, versions)
+                val category = elementCategoryDao.get(element.categoryId)
+                if (category == null) {
+                    throw RuntimeException();
+                }
+                mapElement(element, versions, category)
             }
     }
 
@@ -81,7 +89,7 @@ class ElementApi(
             .map { width ->
                 ElementVersionRow(
                     elementId = element.id,
-                    name = "${width/1024}K",
+                    name = "${width / 1024}K",
                     width = width,
                     height = width * createElement.height / createElement.width,
                     filetype = EXR.extension
@@ -92,7 +100,8 @@ class ElementApi(
         versions.forEach { elementVersionDao.insert(it) }
         logger.info("Created ${versions.size} versions for element ${element.id}")
 
-        return mapElement(element, versions)
+        val category = elementCategoryDao.get(element.categoryId)!!
+        return mapElement(element, versions, category)
     }
 
     @GET
@@ -100,7 +109,8 @@ class ElementApi(
     fun getElement(@PathParam("elementId") elementId: String): Element {
         val element = elementDao.get(elementId) ?: throw NotFoundException()
         val versions = elementVersionDao.listForElement(elementId)
-        return mapElement(element, versions)
+        val category = elementCategoryDao.get(element.categoryId)!!
+        return mapElement(element, versions, category)
     }
 
     @GET
@@ -164,7 +174,7 @@ class ElementApi(
         elementFrameDao.insert(frame)
     }
 
-    private fun mapElement(element: ElementRow, versions: List<ElementVersionRow>): Element {
+    private fun mapElement(element: ElementRow, versions: List<ElementVersionRow>, category: ElementCategoryRow): Element {
         return Element(
             id = element.id,
             name = element.name,
@@ -172,7 +182,8 @@ class ElementApi(
             framerate = element.framerate,
             alpha = element.alpha,
             previews = element.previews,
-            versions = versions.map { mapVersion(it) }
+            versions = versions.map { mapVersion(it) },
+            category = mapCategory(category)
         )
     }
 
@@ -182,6 +193,13 @@ class ElementApi(
             name = version.name,
             width = version.width,
             height = version.height
+        )
+    }
+
+    private fun mapCategory(category: ElementCategoryRow): ElementCategory {
+        return ElementCategory(
+            id = category.id,
+            name = category.name
         )
     }
 
