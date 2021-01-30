@@ -8,27 +8,38 @@ import {
   Category,
   createCategory,
   CreateCategory,
+  deleteCategory,
   listCategories,
 } from "../api/categories";
 import { Textbox } from "../components/Textbox";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
 export function ManageCategoriesPage(props: RouteComponentProps): JSX.Element {
-  const [categories, setCategory] = useState<Category[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [state, setState] = useState<CreateCategory>({ name: "" });
 
   useEffect(() => {
-    listCategories().then(setCategory);
+    listCategories().then(setCategories);
   }, []);
 
   function onCreateClicked(): void {
     createCategory(state)
       .then(() => {
-        listCategories().then(setCategory);
+        listCategories().then(setCategories);
         setState({ name: "" });
       })
-      .catch(() => {
-        // TODO
-      });
+      // TODO
+      .catch(() => alert("Failed to create category"));
+  }
+
+  function onDeleteClicked(id: string): void {
+    deleteCategory(id)
+      .then(() => {
+        listCategories().then(setCategories);
+      })
+      // TODO
+      .catch(() => alert("Failed to delete category"));
   }
 
   function categoryTable(): JSX.Element {
@@ -41,6 +52,7 @@ export function ManageCategoriesPage(props: RouteComponentProps): JSX.Element {
           <tr>
             <th>Id</th>
             <th>Name</th>
+            <th />
           </tr>
         </thead>
         <tbody>
@@ -48,6 +60,12 @@ export function ManageCategoriesPage(props: RouteComponentProps): JSX.Element {
             <tr key={category.id}>
               <td>{category.id}</td>
               <td>{category.name}</td>
+              <td>
+                <FontAwesomeIcon
+                  icon={faTrash}
+                  onClick={() => onDeleteClicked(category.id)}
+                />
+              </td>
             </tr>
           ))}
         </tbody>

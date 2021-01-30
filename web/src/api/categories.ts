@@ -37,3 +37,16 @@ export function createCategory(category: CreateCategory): Promise<Category> {
     return response.json();
   });
 }
+
+export function deleteCategory(id: string): Promise<void> {
+  return fetch(baseUrl() + "/api/v1/categories/" + id, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }).then((response) => {
+    if (!response.ok) {
+      throw new Error("Unexpected status");
+    }
+  });
+}

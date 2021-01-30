@@ -17,6 +17,9 @@ interface ElementDao {
     @SqlQuery("select * from elements")
     fun list(): List<ElementRow>
 
+    @SqlQuery("select * from elements where category_id = :categoryId")
+    fun listForCategory(categoryId: String): List<ElementRow>
+
     @SqlQuery("select * from elements where id = :id")
     fun get(id: String): ElementRow?
 

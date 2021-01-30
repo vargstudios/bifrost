@@ -20,4 +20,7 @@ interface ElementCategoryDao {
     @SqlQuery("select * from element_categories where id = :id")
     fun get(id: String): ElementCategoryRow?
 
+    @SqlUpdate("delete from element_categories where id = :id")
+    fun delete(id: String)
+
 }
