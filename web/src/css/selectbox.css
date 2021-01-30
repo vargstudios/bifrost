@@ -6,19 +6,21 @@
 .selectbox select {
   display: block;
   width: 100%;
-  padding: calc(var(--size-1) - 1px) calc(var(--size-2) - 1px);
+  padding: calc(var(--size-1) - 2px) calc(var(--size-2) - 2px);
   border-radius: var(--size-1);
-  border: 1px solid var(--grey-7);
+  border: 2px solid var(--grey-4);
+  background: var(--grey-2);
   /* remove default arrow */
   -moz-appearance: none;
   -webkit-appearance: none;
   /* add custom arrow (hacky) */
-  background-image: url("data:image/svg+xml;utf8,<svg fill='rgb(227, 227, 227)' viewBox='0 0 24 24' width='24' height='24' xmlns='http://www.w3.org/2000/svg'><path d='M4 9l4 6 4-6z'/></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg fill='rgb(200, 200, 200)' viewBox='0 0 24 24' width='24' height='24' xmlns='http://www.w3.org/2000/svg'><path d='M4 9l4 6 4-6z'/></svg>");
   background-repeat: no-repeat;
   background-position-x: 100%;
   background-position-y: var(--size-1);
 }
 
+.selectbox select:hover,
 .selectbox select:focus {
-  border: 1px solid var(--grey-8);
+  border: 2px solid var(--grey-6);
 }
