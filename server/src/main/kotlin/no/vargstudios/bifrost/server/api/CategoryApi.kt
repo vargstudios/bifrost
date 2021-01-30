@@ -23,6 +23,9 @@ class CategoryApi(val elementCategoryDao: ElementCategoryDao) {
 
     @POST
     fun createCategory(createCategory: CreateElementCategory): ElementCategory {
+        if (createCategory.name.length < 3) {
+            throw BadRequestException("Category name too short")
+        }
         val category = ElementCategoryRow(
             name = createCategory.name
         )
