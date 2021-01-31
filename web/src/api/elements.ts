@@ -26,6 +26,7 @@ export type ElementVersion = {
   name: string;
   width: number;
   height: number;
+  url: string;
 };
 
 export type ElementCategory = {
@@ -35,6 +36,20 @@ export type ElementCategory = {
 
 export function listElements(): Promise<Element[]> {
   return fetch(baseUrl() + "/api/v1/elements", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }).then((response) => {
+    if (!response.ok) {
+      throw new Error("Unexpected status");
+    }
+    return response.json();
+  });
+}
+
+export function getElement(id: string): Promise<Element> {
+  return fetch(baseUrl() + "/api/v1/elements/" + id, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

@@ -1,7 +1,8 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { HashRouter, Redirect, Route, Switch } from "react-router-dom";
-import { BrowseElementsPage } from "./pages/BrowseElementsPage";
+import { ElementsPage } from "./pages/ElementsPage";
+import { ElementDetailsPage } from "./pages/ElementDetailsPage";
 import { ImportElementPage } from "./pages/ImportElement";
 import { ManageCategoriesPage } from "./pages/ManageCategoriesPage";
 import { ManageWorkersPage } from "./pages/ManageWorkersPage";
@@ -11,7 +12,8 @@ function Router() {
   return (
     <HashRouter>
       <Switch>
-        <Route exact path="/browse/elements" component={BrowseElementsPage} />
+        <Route exact path="/elements" component={ElementsPage} />
+        <Route exact path="/elements/:id" component={ElementDetailsPage} />
         <Route exact path="/import/element" component={ImportElementPage} />
         <Route
           exact
@@ -20,7 +22,7 @@ function Router() {
         />
         <Route exact path="/manage/workers" component={ManageWorkersPage} />
         <Route>
-          <Redirect to="/browse/elements" />
+          <Redirect to="/elements" />
         </Route>
       </Switch>
     </HashRouter>
