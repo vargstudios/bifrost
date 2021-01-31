@@ -3,6 +3,7 @@ import "./system.css";
 import "./text.css";
 import "./layout.css";
 import "./header.css";
+import "./footer.css";
 import "./sidebar.css";
 import "./elements.css";
 import "./button.css";
