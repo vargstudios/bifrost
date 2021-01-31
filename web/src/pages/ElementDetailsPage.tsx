@@ -21,6 +21,10 @@ export function ElementDetailsPage(props: RouteComponentProps): JSX.Element {
       <>
         <div className="title">{element.name}</div>
         <ElementPreview element={element} />
+        <div className="details">
+          {element.framecount} Frames, {element.framerate} FPS
+          {element.alpha ? ", Alpha" : ""}
+        </div>
         {renderVersionTable(
           element.versions.filter((version) => version.name !== "Preview")
         )}
