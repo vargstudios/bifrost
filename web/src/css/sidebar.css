@@ -20,6 +20,7 @@
   background: var(--grey-4);
 }
 
-.sidebar a:hover {
+.sidebar a:hover,
+.sidebar a:focus {
   background: var(--grey-4);
 }

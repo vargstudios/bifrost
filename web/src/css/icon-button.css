@@ -1,0 +1,29 @@
+.icon-button {
+  width: var(--size-6);
+  height: var(--size-6);
+  text-align: center;
+  border-radius: var(--size-1);
+  cursor: pointer;
+  font-size: var(--font-large);
+}
+
+.icon-button.small {
+  width: var(--size-4);
+  height: var(--size-4);
+  font-size: var(--font-normal);
+}
+
+.icon-button.large {
+  width: var(--size-8);
+  height: var(--size-8);
+  font-size: var(--font-gargantuan);
+}
+
+.icon-button:hover,
+.icon-button:focus {
+  background: var(--grey-4);
+}
+
+.icon-button:active {
+  background: var(--grey-5);
+}

@@ -1,7 +1,7 @@
 import * as React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCog } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
+import { IconButtonLink } from "./IconButtonLink";
 
 export function Header(): JSX.Element {
   return (
@@ -9,9 +9,7 @@ export function Header(): JSX.Element {
       <Link to="/" className="title">
         BIFROST
       </Link>
-      <Link to="/import/element" className="navbutton">
-        <FontAwesomeIcon icon={faCog} size="2x" />
-      </Link>
+      <IconButtonLink to="/import/element" size="large" icon={faCog} />
     </header>
   );
 }

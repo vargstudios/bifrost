@@ -6,6 +6,7 @@ import "./header.css";
 import "./sidebar.css";
 import "./elements.css";
 import "./button.css";
+import "./icon-button.css";
 import "./textbox.css";
 import "./selectbox.css";
 import "./progressbar.css";

@@ -12,9 +12,9 @@ import {
   listCategories,
 } from "../api/categories";
 import { Textbox } from "../components/Textbox";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faPencilAlt, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "../components/Button";
+import { IconButton } from "../components/IconButton";
 
 export function ManageCategoriesPage(props: RouteComponentProps): JSX.Element {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -53,7 +53,7 @@ export function ManageCategoriesPage(props: RouteComponentProps): JSX.Element {
           <tr>
             <th>Id</th>
             <th>Name</th>
-            <th />
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -62,7 +62,15 @@ export function ManageCategoriesPage(props: RouteComponentProps): JSX.Element {
               <td>{category.id}</td>
               <td>{category.name}</td>
               <td>
-                <FontAwesomeIcon
+                <IconButton
+                  size="small"
+                  title="Edit"
+                  icon={faPencilAlt}
+                  onClick={() => alert("TODO")}
+                />
+                <IconButton
+                  size="small"
+                  title="Delete"
                   icon={faTrash}
                   onClick={() => onDeleteClicked(category.id)}
                 />

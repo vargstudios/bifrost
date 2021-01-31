@@ -12,6 +12,8 @@ html {
   --font-normal: 16px;
   --font-large: 20px;
   --font-huge: 24px;
+  --font-gargantuan: 32px;
+  --font-colossal: 48px;
 
   /* Munsell: Chroma 0 */
   --grey-9: rgb(227, 227, 227);
