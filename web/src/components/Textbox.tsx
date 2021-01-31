@@ -14,6 +14,7 @@ export function Textbox(props: Props): JSX.Element {
       <input
         id={props.id}
         type="text"
+        autoComplete="off"
         value={props.value}
         onChange={(e) => props.onChange(e.target.value)}
       />

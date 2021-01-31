@@ -19,6 +19,7 @@ export function Selectbox(props: Props): JSX.Element {
       <label htmlFor={props.id}>{props.label}</label>
       <select
         id={props.id}
+        autoComplete="off"
         value={props.value}
         onChange={(e) => props.onChange(e.target.value)}
       >
