@@ -35,7 +35,6 @@ export function ElementPreview(props: Props) {
     return (
       <div className="preview" onMouseEnter={onEnter} onMouseLeave={onLeave}>
         <div
-          className="image"
           style={{
             backgroundImage: `url('${elementUrl}/preview.jpg')`,
             backgroundPosition: "center",
@@ -44,7 +43,6 @@ export function ElementPreview(props: Props) {
           }}
         />
         <video
-          className="video"
           ref={videoRef}
           src={`${elementUrl}/preview.mp4`}
           loop
