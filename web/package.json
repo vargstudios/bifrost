@@ -4,7 +4,7 @@
   "license": "GPL-3.0-or-later",
   "scripts": {
     "dev": "tsc && parcel src/index.html",
-    "build": "tsc && parcel build src/index.html",
+    "build": "tsc && parcel build src/index.html --experimental-scope-hoisting",
     "format": "prettier --write 'src/**/*' '*.json'",
     "clean": "rimraf .cache dist",
     "test": "mocha -r ts-node/register src/**/*.test.ts"
