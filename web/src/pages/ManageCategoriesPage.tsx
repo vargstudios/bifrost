@@ -45,7 +45,7 @@ export function ManageCategoriesPage(props: RouteComponentProps): JSX.Element {
 
   function categoryTable(): JSX.Element {
     if (categories.length < 1) {
-      return <></>;
+      return <div>No categories</div>;
     }
     return (
       <table>

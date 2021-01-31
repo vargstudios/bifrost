@@ -4,7 +4,7 @@ import { RouteComponentProps } from "react-router";
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
 import { ConfigSidebar } from "../components/ConfigSidebar";
-import { Worker, listWorkers } from "../api/workers";
+import { listWorkers, Worker } from "../api/workers";
 import { useInterval } from "../hooks/useInterval";
 
 export function ManageWorkersPage(props: RouteComponentProps): JSX.Element {
@@ -20,7 +20,7 @@ export function ManageWorkersPage(props: RouteComponentProps): JSX.Element {
 
   function workerTable(): JSX.Element {
     if (workers.length < 1) {
-      return <></>;
+      return <div>No workers</div>;
     }
     return (
       <table>
