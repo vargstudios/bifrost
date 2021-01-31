@@ -25,6 +25,15 @@ class PathResolver(
     fun local(element: ElementRow, version: ElementVersionRow, frame: ElementFrameRow): Path =
         Path.of(dataPathLocal, name(element), name(element, version), name(element, version, frame))
 
+    fun remote(element: ElementRow): String =
+        formatPath(dataPathRemote, name(element))
+
+    fun remote(element: ElementRow, version: ElementVersionRow): String =
+        formatPath(dataPathRemote, name(element), name(element, version))
+
+    fun remote(element: ElementRow, version: ElementVersionRow, frame: ElementFrameRow): String =
+        formatPath(dataPathRemote, name(element), name(element, version), name(element, version, frame))
+
     private fun name(element: ElementRow): String =
         sanitizeText(elementRootName.format(element))
 
@@ -54,4 +63,8 @@ class PathResolver(
 
     private fun formatNumber(number: Int): String =
         number.toString().padStart(6, '0')
+
+    private fun formatPath(vararg paths: String): String {
+        return paths.joinToString("/")
+    }
 }

@@ -45,10 +45,7 @@ class ElementApi(
         return elementDao.list()
             .map { element ->
                 val versions = elementVersionDao.listForElement(element.id)
-                val category = elementCategoryDao.get(element.categoryId)
-                if (category == null) {
-                    throw RuntimeException();
-                }
+                val category = elementCategoryDao.get(element.categoryId) ?: throw IllegalStateException("Element has non-existing category")
                 mapElement(element, versions, category)
             }
     }
@@ -182,17 +179,18 @@ class ElementApi(
             framerate = element.framerate,
             alpha = element.alpha,
             previews = element.previews,
-            versions = versions.map { mapVersion(it) },
+            versions = versions.map { mapVersion(element, it) },
             category = mapCategory(category)
         )
     }
 
-    private fun mapVersion(version: ElementVersionRow): ElementVersion {
+    private fun mapVersion(element: ElementRow, version: ElementVersionRow): ElementVersion {
         return ElementVersion(
             id = version.id,
             name = version.name,
             width = version.width,
-            height = version.height
+            height = version.height,
+            url = pathResolver.remote(element, version)
         )
     }
 

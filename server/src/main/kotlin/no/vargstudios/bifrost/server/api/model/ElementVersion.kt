@@ -4,5 +4,6 @@ data class ElementVersion(
     val id: String,
     val name: String,
     val width: Int,
-    val height: Int
+    val height: Int,
+    val url: String
 )
