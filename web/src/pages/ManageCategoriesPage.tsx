@@ -14,6 +14,7 @@ import {
 import { Textbox } from "../components/Textbox";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { Button } from "../components/Button";
 
 export function ManageCategoriesPage(props: RouteComponentProps): JSX.Element {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -85,7 +86,7 @@ export function ManageCategoriesPage(props: RouteComponentProps): JSX.Element {
           value={state.name}
           onChange={(value) => setState({ ...state, name: value })}
         />
-        <button onClick={onCreateClicked}>Create</button>
+        <Button label="Create" onClick={onCreateClicked} />
         <div className="title">ALL CATEGORIES</div>
         {categoryTable()}
       </main>

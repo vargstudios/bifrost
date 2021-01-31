@@ -13,6 +13,7 @@ import { Selectbox } from "../../components/Selectbox";
 import { Progressbar } from "../../components/Progressbar";
 import { DefineElement, Importing, State } from "./state";
 import { parseFilename } from "../../utils/FilenameUtils";
+import { Button } from "../../components/Button";
 
 export function ImportElementPage(props: RouteComponentProps): JSX.Element {
   const fileRef = useRef<HTMLInputElement>(null);
@@ -113,9 +114,10 @@ export function ImportElementPage(props: RouteComponentProps): JSX.Element {
         return (
           <>
             <div>Select a sequence of OpenEXR frames in linear RGB or RGBA</div>
-            <button onClick={() => fileRef.current!.click()}>
-              Select files
-            </button>
+            <Button
+              label="Select files"
+              onClick={() => fileRef.current!.click()}
+            />
             <input
               type="file"
               accept=".exr"
@@ -163,10 +165,11 @@ export function ImportElementPage(props: RouteComponentProps): JSX.Element {
               {state.analysis.height} Pixels
             </div>
             <div>
-              <button onClick={onImportClicked}>Import element</button>
-              <button onClick={() => setState({ type: "SelectFiles" })}>
-                Cancel
-              </button>
+              <Button label="Import element" onClick={onImportClicked} />
+              <Button
+                label="Cancel"
+                onClick={() => setState({ type: "SelectFiles" })}
+              />
             </div>
           </>
         );
@@ -200,9 +203,10 @@ export function ImportElementPage(props: RouteComponentProps): JSX.Element {
               Previews and other versions will be available in a few minutes.
             </div>
             <div>
-              <button onClick={() => setState({ type: "SelectFiles" })}>
-                Import another
-              </button>
+              <Button
+                label="Import another"
+                onClick={() => setState({ type: "SelectFiles" })}
+              />
             </div>
           </>
         );

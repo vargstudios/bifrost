@@ -11,7 +11,7 @@ header .title {
   flex-grow: 1;
 }
 
-header .button {
+header .navbutton {
   width: var(--size-8);
   height: var(--size-8);
   margin: var(--size-2) 0;
@@ -22,6 +22,6 @@ header .button {
   cursor: pointer;
 }
 
-header .button:hover {
+header .navbutton:hover {
   background: var(--grey-3);
 }
