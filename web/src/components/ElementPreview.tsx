@@ -34,7 +34,7 @@ export function ElementPreview(props: Props) {
       <div
         className="image"
         style={{
-          backgroundImage: `url('${elementUrl}/previews/image')`,
+          backgroundImage: `url('${elementUrl}/preview.jpg')`,
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
           backgroundSize: "contain",
@@ -43,7 +43,7 @@ export function ElementPreview(props: Props) {
       <video
         className="video"
         ref={videoRef}
-        src={`${elementUrl}/previews/video`}
+        src={`${elementUrl}/preview.mp4`}
         loop
         muted
         width="100%"

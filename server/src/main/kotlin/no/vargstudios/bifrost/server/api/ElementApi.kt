@@ -111,7 +111,7 @@ class ElementApi(
     }
 
     @GET
-    @Path("/{elementId}/previews/image")
+    @Path("/{elementId}/preview.jpg")
     @Consumes(WILDCARD)
     @Produces("image/jpeg")
     fun getElementPreviewImage(@PathParam("elementId") elementId: String): ByteArray {
@@ -125,7 +125,7 @@ class ElementApi(
     }
 
     @GET
-    @Path("/{elementId}/previews/video")
+    @Path("/{elementId}/preview.mp4")
     @Consumes(WILDCARD)
     @Produces("video/mp4")
     fun getElementPreviewVideo(@PathParam("elementId") elementId: String): ByteArray {
