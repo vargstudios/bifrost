@@ -3,9 +3,8 @@ import { useEffect, useState } from "react";
 import { Element, ElementVersion, getElement } from "../api/elements";
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
-import { useParams } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import { ElementPreview } from "../components/ElementPreview";
-import { ElementsSidebar } from "../components/ElementsSidebar";
 
 export function ElementDetailsPage(): JSX.Element {
   const [element, setElement] = useState<Element | null>(null);
@@ -62,7 +61,10 @@ export function ElementDetailsPage(): JSX.Element {
   return (
     <div className="layout">
       <Header />
-      <ElementsSidebar categories={[]} />
+      <aside className="sidebar">
+        <div className="heading">ELEMENT</div>
+        <NavLink to={`/elements/${id}`}>Details</NavLink>
+      </aside>
       <main className="element-details">
         {element ? renderElement(element) : "Not found"}
       </main>
