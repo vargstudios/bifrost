@@ -52,7 +52,7 @@ export function ImportElementPage(props: RouteComponentProps): JSX.Element {
       });
   }
 
-  function onImportClicked() {
+  function onImportClicked(): void {
     if (state.type !== "DefineElement") {
       return;
     }

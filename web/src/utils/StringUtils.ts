@@ -11,7 +11,7 @@ export function commonPrefix(strings: string[]): string {
   return commonPrefix2(sorted[0], sorted[sorted.length - 1]);
 }
 
-function commonPrefix2(a: string, b: string) {
+function commonPrefix2(a: string, b: string): string {
   const maxlength = Math.min(a.length, b.length);
 
   for (let i = 0; i < maxlength; i++) {

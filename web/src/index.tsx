@@ -8,7 +8,7 @@ import { ManageCategoriesPage } from "./pages/ManageCategoriesPage";
 import { ManageWorkersPage } from "./pages/ManageWorkersPage";
 import "./css/all";
 
-function Router() {
+function Router(): JSX.Element {
   return (
     <HashRouter>
       <Switch>

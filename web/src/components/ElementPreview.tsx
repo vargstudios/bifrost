@@ -10,7 +10,7 @@ type Props = {
   element: Element;
 };
 
-export function ElementPreview(props: Props) {
+export function ElementPreview(props: Props): JSX.Element {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [playing, setPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -28,7 +28,7 @@ export function ElementPreview(props: Props) {
     playing ? 50 : 1000
   );
 
-  function onEnter() {
+  function onEnter(): void {
     if (!videoRef.current) {
       return;
     }
@@ -39,13 +39,13 @@ export function ElementPreview(props: Props) {
       .catch((e) => console.log("Play", e));
   }
 
-  function onLeave() {
+  function onLeave(): void {
     videoRef.current?.pause();
     setPlaying(false);
     setProgress(0);
   }
 
-  function preview() {
+  function preview(): JSX.Element {
     return (
       <div className="preview" onMouseEnter={onEnter} onMouseLeave={onLeave}>
         <div
@@ -75,7 +75,7 @@ export function ElementPreview(props: Props) {
     );
   }
 
-  function processing() {
+  function processing(): JSX.Element {
     return (
       <div className="preview">
         <div className="center" title="Processing...">

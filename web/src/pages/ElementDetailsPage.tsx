@@ -16,7 +16,7 @@ export function ElementDetailsPage(props: RouteComponentProps): JSX.Element {
     getElement(id).then(setElement);
   }, []);
 
-  function renderElement(element: Element) {
+  function renderElement(element: Element): JSX.Element {
     return (
       <>
         <div className="title">{element.name}</div>
