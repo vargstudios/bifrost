@@ -17,16 +17,17 @@ export function ElementPreview(props: Props): JSX.Element {
 
   const elementUrl = baseUrl() + `/api/v1/elements/${props.element.id}`;
 
-  useInterval(
-    () => {
-      if (playing && videoRef.current) {
-        setProgress(videoRef.current.currentTime / videoRef.current.duration);
-      } else {
-        setProgress(0);
-      }
-    },
-    playing ? 50 : 1000
-  );
+  useInterval(updateProgress, playing ? 50 : 10_000);
+
+  function updateProgress(): void {
+    const video = videoRef.current;
+    const lookahead = 0.2; // Compensate for interval and animation delay
+    if (!video || !playing) {
+      setProgress(0);
+    } else {
+      setProgress((video.currentTime + lookahead) / video.duration);
+    }
+  }
 
   function onEnter(): void {
     if (!videoRef.current) {
