@@ -1,6 +1,5 @@
 import * as React from "react";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
-import { RouteComponentProps } from "react-router";
 import { Category, listCategories } from "../../api/categories";
 import { Header } from "../../components/Header";
 import { ConfigSidebar } from "../../components/ConfigSidebar";
@@ -11,11 +10,11 @@ import { Element, createElement, importFrame } from "../../api/elements";
 import { Textbox } from "../../components/Textbox";
 import { Selectbox } from "../../components/Selectbox";
 import { Progressbar } from "../../components/Progressbar";
-import { DefineElement, Importing, State } from "./state";
+import { Importing, State } from "./state";
 import { parseFilename } from "../../utils/FilenameUtils";
 import { Button } from "../../components/Button";
 
-export function ImportElementPage(props: RouteComponentProps): JSX.Element {
+export function ImportElementPage(): JSX.Element {
   const fileRef = useRef<HTMLInputElement>(null);
   const [state, setState] = useState<State>({ type: "SelectFiles" });
   const [categories, setCategories] = useState<Category[]>([]);

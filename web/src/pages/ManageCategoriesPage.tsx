@@ -1,6 +1,5 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { RouteComponentProps } from "react-router";
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
 import { ConfigSidebar } from "../components/ConfigSidebar";
@@ -16,7 +15,7 @@ import { faPencilAlt, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "../components/Button";
 import { IconButton } from "../components/IconButton";
 
-export function ManageCategoriesPage(props: RouteComponentProps): JSX.Element {
+export function ManageCategoriesPage(): JSX.Element {
   const [categories, setCategories] = useState<Category[]>([]);
   const [state, setState] = useState<CreateCategory>({ name: "" });
 

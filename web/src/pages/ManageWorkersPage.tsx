@@ -1,13 +1,12 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { RouteComponentProps } from "react-router";
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
 import { ConfigSidebar } from "../components/ConfigSidebar";
 import { listWorkers, Worker } from "../api/workers";
 import { useInterval } from "../hooks/useInterval";
 
-export function ManageWorkersPage(props: RouteComponentProps): JSX.Element {
+export function ManageWorkersPage(): JSX.Element {
   const [workers, setWorkers] = useState<Worker[]>([]);
 
   useEffect(() => {

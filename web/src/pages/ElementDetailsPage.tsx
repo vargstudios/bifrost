@@ -1,6 +1,5 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { RouteComponentProps } from "react-router";
 import { Element, ElementVersion, getElement } from "../api/elements";
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
@@ -8,7 +7,7 @@ import { useParams } from "react-router-dom";
 import { ElementPreview } from "../components/ElementPreview";
 import { ElementsSidebar } from "../components/ElementsSidebar";
 
-export function ElementDetailsPage(props: RouteComponentProps): JSX.Element {
+export function ElementDetailsPage(): JSX.Element {
   const [element, setElement] = useState<Element | null>(null);
   const { id } = useParams<{ id: string }>();
 
