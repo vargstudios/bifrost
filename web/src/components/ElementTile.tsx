@@ -15,8 +15,8 @@ export function ElementTile(props: Props): JSX.Element {
       <div className="title">{element.name}</div>
       <ElementPreview element={element} />
       <div className="details">
-        {element.framecount} Frames, {element.framerate} FPS
-        {element.alpha ? ", Alpha" : ""}
+        {element.framecount} Frames, {element.framerate} FPS,{" "}
+        {element.alpha ? "RGBA" : "RGB"}
       </div>
     </Link>
   );
