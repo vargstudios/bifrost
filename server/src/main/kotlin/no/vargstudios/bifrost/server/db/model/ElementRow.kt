@@ -9,6 +9,7 @@ data class ElementRow(
     val name: String,
     val framecount: Int,
     val framerate: Int,
+    val channels: String,
     val alpha: Boolean,
     val previews: Boolean = false,
     val created: Long = OffsetDateTime.now().toEpochSecond()

@@ -21,7 +21,7 @@ export function ElementDetailsPage(): JSX.Element {
         <ElementPreview element={element} />
         <div className="details">
           {element.framecount} Frames, {element.framerate} FPS,{" "}
-          {element.alpha ? "RGBA" : "RGB"}
+          {element.channels}
         </div>
         {renderVersionTable(
           element.versions.filter((version) => version.name !== "Preview")

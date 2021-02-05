@@ -8,8 +8,8 @@ interface ElementDao {
 
     @SqlUpdate(
         """
-        insert into elements (id, category_id, name, framecount, framerate, alpha, previews, created)
-        values (:element.id, :element.categoryId, :element.name, :element.framecount, :element.framerate, :element.alpha, :element.previews, :element.created)
+        insert into elements (id, category_id, name, framecount, framerate, channels, alpha, previews, created)
+        values (:element.id, :element.categoryId, :element.name, :element.framecount, :element.framerate, :element.channels, :element.alpha, :element.previews, :element.created)
         """
     )
     fun insert(element: ElementRow)

@@ -6,7 +6,7 @@ import { ConfigSidebar } from "../../components/ConfigSidebar";
 import { Footer } from "../../components/Footer";
 import { toList } from "../../utils/FileUtils";
 import { analyseExr } from "../../api/analysis";
-import { Element, createElement, importFrame } from "../../api/elements";
+import { createElement, Element, importFrame } from "../../api/elements";
 import { Textbox } from "../../components/Textbox";
 import { Selectbox } from "../../components/Selectbox";
 import { Progressbar } from "../../components/Progressbar";
@@ -34,6 +34,7 @@ export function ImportElementPage(): JSX.Element {
     });
     analyseExr(files[0])
       .then((analysis) => {
+        // TODO: Error if not linear
         setState({
           type: "DefineElement",
           files: files,
@@ -94,6 +95,7 @@ export function ImportElementPage(): JSX.Element {
       framerate: state.analysis.framerate,
       width: state.analysis.width,
       height: state.analysis.height,
+      channels: state.analysis.channels,
       alpha: state.analysis.alpha,
     });
     for (let i = 0; i < state.totalFrames; i++) {
@@ -160,7 +162,7 @@ export function ImportElementPage(): JSX.Element {
             />
             <div>
               {state.files.length} Frames, {state.analysis.framerate} FPS,{" "}
-              {state.analysis.alpha ? "RGBA" : "RGB"}, {state.analysis.width}x
+              {state.analysis.channels}, {state.analysis.width}x
               {state.analysis.height} Pixels
             </div>
             <div>

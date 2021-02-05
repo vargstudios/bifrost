@@ -5,6 +5,7 @@ data class Element(
     val name: String,
     val framecount: Int,
     val framerate: Int,
+    val channels: String,
     val alpha: Boolean,
     val previews: Boolean,
     val versions: List<ElementVersion>,

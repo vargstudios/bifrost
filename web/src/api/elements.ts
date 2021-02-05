@@ -7,6 +7,7 @@ export type CreateElement = {
   framerate: number;
   width: number;
   height: number;
+  channels: string;
   alpha: boolean;
 };
 
@@ -15,6 +16,7 @@ export type Element = {
   name: string;
   framecount: number;
   framerate: number;
+  channels: string;
   alpha: boolean;
   previews: boolean;
   versions: ElementVersion[];

@@ -8,5 +8,6 @@ data class CreateElement(
     // From analysis:
     val width: Int,
     val height: Int,
+    val channels: String,
     val alpha: Boolean
 )

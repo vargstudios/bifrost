@@ -57,6 +57,7 @@ class ElementApi(
             name = createElement.name,
             framecount = createElement.framecount,
             framerate = createElement.framerate,
+            channels = createElement.channels,
             alpha = createElement.alpha
         )
         elementDao.insert(element)
@@ -177,6 +178,7 @@ class ElementApi(
             name = element.name,
             framecount = element.framecount,
             framerate = element.framerate,
+            channels = element.channels,
             alpha = element.alpha,
             previews = element.previews,
             versions = versions.map { mapVersion(element, it) },
