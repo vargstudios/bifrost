@@ -16,3 +16,7 @@
 .textbox input:focus {
   border: 2px solid var(--grey-6);
 }
+
+.textbox input::placeholder {
+  color: var(--grey-6);
+}

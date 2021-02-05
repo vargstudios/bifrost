@@ -2,7 +2,8 @@ import * as React from "react";
 
 type Props = {
   id: string;
-  label: string;
+  label?: string;
+  placeholder?: string;
   value: string;
   onChange: (value: string) => void;
 };
@@ -10,11 +11,12 @@ type Props = {
 export function Textbox(props: Props): JSX.Element {
   return (
     <div className="textbox">
-      <label htmlFor={props.id}>{props.label}</label>
+      {props.label ?? <label htmlFor={props.id}>{props.label}</label>}
       <input
         id={props.id}
         type="text"
         autoComplete="off"
+        placeholder={props.placeholder}
         value={props.value}
         onChange={(e) => props.onChange(e.target.value)}
       />
