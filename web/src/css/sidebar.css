@@ -14,6 +14,10 @@
   font-weight: 500;
   cursor: pointer;
   color: var(--grey-9);
+  /* Ellipse long text */
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .sidebar a.active {

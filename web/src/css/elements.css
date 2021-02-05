@@ -16,6 +16,10 @@
 
 .element .title {
   font-size: var(--font-large);
+  /* Ellipse long text */
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .element .preview {
