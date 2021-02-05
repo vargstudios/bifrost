@@ -26,3 +26,7 @@ function commonPrefix2(a: string, b: string): string {
 export function reverse(s: string): string {
   return s.split("").reverse().join("");
 }
+
+export function normalize(s: string): string {
+  return s.toLowerCase().replace(/[^a-z0-9]/g, "");
+}

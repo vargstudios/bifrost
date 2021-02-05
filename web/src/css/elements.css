@@ -1,3 +1,8 @@
+.elements-page .textbox {
+  margin: var(--size-4) var(--size-4) 0;
+  width: 360px;
+}
+
 .elements {
   display: flex;
   flex-wrap: wrap;
