@@ -1,4 +1,4 @@
-import { baseUrl } from "./server";
+import { request } from "./request";
 
 export type ExrAnalysis = {
   width: number;
@@ -10,13 +10,8 @@ export type ExrAnalysis = {
 };
 
 export function analyseExr(exr: Blob): Promise<ExrAnalysis> {
-  return fetch(baseUrl() + "/api/v1/analysis/exr", {
+  return request("/api/v1/analysis/exr", {
     method: "POST",
     body: exr,
-  }).then((response) => {
-    if (!response.ok) {
-      throw new Error("Unexpected status");
-    }
-    return response.json();
   });
 }

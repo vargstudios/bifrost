@@ -1,4 +1,4 @@
-import { baseUrl } from "./server";
+import { del, get, post } from "./request";
 
 export type CreateCategory = {
   name: string;
@@ -10,43 +10,13 @@ export type Category = {
 };
 
 export function listCategories(): Promise<Category[]> {
-  return fetch(baseUrl() + "/api/v1/categories", {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  }).then((response) => {
-    if (!response.ok) {
-      throw new Error("Unexpected status");
-    }
-    return response.json();
-  });
+  return get("/api/v1/categories");
 }
 
 export function createCategory(category: CreateCategory): Promise<Category> {
-  return fetch(baseUrl() + "/api/v1/categories", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(category),
-  }).then((response) => {
-    if (!response.ok) {
-      throw new Error("Unexpected status");
-    }
-    return response.json();
-  });
+  return post("/api/v1/categories", category);
 }
 
 export function deleteCategory(id: string): Promise<void> {
-  return fetch(baseUrl() + "/api/v1/categories/" + id, {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  }).then((response) => {
-    if (!response.ok) {
-      throw new Error("Unexpected status");
-    }
-  });
+  return del("/api/v1/categories/" + id);
 }

@@ -1,4 +1,4 @@
-import { baseUrl } from "./server";
+import { get, post, request } from "./request";
 
 export type CreateElement = {
   categoryId: string;
@@ -37,46 +37,15 @@ export type ElementCategory = {
 };
 
 export function listElements(): Promise<Element[]> {
-  return fetch(baseUrl() + "/api/v1/elements", {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  }).then((response) => {
-    if (!response.ok) {
-      throw new Error("Unexpected status");
-    }
-    return response.json();
-  });
+  return get("/api/v1/elements");
 }
 
 export function getElement(id: string): Promise<Element> {
-  return fetch(baseUrl() + "/api/v1/elements/" + id, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  }).then((response) => {
-    if (!response.ok) {
-      throw new Error("Unexpected status");
-    }
-    return response.json();
-  });
+  return get("/api/v1/elements/" + id);
 }
 
 export function createElement(element: CreateElement): Promise<Element> {
-  return fetch(baseUrl() + "/api/v1/elements", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(element),
-  }).then((response) => {
-    if (!response.ok) {
-      throw new Error("Unexpected status");
-    }
-    return response.json();
-  });
+  return post("/api/v1/elements", element);
 }
 
 export function importFrame(
@@ -84,15 +53,8 @@ export function importFrame(
   frameNumber: number,
   exr: Blob
 ): Promise<void> {
-  return fetch(
-    baseUrl() + `/api/v1/elements/${elementId}/frames/${frameNumber}`,
-    {
-      method: "PUT",
-      body: exr,
-    }
-  ).then((response) => {
-    if (!response.ok) {
-      throw new Error("Unexpected status");
-    }
+  return request(`/api/v1/elements/${elementId}/frames/${frameNumber}`, {
+    method: "PUT",
+    body: exr,
   });
 }

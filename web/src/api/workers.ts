@@ -1,4 +1,4 @@
-import { baseUrl } from "./server";
+import { get } from "./request";
 
 export type Worker = {
   url: string;
@@ -8,15 +8,5 @@ export type Worker = {
 export type WorkerState = "NEW" | "UNREACHABLE" | "IDLE" | "WORKING";
 
 export function listWorkers(): Promise<Worker[]> {
-  return fetch(baseUrl() + "/api/v1/workers", {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  }).then((response) => {
-    if (!response.ok) {
-      throw new Error("Unexpected status");
-    }
-    return response.json();
-  });
+  return get("/api/v1/workers");
 }
