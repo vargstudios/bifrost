@@ -11,7 +11,6 @@ class ExrAttributeParser(private val bytes: ByteArray) {
         if (magicNumber != 20000630) {
             throw IllegalArgumentException("Not OpenEXR")
         }
-        check(magicNumber == 20000630)
 
         // Version
         val version = next()

@@ -12,7 +12,6 @@ import no.vargstudios.bifrost.server.db.model.ElementCategoryRow
 import no.vargstudios.bifrost.server.db.model.ElementFrameRow
 import no.vargstudios.bifrost.server.db.model.ElementRow
 import no.vargstudios.bifrost.server.db.model.ElementVersionRow
-import no.vargstudios.bifrost.server.exr.ExrAttributeParser
 import no.vargstudios.bifrost.server.service.PathResolver
 import no.vargstudios.bifrost.worker.api.model.ImageFormat.EXR
 import no.vargstudios.bifrost.worker.api.model.ImageFormat.JPEG
@@ -147,16 +146,21 @@ class ElementApi(
         @PathParam("frameNumber") frameNumber: Int,
         data: ByteArray
     ) {
-        try {
-            ExrAttributeParser(data).parse();
-            // TODO: Check size, linear, alpha
-        } catch (e: IllegalArgumentException) {
-            logger.warn("Invalid OpenEXR-file", e)
-            throw NotSupportedException()
+        val analysis = AnalysisApi().analyseExr(data)
+        if (!analysis.linear) {
+            throw BadRequestException("Not linear")
         }
 
         val element = elementDao.get(elementId) ?: throw NotFoundException()
         val version = elementVersionDao.listForElement(elementId)[0] // FIXME: Assumes first is original
+
+        if (analysis.channels != element.channels) {
+            throw BadRequestException("Channels ${analysis.channels} do not match ${element.channels}")
+        }
+        if (analysis.width != version.width || analysis.height != version.height) {
+            throw BadRequestException("Size ${analysis.width}x${analysis.height} does not match ${version.width}x${version.height}")
+        }
+
         val frame = ElementFrameRow(
             elementId = element.id,
             number = frameNumber
