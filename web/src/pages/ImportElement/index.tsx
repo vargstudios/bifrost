@@ -5,7 +5,7 @@ import { Header } from "../../components/Header";
 import { ConfigSidebar } from "../../components/ConfigSidebar";
 import { Footer } from "../../components/Footer";
 import { toList } from "../../utils/FileUtils";
-import { analyseExr } from "../../api/analysis";
+import { analyseExr, ExrAnalysis } from "../../api/analysis";
 import { createElement, Element, importFrame } from "../../api/elements";
 import { Textbox } from "../../components/Textbox";
 import { Selectbox } from "../../components/Selectbox";
@@ -13,6 +13,7 @@ import { Progressbar } from "../../components/Progressbar";
 import { Importing, State } from "./state";
 import { parseFilename } from "../../utils/FilenameUtils";
 import { Button } from "../../components/Button";
+import { Error } from "../../api/error";
 
 export function ImportElementPage(): JSX.Element {
   const fileRef = useRef<HTMLInputElement>(null);
@@ -33,7 +34,7 @@ export function ImportElementPage(): JSX.Element {
       files: files,
     });
     analyseExr(files[0])
-      .then((analysis) => {
+      .then((analysis: ExrAnalysis) =>
         // TODO: Error if not linear
         setState({
           type: "DefineElement",
@@ -41,15 +42,15 @@ export function ImportElementPage(): JSX.Element {
           analysis: analysis,
           name: parseFilename(files[0].name)!.name, // TODO
           categoryId: categories[0].id, // TODO
-        });
-      })
-      .catch((error) => {
+        })
+      )
+      .catch((error: Error) =>
         setState({
           type: "AnalysisError",
           files: files,
-          error: error,
-        });
-      });
+          error: error.details,
+        })
+      );
   }
 
   function onImportClicked(): void {
@@ -71,18 +72,18 @@ export function ImportElementPage(): JSX.Element {
     setState(stateImporting);
 
     importElement(stateImporting)
-      .then((element) =>
+      .then((element: Element) =>
         setState({
           type: "Success",
           name: state.name,
           elementId: element.id,
         })
       )
-      .catch((error) =>
+      .catch((error: Error) =>
         setState({
           ...state,
           type: "ImportError",
-          error: error,
+          error: error.details,
         })
       );
   }
