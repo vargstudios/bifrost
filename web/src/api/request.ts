@@ -25,6 +25,9 @@ export function request<T>(path: string, init: RequestInit): Promise<T> {
       throw networkError(error);
     })
     .then((response: Response) => {
+      if (response.status === 204) {
+        return {} as T; // FIXME
+      }
       return response
         .json()
         .catch((error: any) => {
