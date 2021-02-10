@@ -1,5 +1,6 @@
 package no.vargstudios.bifrost.server.api
 
+import no.vargstudios.bifrost.server.api.model.RegisterWorker
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient
 import javax.ws.rs.Consumes
 import javax.ws.rs.POST
@@ -14,7 +15,6 @@ import javax.ws.rs.core.MediaType.APPLICATION_JSON
 interface WorkerApi {
 
     @POST
-    @Path("/register")
-    fun registerWorker()
+    fun registerWorker(registerWorker: RegisterWorker)
 
 }

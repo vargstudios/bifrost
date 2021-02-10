@@ -1,5 +1,6 @@
 package no.vargstudios.bifrost.server.api
 
+import no.vargstudios.bifrost.server.api.model.RegisterWorker
 import no.vargstudios.bifrost.server.api.model.Worker
 import no.vargstudios.bifrost.worker.registry.WorkerPool
 import org.jboss.resteasy.spi.HttpRequest
@@ -17,10 +18,9 @@ class WorkerApi(val workerPool: WorkerPool) {
     val logger: Logger = LoggerFactory.getLogger(this::class.java)
 
     @POST
-    @Path("/register")
-    fun registerWorker(@Context request: HttpRequest) {
+    fun registerWorker(@Context request: HttpRequest, registerWorker: RegisterWorker) {
         logger.info("Worker registration from ${request.remoteAddress}")
-        workerPool.addWorker("http://${request.remoteAddress}:3201")
+        workerPool.addWorker("http://${request.remoteAddress}:${registerWorker.port}")
     }
 
     @GET
