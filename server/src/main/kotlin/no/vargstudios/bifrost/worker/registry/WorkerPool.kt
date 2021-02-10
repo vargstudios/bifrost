@@ -11,9 +11,6 @@ import org.slf4j.LoggerFactory
 import java.lang.Thread.sleep
 import java.net.URL
 import java.util.*
-import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.ConcurrentLinkedQueue
-import java.util.concurrent.ConcurrentMap
 import java.util.concurrent.TimeUnit.SECONDS
 import javax.enterprise.context.ApplicationScoped
 import kotlin.concurrent.thread
@@ -23,32 +20,59 @@ class WorkerPool {
 
     private val logger: Logger = LoggerFactory.getLogger(this::class.java)
 
-    private val tasks: Queue<(WorkerApis) -> Unit> = ConcurrentLinkedQueue<(WorkerApis) -> Unit>()
-    private val workers: ConcurrentMap<String, WorkerState> = ConcurrentHashMap<String, WorkerState>()
+    private val tasks: Queue<WorkerTask> = LinkedList()
+    private val workersById: MutableMap<String, Worker> = HashMap()
 
-    fun list(): List<Worker> {
-        return workers.map { (url, state) ->
-            Worker(url = url, state = state)
+    fun listWorkers(): List<Worker> {
+        synchronized(this) {
+            return workersById.values.toList()
+        }
+    }
+
+    fun getWorker(id: String): Worker? {
+        synchronized(this) {
+            return workersById[id]
+        }
+    }
+
+    fun updateWorker(id: String, func: (Worker) -> Worker) {
+        synchronized(this) {
+            workersById.computeIfPresent(id) { _, worker -> func(worker) }
         }
     }
 
     fun isIdle(): Boolean {
-        return tasks.isEmpty() && workers.none { (_, state) -> state == WORKING }
-    }
-
-    fun addTask(task: (WorkerApis) -> Unit) {
-        tasks.add(task)
-    }
-
-    fun addWorker(url: String) {
-        // Add worker state. Stop if worker already exists.
-        if (workers.putIfAbsent(url, NEW) != null) {
-            return
+        synchronized(this) {
+            return tasks.isEmpty() && workersById.values.none { it.state == WORKING }
         }
+    }
 
-        // Create worker
-        val worker = WorkerApis(
-            url = url,
+    fun addTask(workerTask: WorkerTask) {
+        synchronized(this) {
+            tasks.add(workerTask)
+        }
+    }
+
+    fun addWorker(worker: Worker) {
+        synchronized(this) {
+            if (workersById.values.any { it.url == worker.url }) {
+                return
+            }
+            workersById[worker.id] = worker
+        }
+        logger.info("Starting $worker")
+        startWorker(worker.id, worker.url)
+    }
+
+    private fun nextTask(): WorkerTask? {
+        synchronized(this) {
+            return tasks.poll()
+        }
+    }
+
+    private fun startWorker(id: String, url: String) {
+        // Create worker apis
+        val apis = WorkerApis(
             pingApi = RestClientBuilder.newBuilder()
                 .baseUrl(URL(url))
                 .connectTimeout(3, SECONDS)
@@ -61,39 +85,50 @@ class WorkerPool {
                 .build(TranscodeApi::class.java)
         )
 
+        // Simplified state update function
+        val setState = { state: WorkerState ->
+            updateWorker(id) { worker -> worker.copy(state = state) }
+        }
+
         // Start worker thread
         thread {
             while (true) {
+                // Wait between attempts
+                sleep(3_000)
+
                 // Unreachable until ping ok
                 try {
-                    worker.pingApi.ping()
+                    apis.pingApi.ping()
                 } catch (e: Exception) {
-                    workers[url] = UNREACHABLE
-                    sleep(10_000)
+                    setState(UNREACHABLE)
                     continue
                 }
 
                 while (true) {
+                    // Idle until enabled
+                    val worker = getWorker(id)!!
+                    if (!worker.enabled) {
+                        setState(IDLE)
+                        break
+                    }
+
                     // Idle until there are tasks
-                    val task = tasks.poll()
+                    val task = nextTask()
                     if (task == null) {
-                        workers[url] = IDLE
-                        sleep(10_000)
+                        setState(IDLE)
                         break
                     }
 
                     // Working while there are tasks
                     try {
-                        workers[url] = WORKING
-                        task(worker)
+                        setState(WORKING)
+                        task(worker, apis)
                     } catch (e: Exception) {
-                        logger.error("Worker $url failed", e)
-                        sleep(10_000)
+                        logger.error("Worker $id @ $url failed", e)
                         break
                     }
                 }
             }
         }
     }
-
 }

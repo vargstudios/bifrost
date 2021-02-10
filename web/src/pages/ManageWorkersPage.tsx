@@ -3,8 +3,15 @@ import { useEffect, useState } from "react";
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
 import { ConfigSidebar } from "../components/ConfigSidebar";
-import { listWorkers, Worker } from "../api/workers";
+import {
+  disableWorker,
+  enableWorker,
+  listWorkers,
+  Worker,
+} from "../api/workers";
 import { useInterval } from "../hooks/useInterval";
+import { IconButton } from "../components/IconButton";
+import { faCheckSquare, faSquare } from "@fortawesome/free-solid-svg-icons";
 
 export function ManageWorkersPage(): JSX.Element {
   const [workers, setWorkers] = useState<Worker[]>([]);
@@ -17,6 +24,24 @@ export function ManageWorkersPage(): JSX.Element {
     listWorkers().then(setWorkers);
   }, 1000);
 
+  function onEnableClicked(id: string): void {
+    enableWorker(id)
+      .then(() => {
+        listWorkers().then(setWorkers);
+      })
+      // TODO
+      .catch(() => alert("Failed to enable worker"));
+  }
+
+  function onDisableClicked(id: string): void {
+    disableWorker(id)
+      .then(() => {
+        listWorkers().then(setWorkers);
+      })
+      // TODO
+      .catch(() => alert("Failed to disable worker"));
+  }
+
   function workerTable(): JSX.Element {
     if (workers.length < 1) {
       return <div>No workers</div>;
@@ -25,17 +50,41 @@ export function ManageWorkersPage(): JSX.Element {
       <table>
         <thead>
           <tr>
-            <th>Url</th>
+            <th>Enbl</th>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Port</th>
             <th>State</th>
           </tr>
         </thead>
         <tbody>
-          {workers.map((worker) => (
-            <tr key={worker.url}>
-              <td>{worker.url}</td>
-              <td>{worker.state}</td>
-            </tr>
-          ))}
+          {workers
+            .sort((a, b) => a.name.localeCompare(b.name))
+            .map((worker) => (
+              <tr key={worker.id}>
+                <td>
+                  {worker.enabled ? (
+                    <IconButton
+                      size="small"
+                      title="Disable"
+                      icon={faCheckSquare}
+                      onClick={() => onDisableClicked(worker.id)}
+                    />
+                  ) : (
+                    <IconButton
+                      size="small"
+                      title="Enable"
+                      icon={faSquare}
+                      onClick={() => onEnableClicked(worker.id)}
+                    />
+                  )}
+                </td>
+                <td>{worker.name}</td>
+                <td>{worker.ip}</td>
+                <td>{worker.port}</td>
+                <td>{worker.state}</td>
+              </tr>
+            ))}
         </tbody>
       </table>
     );

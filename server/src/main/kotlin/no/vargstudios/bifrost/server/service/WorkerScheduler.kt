@@ -49,10 +49,10 @@ class WorkerScheduler(
     }
 
     private fun queuePreviewTask(element: ElementRow, version: ElementVersionRow, frames: List<ElementFrameRow>) {
-        workerPool.addTask { worker ->
+        workerPool.addTask { worker, apis ->
             logger.info("Generating preview for element=${element.id} on ${worker.url}")
             val before = currentTimeMillis()
-            val video = worker.transcodeApi.transcodeVideo(
+            val video = apis.transcodeApi.transcodeVideo(
                 TranscodeVideoRequest(
                     framerate = element.framerate,
                     images = frames.map { frame ->
@@ -107,10 +107,10 @@ class WorkerScheduler(
         val sourceVersion = versions[0]
         val targetVersions = versions.drop(1)
 
-        workerPool.addTask { worker ->
+        workerPool.addTask { worker, apis ->
             logger.info("Transcoding element=${frame.elementId} frame=${frame.number} on ${worker.url}")
             val before = currentTimeMillis()
-            val images = worker.transcodeApi.transcodeImages(
+            val images = apis.transcodeApi.transcodeImages(
                 TranscodeImagesRequest(
                     specs = targetVersions.map { version ->
                         toImageSpec(version)

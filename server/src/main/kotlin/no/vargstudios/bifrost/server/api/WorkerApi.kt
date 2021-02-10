@@ -2,6 +2,7 @@ package no.vargstudios.bifrost.server.api
 
 import no.vargstudios.bifrost.server.api.model.RegisterWorker
 import no.vargstudios.bifrost.server.api.model.Worker
+import no.vargstudios.bifrost.server.api.model.WorkerState.NEW
 import no.vargstudios.bifrost.worker.registry.WorkerPool
 import org.jboss.resteasy.spi.HttpRequest
 import org.slf4j.Logger
@@ -19,13 +20,36 @@ class WorkerApi(val workerPool: WorkerPool) {
 
     @POST
     fun registerWorker(@Context request: HttpRequest, registerWorker: RegisterWorker) {
-        logger.info("Worker registration from ${request.remoteAddress}")
-        workerPool.addWorker("http://${request.remoteAddress}:${registerWorker.port}")
+        val worker = Worker(
+            url = "http://${request.remoteAddress}:${registerWorker.port}",
+            ip = request.remoteAddress,
+            port = registerWorker.port,
+            name = registerWorker.name,
+            enabled = false,
+            state = NEW
+        )
+        workerPool.addWorker(worker)
     }
 
     @GET
     fun listWorkers(): List<Worker> {
-        return workerPool.list()
+        return workerPool.listWorkers()
+    }
+
+    @POST
+    @Path("/{id}/enable")
+    fun enableWorker(@PathParam("id") id: String) {
+        workerPool.updateWorker(id) { worker ->
+            worker.copy(enabled = true)
+        }
+    }
+
+    @POST
+    @Path("/{id}/disable")
+    fun disableWorker(@PathParam("id") id: String) {
+        workerPool.updateWorker(id) { worker ->
+            worker.copy(enabled = false)
+        }
     }
 
 }
