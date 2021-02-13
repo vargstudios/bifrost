@@ -10,29 +10,30 @@ import javax.inject.Singleton
 @Singleton
 class PathResolver(
     @ConfigProperty(name = "data.path.local") private val dataPathLocal: String,
-    @ConfigProperty(name = "data.path.remote") private val dataPathRemote: String,
+    @ConfigProperty(name = "data.path.network") private val dataPathNetwork: String,
     @ConfigProperty(name = "element.root.name") private val elementRootName: String,
     @ConfigProperty(name = "element.version.name") private val elementVersionName: String,
     @ConfigProperty(name = "element.frame.name") private val elementFrameName: String
 ) {
+    private val elements = "elements";
 
     fun local(element: ElementRow): Path =
-        Path.of(dataPathLocal, name(element))
+        Path.of(dataPathLocal, elements, name(element))
 
     fun local(element: ElementRow, version: ElementVersionRow): Path =
-        Path.of(dataPathLocal, name(element), name(element, version))
+        Path.of(dataPathLocal, elements, name(element), name(element, version))
 
     fun local(element: ElementRow, version: ElementVersionRow, frame: ElementFrameRow): Path =
-        Path.of(dataPathLocal, name(element), name(element, version), name(element, version, frame))
+        Path.of(dataPathLocal, elements, name(element), name(element, version), name(element, version, frame))
 
-    fun remote(element: ElementRow): String =
-        formatPath(dataPathRemote, name(element))
+    fun network(element: ElementRow): String =
+        formatPath(dataPathNetwork, elements, name(element))
 
-    fun remote(element: ElementRow, version: ElementVersionRow): String =
-        formatPath(dataPathRemote, name(element), name(element, version))
+    fun network(element: ElementRow, version: ElementVersionRow): String =
+        formatPath(dataPathNetwork, elements, name(element), name(element, version))
 
-    fun remote(element: ElementRow, version: ElementVersionRow, frame: ElementFrameRow): String =
-        formatPath(dataPathRemote, name(element), name(element, version), name(element, version, frame))
+    fun network(element: ElementRow, version: ElementVersionRow, frame: ElementFrameRow): String =
+        formatPath(dataPathNetwork, elements, name(element), name(element, version), name(element, version, frame))
 
     private fun name(element: ElementRow): String =
         sanitizeText(elementRootName.format(element))

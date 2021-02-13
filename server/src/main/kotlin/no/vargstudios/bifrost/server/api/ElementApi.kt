@@ -196,7 +196,7 @@ class ElementApi(
             name = version.name,
             width = version.width,
             height = version.height,
-            url = pathResolver.remote(element, version)
+            url = pathResolver.network(element, version)
         )
     }
 
