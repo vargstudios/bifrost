@@ -7,13 +7,10 @@ RUN echo "https://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposi
  && apk add ffmpeg openimageio-tools
 
 # Install app
-WORKDIR /work/
-RUN chown 1001 /work \
-    && chmod "g+rwX" /work \
-    && chown 1001:root /work
-COPY --chown=1001:root build/*-runner /work/application
+WORKDIR /app
+COPY build/*-runner /app/application
 
 EXPOSE 3201
-USER 1001
+USER 3333:3333
 
 CMD ["./application"]
