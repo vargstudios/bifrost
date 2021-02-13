@@ -20,7 +20,6 @@ export type Analysing = {
 
 export type AnalysisError = {
   type: "AnalysisError";
-  files: File[];
   error: string;
 };
 

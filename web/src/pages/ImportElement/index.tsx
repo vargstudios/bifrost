@@ -11,7 +11,8 @@ import { Textbox } from "../../components/Textbox";
 import { Selectbox } from "../../components/Selectbox";
 import { Progressbar } from "../../components/Progressbar";
 import { Importing, State } from "./state";
-import { parseFilename } from "../../utils/FilenameUtils";
+import { Filename, parseFilename } from "../../utils/FilenameUtils";
+import { isConsecutive, unique } from "../../utils/ArrayUtils";
 import { Button } from "../../components/Button";
 import { Error } from "../../api/error";
 
@@ -31,6 +32,37 @@ export function ImportElementPage(): JSX.Element {
     if (files.length < 1) {
       return;
     }
+
+    // Check pattern
+    const maybeFilenames = files.map((file) => file.name).map(parseFilename);
+    if (maybeFilenames.some((filename) => filename == null)) {
+      return setState({
+        type: "AnalysisError",
+        error: "Unsupported filename pattern. Try <name>.<sequence_number>.exr",
+      });
+    }
+    const filenames = maybeFilenames as Filename[];
+
+    // Check names
+    const uniqueNames = filenames
+      .map((filename) => filename.name)
+      .filter(unique);
+    if (uniqueNames.length != 1) {
+      return setState({
+        type: "AnalysisError",
+        error: "Multiple names: " + JSON.stringify(uniqueNames),
+      });
+    }
+
+    // Check sequence
+    const sequence = filenames.map((filename) => filename.sequence);
+    if (!sequence.every(isConsecutive)) {
+      return setState({
+        type: "AnalysisError",
+        error: "Non-consecutive sequence: " + JSON.stringify(sequence),
+      });
+    }
+
     setState({
       type: "Analysing",
       files: files,
@@ -38,25 +70,22 @@ export function ImportElementPage(): JSX.Element {
     analyseExr(files[0])
       .then((analysis: ExrAnalysis) => {
         if (!analysis.linear) {
-          setState({
+          return setState({
             type: "AnalysisError",
-            files: files,
             error: "Not linear",
           });
-        } else {
-          setState({
-            type: "DefineElement",
-            files: files,
-            analysis: analysis,
-            name: parseFilename(files[0].name)!.name, // TODO
-            categoryId: categories[0].id, // TODO
-          });
         }
+        setState({
+          type: "DefineElement",
+          files: files,
+          analysis: analysis,
+          name: uniqueNames[0],
+          categoryId: categories[0].id, // TODO
+        });
       })
       .catch((error: Error) =>
         setState({
           type: "AnalysisError",
-          files: files,
           error: error.details,
         })
       );
