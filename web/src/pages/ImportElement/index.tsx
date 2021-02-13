@@ -34,16 +34,23 @@ export function ImportElementPage(): JSX.Element {
       files: files,
     });
     analyseExr(files[0])
-      .then((analysis: ExrAnalysis) =>
-        // TODO: Error if not linear
-        setState({
-          type: "DefineElement",
-          files: files,
-          analysis: analysis,
-          name: parseFilename(files[0].name)!.name, // TODO
-          categoryId: categories[0].id, // TODO
-        })
-      )
+      .then((analysis: ExrAnalysis) => {
+        if (!analysis.linear) {
+          setState({
+            type: "AnalysisError",
+            files: files,
+            error: "Not linear",
+          });
+        } else {
+          setState({
+            type: "DefineElement",
+            files: files,
+            analysis: analysis,
+            name: parseFilename(files[0].name)!.name, // TODO
+            categoryId: categories[0].id, // TODO
+          });
+        }
+      })
       .catch((error: Error) =>
         setState({
           type: "AnalysisError",
@@ -113,6 +120,8 @@ export function ImportElementPage(): JSX.Element {
   function renderDynamic(): JSX.Element {
     switch (state.type) {
       case "SelectFiles":
+      case "Analysing":
+      case "AnalysisError":
         return (
           <>
             <div>Select a sequence of OpenEXR frames in linear RGB or RGBA</div>
@@ -128,18 +137,10 @@ export function ImportElementPage(): JSX.Element {
               onChange={onFileInputChanged}
               style={{ display: "none" }}
             />
-          </>
-        );
-      case "Analysing":
-        return (
-          <>
-            <div>Analysing...</div>
-          </>
-        );
-      case "AnalysisError":
-        return (
-          <>
-            <div>Analysis failed: {state.error}</div>
+            {state.type === "Analysing" && <div>Analysing...</div>}
+            {state.type === "AnalysisError" && (
+              <div>Analysis error: {state.error}</div>
+            )}
           </>
         );
       case "DefineElement":
