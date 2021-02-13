@@ -45,10 +45,4 @@ class JdbiConfiguration {
         return jdbi.onDemand()
     }
 
-    @Produces
-    @ApplicationScoped
-    fun tagDao(jdbi: Jdbi): TagDao {
-        return jdbi.onDemand()
-    }
-
 }
