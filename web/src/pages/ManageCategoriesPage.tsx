@@ -11,7 +11,7 @@ import {
   listCategories,
 } from "../api/element-categories";
 import { Textbox } from "../components/Textbox";
-import { faPencilAlt, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "../components/Button";
 import { IconButton } from "../components/IconButton";
 import { Error } from "../api/error";
@@ -60,12 +60,6 @@ export function ManageCategoriesPage(): JSX.Element {
               <td>{category.name}</td>
               <td>{category.elements}</td>
               <td>
-                <IconButton
-                  size="small"
-                  title="Edit"
-                  icon={faPencilAlt}
-                  onClick={() => alert("TODO")}
-                />
                 <IconButton
                   size="small"
                   title="Delete"
