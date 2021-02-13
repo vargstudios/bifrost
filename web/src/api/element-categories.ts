@@ -7,6 +7,7 @@ export type CreateElementCategory = {
 export type ElementCategory = {
   id: string;
   name: string;
+  elements: number;
 };
 
 export function listCategories(): Promise<ElementCategory[]> {

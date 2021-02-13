@@ -203,7 +203,8 @@ class ElementApi(
     private fun mapCategory(category: ElementCategoryRow): ElementCategory {
         return ElementCategory(
             id = category.id,
-            name = category.name
+            name = category.name,
+            elements = 0 // TODO
         )
     }
 

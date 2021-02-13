@@ -19,7 +19,9 @@ class ElementCategoryApi(val elementCategoryDao: ElementCategoryDao, val element
 
     @GET
     fun listCategories(): List<ElementCategory> {
-        return elementCategoryDao.list().map { mapCategory(it) }
+        return elementCategoryDao.list().map {
+            mapCategory(it, elementDao.listForCategory(it.id).size)
+        }
     }
 
     @POST
@@ -27,19 +29,22 @@ class ElementCategoryApi(val elementCategoryDao: ElementCategoryDao, val element
         if (createCategory.name.length < 3) {
             throw BadRequestException("Category name must be at least 3 characters")
         }
+        if (elementCategoryDao.list().any { it.name == createCategory.name }) {
+            throw BadRequestException("Category name already exists")
+        }
         val category = ElementCategoryRow(
             name = createCategory.name
         )
         elementCategoryDao.insert(category)
         logger.info("Created category ${category.id}")
-        return mapCategory(category)
+        return mapCategory(category, 0)
     }
 
     @GET
     @Path("/{categoryId}")
     fun getCategory(@PathParam("categoryId") categoryId: String): ElementCategory {
         val category = elementCategoryDao.get(categoryId) ?: throw NotFoundException()
-        return mapCategory(category)
+        return mapCategory(category, elementDao.listForCategory(categoryId).size)
     }
 
     @DELETE
@@ -51,10 +56,11 @@ class ElementCategoryApi(val elementCategoryDao: ElementCategoryDao, val element
         elementCategoryDao.delete(categoryId)
     }
 
-    private fun mapCategory(category: ElementCategoryRow): ElementCategory {
+    private fun mapCategory(category: ElementCategoryRow, elements: Int): ElementCategory {
         return ElementCategory(
             id = category.id,
-            name = category.name
+            name = category.name,
+            elements = elements
         )
     }
 

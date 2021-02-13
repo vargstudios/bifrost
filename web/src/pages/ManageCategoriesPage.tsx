@@ -49,16 +49,16 @@ export function ManageCategoriesPage(): JSX.Element {
       <table>
         <thead>
           <tr>
-            <th>Id</th>
             <th>Name</th>
+            <th>Elements</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           {categories.map((category) => (
             <tr key={category.id}>
-              <td>{category.id}</td>
               <td>{category.name}</td>
+              <td>{category.elements}</td>
               <td>
                 <IconButton
                   size="small"
