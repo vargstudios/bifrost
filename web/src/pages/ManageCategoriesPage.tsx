@@ -19,27 +19,25 @@ export function ManageCategoriesPage(): JSX.Element {
   const [categories, setCategories] = useState<ElementCategory[]>([]);
   const [state, setState] = useState<CreateElementCategory>({ name: "" });
 
-  useEffect(() => {
-    listCategories().then(setCategories);
-  }, []);
+  useEffect(updateCategories, []);
+
+  function updateCategories(): void {
+    listCategories()
+      .then(setCategories)
+      .catch(() => alert("Failed to list categories")); // TODO
+  }
 
   function onCreateClicked(): void {
     createCategory(state)
-      .then(() => {
-        listCategories().then(setCategories);
-        setState({ name: "" });
-      })
-      // TODO
-      .catch(() => alert("Failed to create category"));
+      .then(updateCategories)
+      .then(() => setState({ name: "" }))
+      .catch(() => alert("Failed to create category")); // TODO
   }
 
   function onDeleteClicked(id: string): void {
     deleteCategory(id)
-      .then(() => {
-        listCategories().then(setCategories);
-      })
-      // TODO
-      .catch(() => alert("Failed to delete category"));
+      .then(updateCategories)
+      .catch(() => alert("Failed to delete category")); // TODO
   }
 
   function categoryTable(): JSX.Element {

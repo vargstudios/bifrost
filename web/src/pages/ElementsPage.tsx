@@ -18,8 +18,12 @@ export function ElementsPage(): JSX.Element {
   const currentCategory = query.get("category");
 
   useEffect(() => {
-    listCategories().then(setCategories);
-    listElements().then(setElements);
+    listCategories()
+      .then(setCategories)
+      .catch(() => alert("Failed to list categories")); // TODO
+    listElements()
+      .then(setElements)
+      .catch(() => alert("Failed to list elements")); // TODO
   }, []);
 
   return (

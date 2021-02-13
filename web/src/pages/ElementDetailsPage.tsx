@@ -11,7 +11,9 @@ export function ElementDetailsPage(): JSX.Element {
   const { id } = useParams<{ id: string }>();
 
   useEffect(() => {
-    getElement(id).then(setElement);
+    getElement(id)
+      .then(setElement)
+      .catch(() => alert("Failed to get element")); // TODO
   }, []);
 
   function renderElement(element: Element): JSX.Element {

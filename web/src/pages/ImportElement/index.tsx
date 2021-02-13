@@ -21,7 +21,9 @@ export function ImportElementPage(): JSX.Element {
   const [categories, setCategories] = useState<ElementCategory[]>([]);
 
   useEffect(() => {
-    listCategories().then(setCategories);
+    listCategories()
+      .then(setCategories)
+      .catch(() => alert("Failed to list categories")); // TODO
   }, []);
 
   function onFileInputChanged(e: ChangeEvent<HTMLInputElement>): void {

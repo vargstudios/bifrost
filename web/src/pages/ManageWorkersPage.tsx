@@ -16,30 +16,25 @@ import { faCheckSquare, faSquare } from "@fortawesome/free-regular-svg-icons";
 export function ManageWorkersPage(): JSX.Element {
   const [workers, setWorkers] = useState<Worker[]>([]);
 
-  useEffect(() => {
-    listWorkers().then(setWorkers);
-  }, []);
+  useEffect(updateWorkers, []);
+  useInterval(updateWorkers, 1000);
 
-  useInterval(() => {
-    listWorkers().then(setWorkers);
-  }, 1000);
+  function updateWorkers(): void {
+    listWorkers()
+      .then(setWorkers)
+      .catch(() => alert("Failed to list workers")); // TODO
+  }
 
   function onEnableClicked(id: string): void {
     enableWorker(id)
-      .then(() => {
-        listWorkers().then(setWorkers);
-      })
-      // TODO
-      .catch(() => alert("Failed to enable worker"));
+      .then(updateWorkers)
+      .catch(() => alert("Failed to enable worker")); // TODO
   }
 
   function onDisableClicked(id: string): void {
     disableWorker(id)
-      .then(() => {
-        listWorkers().then(setWorkers);
-      })
-      // TODO
-      .catch(() => alert("Failed to disable worker"));
+      .then(updateWorkers)
+      .catch(() => alert("Failed to disable worker")); // TODO
   }
 
   function workerTable(): JSX.Element {
