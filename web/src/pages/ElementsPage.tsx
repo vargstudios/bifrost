@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { Category, listCategories } from "../api/categories";
+import { ElementCategory, listCategories } from "../api/element-categories";
 import { Element, listElements } from "../api/elements";
 import { ElementTile } from "../components/ElementTile";
 import { Header } from "../components/Header";
@@ -11,7 +11,7 @@ import { Textbox } from "../components/Textbox";
 import { normalize } from "../utils/StringUtils";
 
 export function ElementsPage(): JSX.Element {
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [categories, setCategories] = useState<ElementCategory[]>([]);
   const [elements, setElements] = useState<Element[]>([]);
   const [search, setSearch] = useState<string>("");
   const query = useQuery();

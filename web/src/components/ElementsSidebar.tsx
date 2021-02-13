@@ -1,10 +1,10 @@
 import * as React from "react";
 import { NavLink } from "react-router-dom";
-import { Category } from "../api/categories";
+import { ElementCategory } from "../api/element-categories";
 import { useQuery } from "../hooks/useQuery";
 
 type Props = {
-  categories: Category[];
+  categories: ElementCategory[];
 };
 
 export function ElementsSidebar(props: Props): JSX.Element {

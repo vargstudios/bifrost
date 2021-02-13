@@ -4,20 +4,20 @@ import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
 import { ConfigSidebar } from "../components/ConfigSidebar";
 import {
-  Category,
   createCategory,
-  CreateCategory,
+  CreateElementCategory,
   deleteCategory,
+  ElementCategory,
   listCategories,
-} from "../api/categories";
+} from "../api/element-categories";
 import { Textbox } from "../components/Textbox";
 import { faPencilAlt, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "../components/Button";
 import { IconButton } from "../components/IconButton";
 
 export function ManageCategoriesPage(): JSX.Element {
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [state, setState] = useState<CreateCategory>({ name: "" });
+  const [categories, setCategories] = useState<ElementCategory[]>([]);
+  const [state, setState] = useState<CreateElementCategory>({ name: "" });
 
   useEffect(() => {
     listCategories().then(setCategories);

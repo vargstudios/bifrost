@@ -10,10 +10,10 @@ import org.slf4j.LoggerFactory
 import javax.ws.rs.*
 import javax.ws.rs.core.MediaType.APPLICATION_JSON
 
-@Path("/api/v1/categories")
+@Path("/api/v1/element-categories")
 @Consumes(APPLICATION_JSON)
 @Produces(APPLICATION_JSON)
-class CategoryApi(val elementCategoryDao: ElementCategoryDao, val elementDao: ElementDao) {
+class ElementCategoryApi(val elementCategoryDao: ElementCategoryDao, val elementDao: ElementDao) {
 
     val logger: Logger = LoggerFactory.getLogger(this::class.java)
 

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
-import { Category, listCategories } from "../../api/categories";
+import { ElementCategory, listCategories } from "../../api/element-categories";
 import { Header } from "../../components/Header";
 import { ConfigSidebar } from "../../components/ConfigSidebar";
 import { Footer } from "../../components/Footer";
@@ -18,7 +18,7 @@ import { Error } from "../../api/error";
 export function ImportElementPage(): JSX.Element {
   const fileRef = useRef<HTMLInputElement>(null);
   const [state, setState] = useState<State>({ type: "SelectFiles" });
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [categories, setCategories] = useState<ElementCategory[]>([]);
 
   useEffect(() => {
     listCategories().then(setCategories);
