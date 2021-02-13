@@ -14,6 +14,7 @@ import { Textbox } from "../components/Textbox";
 import { faPencilAlt, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "../components/Button";
 import { IconButton } from "../components/IconButton";
+import { Error } from "../api/error";
 
 export function ManageCategoriesPage(): JSX.Element {
   const [categories, setCategories] = useState<ElementCategory[]>([]);
@@ -31,13 +32,13 @@ export function ManageCategoriesPage(): JSX.Element {
     createCategory(state)
       .then(updateCategories)
       .then(() => setState({ name: "" }))
-      .catch(() => alert("Failed to create category")); // TODO
+      .catch((error: Error) => alert("Creation error: " + error.details));
   }
 
   function onDeleteClicked(id: string): void {
     deleteCategory(id)
       .then(updateCategories)
-      .catch(() => alert("Failed to delete category")); // TODO
+      .catch((error: Error) => alert("Deletion error: " + error.details));
   }
 
   function categoryTable(): JSX.Element {

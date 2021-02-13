@@ -12,6 +12,7 @@ import {
 import { useInterval } from "../hooks/useInterval";
 import { IconButton } from "../components/IconButton";
 import { faCheckSquare, faSquare } from "@fortawesome/free-regular-svg-icons";
+import { Error } from "../api/error";
 
 export function ManageWorkersPage(): JSX.Element {
   const [workers, setWorkers] = useState<Worker[]>([]);
@@ -28,13 +29,17 @@ export function ManageWorkersPage(): JSX.Element {
   function onEnableClicked(id: string): void {
     enableWorker(id)
       .then(updateWorkers)
-      .catch(() => alert("Failed to enable worker")); // TODO
+      .catch((error: Error) =>
+        alert("Error enabling worker: " + error.details)
+      );
   }
 
   function onDisableClicked(id: string): void {
     disableWorker(id)
       .then(updateWorkers)
-      .catch(() => alert("Failed to disable worker")); // TODO
+      .catch((error: Error) =>
+        alert("Error disabling worker: " + error.details)
+      );
   }
 
   function workerTable(): JSX.Element {
