@@ -50,7 +50,7 @@ export function ManageWorkersPage(): JSX.Element {
       <table>
         <thead>
           <tr>
-            <th>Enbl</th>
+            <th title="Enabled">Enbl</th>
             <th>Name</th>
             <th>Address</th>
             <th>Port</th>
