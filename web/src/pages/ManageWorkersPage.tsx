@@ -11,7 +11,7 @@ import {
 } from "../api/workers";
 import { useInterval } from "../hooks/useInterval";
 import { IconButton } from "../components/IconButton";
-import { faCheckSquare, faSquare } from "@fortawesome/free-solid-svg-icons";
+import { faCheckSquare, faSquare } from "@fortawesome/free-regular-svg-icons";
 
 export function ManageWorkersPage(): JSX.Element {
   const [workers, setWorkers] = useState<Worker[]>([]);
