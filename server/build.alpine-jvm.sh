@@ -2,12 +2,12 @@
 set -o errexit
 set -o nounset
 
-# Build native app
+# Build jvm app
 ./gradlew clean
-./gradlew build --info
+./gradlew build --info -Dquarkus.package.type=jar
 
 # Create app image
 podman build \
-  --file src/main/docker/Dockerfile.alpine \
+  --file src/main/docker/Dockerfile.alpine-jvm \
   --tag docker.io/vargstudios/bifrost-server:latest \
   .
