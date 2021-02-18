@@ -1,10 +1,11 @@
 import * as React from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { shuffle } from "../utils/ArrayUtils";
 
 export function Footer(): JSX.Element {
-  const [title, setTitle] = useState("");
+  const [index, setIndex] = useState(0);
 
-  const made = [
+  const [made, setMade] = useState([
     "Assembled",
     "Crafted",
     "Manufactured",
@@ -15,9 +16,9 @@ export function Footer(): JSX.Element {
     "Forged",
     "Constructed",
     "Glued together",
-  ];
+  ]);
 
-  const love = [
+  const [love, setLove] = useState([
     "blood, sweat and tears",
     "machine learning",
     "science",
@@ -30,9 +31,9 @@ export function Footer(): JSX.Element {
     "blissful ignorance",
     "copy and paste",
     "drag and drop",
-  ];
+  ]);
 
-  const varg = [
+  const [varg, setVarg] = useState([
     "a roommate",
     "a flatmate",
     "yours truly",
@@ -45,22 +46,31 @@ export function Footer(): JSX.Element {
     "aliens",
     "toddlers",
     "[redacted]",
-  ];
+  ]);
 
-  function randomItem(items: string[]): string {
-    const index = Math.floor(Math.random() * items.length);
-    return items[index];
+  useEffect(shuffleAll, []);
+
+  function shuffleAll() {
+    setMade(shuffle(made));
+    setLove(shuffle(love));
+    setVarg(shuffle(varg));
   }
 
-  function randomTitle(): string {
-    return (
-      randomItem(made) + " with " + randomItem(love) + " by " + randomItem(varg)
-    );
+  function nextTitle() {
+    if (index < 9) {
+      setIndex(index + 1);
+    } else {
+      shuffleAll();
+      setIndex(0);
+    }
   }
 
   return (
     <footer>
-      <span title={title} onMouseEnter={() => setTitle(randomTitle())}>
+      <span
+        title={made[index] + " with " + love[index] + " by " + varg[index]}
+        onMouseEnter={nextTitle}
+      >
         Made with ♥ by VARG Studios
       </span>
     </footer>
