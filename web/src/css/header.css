@@ -4,10 +4,27 @@ header {
   padding: 0 var(--size-4);
 }
 
-header .title {
+header .title .logo {
+  width: var(--size-6);
+  height: var(--size-6);
+  vertical-align: bottom;
+}
+
+header .title .text {
   font-size: var(--font-huge);
   font-weight: 500;
-  margin: var(--size-2) 0;
+  margin: var(--size-2);
+  transition: text-shadow 0.3s;
+  text-shadow: 0 0 1px var(--grey-1), 0 0 2px var(--grey-1),
+    0 0 0 rgb(208, 54, 169), 0 0 0 rgb(84, 254, 150);
+}
+
+header .title:hover .text {
+  text-shadow: 0 0 1px var(--grey-1), 0 0 2px var(--grey-1),
+    2px 1px 1px rgb(208, 54, 169), -2px -1px 1px rgb(84, 254, 150);
+}
+
+header .expand {
   flex-grow: 1;
 }
 

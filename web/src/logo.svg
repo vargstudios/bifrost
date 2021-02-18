@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64">
+    <defs>
+        <mask id="box">
+            <rect width="64" height="64" fill="white" rx="16"/>
+        </mask>
+    </defs>
+    <g mask="url(#box)">
+        <rect width="64" height="64" fill="rgb(72, 72, 72)"/>
+        <circle cx="62" cy="62" r="48" stroke-width="16" stroke="rgb(84,254,150)" fill="none"/>
+        <circle cx="66" cy="66" r="48" stroke-width="16" stroke="rgb(208,54,169)" fill="none"/>
+        <circle cx="64" cy="64" r="48" stroke-width="16" stroke="rgb(227, 227, 227)" fill="none"/>
+    </g>
+</svg>
