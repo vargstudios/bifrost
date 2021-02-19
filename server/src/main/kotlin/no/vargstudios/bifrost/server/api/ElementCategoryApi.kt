@@ -2,6 +2,7 @@ package no.vargstudios.bifrost.server.api
 
 import no.vargstudios.bifrost.server.api.model.CreateElementCategory
 import no.vargstudios.bifrost.server.api.model.ElementCategory
+import no.vargstudios.bifrost.server.api.model.Name
 import no.vargstudios.bifrost.server.db.ElementCategoryDao
 import no.vargstudios.bifrost.server.db.ElementDao
 import no.vargstudios.bifrost.server.db.model.ElementCategoryRow
@@ -54,6 +55,17 @@ class ElementCategoryApi(val elementCategoryDao: ElementCategoryDao, val element
             throw BadRequestException("Category is not empty")
         }
         elementCategoryDao.delete(categoryId)
+    }
+
+    @PUT
+    @Path("/{categoryId}/name")
+    fun renameCategory(@PathParam("categoryId") categoryId: String, name: Name) {
+        val category = elementCategoryDao.get(categoryId) ?: throw NotFoundException()
+        if (category.name == name.value) {
+            logger.warn("Name unchanged")
+            return
+        }
+        elementCategoryDao.setName(category.id, name.value)
     }
 
     private fun mapCategory(category: ElementCategoryRow, elements: Int): ElementCategory {

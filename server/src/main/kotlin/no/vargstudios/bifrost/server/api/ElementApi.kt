@@ -1,9 +1,6 @@
 package no.vargstudios.bifrost.server.api
 
-import no.vargstudios.bifrost.server.api.model.CreateElement
-import no.vargstudios.bifrost.server.api.model.Element
-import no.vargstudios.bifrost.server.api.model.ElementCategory
-import no.vargstudios.bifrost.server.api.model.ElementVersion
+import no.vargstudios.bifrost.server.api.model.*
 import no.vargstudios.bifrost.server.db.ElementCategoryDao
 import no.vargstudios.bifrost.server.db.ElementDao
 import no.vargstudios.bifrost.server.db.ElementFrameDao
@@ -17,6 +14,8 @@ import no.vargstudios.bifrost.worker.api.model.ImageFormat.EXR
 import no.vargstudios.bifrost.worker.api.model.ImageFormat.JPEG
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import java.nio.file.DirectoryNotEmptyException
+import java.nio.file.Files
 import javax.ws.rs.*
 import javax.ws.rs.core.MediaType.APPLICATION_JSON
 import javax.ws.rs.core.MediaType.WILDCARD
@@ -136,6 +135,60 @@ class ElementApi(
             throw NotFoundException()
         }
         return file.readBytes()
+    }
+
+    @PUT
+    @Path("/{elementId}/name")
+    fun renameElement(@PathParam("elementId") elementId: String, name: Name) {
+        val element = elementDao.get(elementId) ?: throw NotFoundException()
+        if (!element.previews) {
+            throw BadRequestException("Can not rename an element that is not fully imported")
+        }
+        if (element.name == name.value) {
+            logger.warn("Name unchanged")
+            return
+        }
+        val versions = elementVersionDao.listForElement(elementId)
+        val frames = elementFrameDao.listForElement(elementId)
+
+        logger.info("Changing name from '${element.name}' to '${name.value}' on element ${element.id} ")
+        val renamedElement = element.copy(name = name.value)
+
+        val framePaths = versions.flatMap { version ->
+            frames.map { frame ->
+                val old = pathResolver.local(element, version, frame)
+                val new = pathResolver.local(renamedElement, version, frame)
+                Pair(old, new)
+            }
+        }
+        val previewPaths = listOf(previewImageName, previewVideoName).map { file ->
+            val old = pathResolver.local(element).resolve(file)
+            val new = pathResolver.local(renamedElement).resolve(file)
+            Pair(old, new)
+        }
+
+        val changedPaths = (framePaths + previewPaths).filter { (old, new) -> old != new }
+
+        logger.info("Linking ${changedPaths.size} files")
+        changedPaths.forEach { (old, new) ->
+            Files.createDirectories(new.parent)
+            Files.createLink(new, old)
+        }
+
+        logger.info("Updating database")
+        elementDao.setName(element.id, name.value)
+
+        logger.info("Deleting ${changedPaths.size} files")
+        changedPaths.forEach { (old, _) ->
+            Files.delete(old)
+            try {
+                Files.deleteIfExists(old.parent)
+            } catch (e: DirectoryNotEmptyException) {
+                // Expected. We want to delete directories if they are empty.
+            }
+        }
+
+        logger.info("Name change complete")
     }
 
     @PUT

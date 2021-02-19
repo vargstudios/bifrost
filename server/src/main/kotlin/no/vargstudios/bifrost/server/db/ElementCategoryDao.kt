@@ -23,4 +23,7 @@ interface ElementCategoryDao {
     @SqlUpdate("delete from element_categories where id = :id")
     fun delete(id: String)
 
+    @SqlUpdate("update element_categories set name = :name where id = :id")
+    fun setName(id: String, name: String)
+
 }
