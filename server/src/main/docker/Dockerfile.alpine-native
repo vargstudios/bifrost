@@ -5,6 +5,5 @@ WORKDIR /app
 COPY build/*-runner /app/application
 
 EXPOSE 3200
-USER 3333:3333
 
 CMD ["./application"]
