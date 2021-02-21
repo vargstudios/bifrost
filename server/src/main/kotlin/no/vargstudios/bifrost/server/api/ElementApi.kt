@@ -19,6 +19,7 @@ import java.nio.file.Files
 import javax.ws.rs.*
 import javax.ws.rs.core.MediaType.APPLICATION_JSON
 import javax.ws.rs.core.MediaType.WILDCARD
+import kotlin.math.max
 
 @Path("/api/v1/elements")
 @Consumes(APPLICATION_JSON)
@@ -73,21 +74,21 @@ class ElementApi(
             ElementVersionRow(
                 elementId = element.id,
                 name = previewName,
-                width = 480,
-                height = 480 * createElement.height / createElement.width,
+                width = 480 * createElement.width / max(createElement.width, createElement.height),
+                height = 480 * createElement.height / max(createElement.width, createElement.height),
                 filetype = JPEG.extension
             )
         )
 
         // Conditional versions
         listOf(8192, 4096, 2048, 1024)
-            .filter { width -> width * 1.5 < createElement.width }
-            .map { width ->
+            .filter { size -> size * 1.5 < max(createElement.width, createElement.height) }
+            .map { size ->
                 ElementVersionRow(
                     elementId = element.id,
-                    name = "${width / 1024}K",
-                    width = width,
-                    height = width * createElement.height / createElement.width,
+                    name = "${size / 1024}K",
+                    width = size * createElement.width / max(createElement.width, createElement.height),
+                    height = size * createElement.height / max(createElement.width, createElement.height),
                     filetype = EXR.extension
                 )
             }
