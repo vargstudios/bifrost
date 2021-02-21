@@ -5,6 +5,5 @@ data class ExrAnalysis(
     val height: Int,
     val framerate: Float,
     val channels: String,
-    val linear: Boolean,
     val alpha: Boolean
 )

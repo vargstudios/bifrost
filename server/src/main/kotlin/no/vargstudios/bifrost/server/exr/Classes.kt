@@ -3,7 +3,7 @@ package no.vargstudios.bifrost.server.exr
 data class Channel(
     val name: String,
     val pixelType: PixelType,
-    val linear: Boolean,
+    val perceptuallyLinear: Boolean,
     val xSampling: Int,
     val ySampling: Int
 )

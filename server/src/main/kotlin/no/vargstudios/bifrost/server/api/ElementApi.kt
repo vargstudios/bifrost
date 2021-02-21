@@ -200,9 +200,6 @@ class ElementApi(
         data: ByteArray
     ) {
         val analysis = AnalysisApi().analyseExr(data)
-        if (!analysis.linear) {
-            throw BadRequestException("Not linear")
-        }
 
         val element = elementDao.get(elementId) ?: throw NotFoundException()
         val version = elementVersionDao.listForElement(elementId)[0] // FIXME: Assumes first is original

@@ -5,7 +5,6 @@ export type ExrAnalysis = {
   height: number;
   framerate: number;
   channels: string;
-  linear: boolean;
   alpha: boolean;
 };
 

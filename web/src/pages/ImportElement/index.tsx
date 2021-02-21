@@ -69,12 +69,6 @@ export function ImportElementPage(): JSX.Element {
     });
     analyseExr(files[0])
       .then((analysis: ExrAnalysis) => {
-        if (!analysis.linear) {
-          return setState({
-            type: "AnalysisError",
-            error: "Not linear",
-          });
-        }
         setState({
           type: "DefineElement",
           files: files,

@@ -21,7 +21,6 @@ class AnalysisApi {
                 height = attributes.displayWindow.height,
                 framerate = attributes.framesPerSecond?.toFloat() ?: 24.0F,
                 channels = attributes.channels.reversed().joinToString("") { it.name },
-                linear = attributes.channels.all { it.linear },
                 alpha = attributes.channels.any { it.name == "A" }
             )
         } catch (e: Exception) {
