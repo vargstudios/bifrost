@@ -12,6 +12,9 @@ export type ExrAnalysis = {
 export function analyseExr(exr: Blob): Promise<ExrAnalysis> {
   return request("/api/v1/analysis/exr", {
     method: "POST",
+    headers: {
+      "Content-Type": "image/x-exr",
+    },
     body: exr,
   });
 }

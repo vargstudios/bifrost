@@ -55,6 +55,9 @@ export function importFrame(
 ): Promise<void> {
   return request(`/api/v1/elements/${elementId}/frames/${frameNumber}`, {
     method: "PUT",
+    headers: {
+      "Content-Type": "image/x-exr",
+    },
     body: exr,
   });
 }
