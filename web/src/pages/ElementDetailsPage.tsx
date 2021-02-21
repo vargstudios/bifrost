@@ -5,6 +5,9 @@ import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
 import { NavLink, useParams } from "react-router-dom";
 import { ElementPreview } from "../components/ElementPreview";
+import { IconButton } from "../components/IconButton";
+import { faCopy } from "@fortawesome/free-solid-svg-icons";
+import { copyToClipboard } from "../utils/ClipboardUtils";
 
 export function ElementDetailsPage(): JSX.Element {
   const [element, setElement] = useState<Element | null>(null);
@@ -44,6 +47,7 @@ export function ElementDetailsPage(): JSX.Element {
             <th>Width</th>
             <th>Height</th>
             <th>Location</th>
+            <th />
           </tr>
         </thead>
         <tbody>
@@ -53,6 +57,14 @@ export function ElementDetailsPage(): JSX.Element {
               <td>{version.width}</td>
               <td>{version.height}</td>
               <td>{version.url}</td>
+              <td>
+                <IconButton
+                  size="small"
+                  title="Copy"
+                  icon={faCopy}
+                  onClick={() => copyToClipboard(version.url)}
+                />
+              </td>
             </tr>
           ))}
         </tbody>
