@@ -26,4 +26,7 @@ interface ElementFrameDao {
     @SqlUpdate("update element_frames set transcoded = true where id = :id")
     fun setTranscoded(id: String)
 
+    @SqlUpdate("delete from element_frames where element_id = :elementId")
+    fun deleteForElement(elementId: String)
+
 }

@@ -20,6 +20,7 @@ import javax.ws.rs.*
 import javax.ws.rs.core.MediaType.APPLICATION_JSON
 import javax.ws.rs.core.MediaType.WILDCARD
 import kotlin.math.max
+import java.nio.file.Path as FilePath
 
 @Path("/api/v1/elements")
 @Consumes(APPLICATION_JSON)
@@ -155,20 +156,9 @@ class ElementApi(
         logger.info("Changing name from '${element.name}' to '${name.value}' on element ${element.id} ")
         val renamedElement = element.copy(name = name.value)
 
-        val framePaths = versions.flatMap { version ->
-            frames.map { frame ->
-                val old = pathResolver.local(element, version, frame)
-                val new = pathResolver.local(renamedElement, version, frame)
-                Pair(old, new)
-            }
-        }
-        val previewPaths = listOf(previewImageName, previewVideoName).map { file ->
-            val old = pathResolver.local(element).resolve(file)
-            val new = pathResolver.local(renamedElement).resolve(file)
-            Pair(old, new)
-        }
-
-        val changedPaths = (framePaths + previewPaths).filter { (old, new) -> old != new }
+        val oldPaths = filePaths(element, versions, frames)
+        val newPaths = filePaths(renamedElement, versions, frames)
+        val changedPaths = oldPaths.zip(newPaths).filter { (old, new) -> old != new }
 
         logger.info("Linking ${changedPaths.size} files")
         changedPaths.forEach { (old, new) ->
@@ -180,16 +170,32 @@ class ElementApi(
         elementDao.setName(element.id, name.value)
 
         logger.info("Deleting ${changedPaths.size} files")
-        changedPaths.forEach { (old, _) ->
-            Files.delete(old)
-            try {
-                Files.deleteIfExists(old.parent)
-            } catch (e: DirectoryNotEmptyException) {
-                // Expected. We want to delete directories if they are empty.
-            }
-        }
+        deleteFiles(changedPaths.map { (old, _) -> old })
 
         logger.info("Name change complete")
+    }
+
+    @DELETE
+    @Path("/{elementId}")
+    fun deleteElement(@PathParam("elementId") elementId: String) {
+        val element = elementDao.get(elementId) ?: return
+        if (!element.previews) {
+            throw BadRequestException("Can not delete an element that is not fully imported")
+        }
+        val versions = elementVersionDao.listForElement(elementId)
+        val frames = elementFrameDao.listForElement(elementId)
+
+        val paths = filePaths(element, versions, frames)
+
+        logger.info("Updating database")
+        elementFrameDao.deleteForElement(elementId)
+        elementVersionDao.deleteForElement(elementId)
+        elementDao.delete(elementId)
+
+        logger.info("Deleting ${paths.size} files")
+        deleteFiles(paths)
+
+        logger.info("Deletion complete")
     }
 
     @PUT
@@ -257,6 +263,31 @@ class ElementApi(
             name = category.name,
             elements = 0 // TODO
         )
+    }
+
+    // All files related to an element
+    private fun filePaths(element: ElementRow, versions: List<ElementVersionRow>, frames: List<ElementFrameRow>): List<FilePath> {
+        val framePaths = versions.flatMap { version ->
+            frames.map { frame ->
+                pathResolver.local(element, version, frame)
+            }
+        }
+        val previewPaths = listOf(previewImageName, previewVideoName).map { file ->
+            pathResolver.local(element).resolve(file)
+        }
+        return (framePaths + previewPaths)
+    }
+
+    private fun deleteFiles(paths: List<FilePath>) {
+        paths.forEach { path ->
+            Files.delete(path)
+            // Delete parent directory if empty
+            try {
+                Files.deleteIfExists(path.parent)
+            } catch (e: DirectoryNotEmptyException) {
+                // Expected
+            }
+        }
     }
 
 }

@@ -20,4 +20,7 @@ interface ElementVersionDao {
     @SqlQuery("select * from element_versions where element_id = :elementId")
     fun listForElement(elementId: String): List<ElementVersionRow>
 
+    @SqlUpdate("delete from element_versions where element_id = :elementId")
+    fun deleteForElement(elementId: String)
+
 }

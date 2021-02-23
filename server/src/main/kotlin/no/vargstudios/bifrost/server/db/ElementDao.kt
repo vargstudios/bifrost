@@ -43,4 +43,7 @@ interface ElementDao {
     @SqlUpdate("update elements set name = :name where id = :id")
     fun setName(id: String, name: String)
 
+    @SqlUpdate("delete from elements where id = :id")
+    fun delete(id: String)
+
 }
