@@ -119,6 +119,7 @@ class TranscodeApi() {
                     "-preset", "slow",
                     "-pix_fmt", "yuv420p",
                     "-crf", "12",
+                    "-vf", "crop=trunc(iw/2)*2:trunc(ih/2)*2", // Size must be divisible by 2
                     "-y", target.absolutePath
                 )
             )
