@@ -9,16 +9,19 @@ import {
   deleteCategory,
   ElementCategory,
   listCategories,
+  renameCategory,
 } from "../api/element-categories";
 import { Textbox } from "../components/Textbox";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faPencilAlt, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "../components/Button";
 import { IconButton } from "../components/IconButton";
 import { Error } from "../api/error";
+import { RenameDialog } from "../components/RenameDialog";
 
 export function ManageCategoriesPage(): JSX.Element {
   const [categories, setCategories] = useState<ElementCategory[]>([]);
   const [state, setState] = useState<CreateElementCategory>({ name: "" });
+  const [renameCat, setRenameCat] = useState<ElementCategory | null>(null);
 
   useEffect(updateCategories, []);
 
@@ -33,6 +36,12 @@ export function ManageCategoriesPage(): JSX.Element {
       .then(updateCategories)
       .then(() => setState({ name: "" }))
       .catch((error: Error) => alert("Creation error: " + error.details));
+  }
+
+  function onRenameClicked(id: string, name: string): void {
+    renameCategory(id, name)
+      .then(updateCategories)
+      .catch((error: Error) => alert("Rename error: " + error.details));
   }
 
   function onDeleteClicked(id: string): void {
@@ -62,6 +71,12 @@ export function ManageCategoriesPage(): JSX.Element {
               <td>
                 <IconButton
                   size="small"
+                  title="Rename"
+                  icon={faPencilAlt}
+                  onClick={() => setRenameCat(category)}
+                />
+                <IconButton
+                  size="small"
                   title="Delete"
                   icon={faTrash}
                   onClick={() => onDeleteClicked(category.id)}
@@ -71,6 +86,23 @@ export function ManageCategoriesPage(): JSX.Element {
           ))}
         </tbody>
       </table>
+    );
+  }
+
+  function renameCategoryDialog(): JSX.Element | null {
+    if (!renameCat) {
+      return null;
+    }
+    return (
+      <RenameDialog
+        title="RENAME CATEGORY"
+        name={renameCat.name}
+        onRename={(name) => {
+          onRenameClicked(renameCat.id, name);
+          setRenameCat(null);
+        }}
+        onCancel={() => setRenameCat(null)}
+      />
     );
   }
 
@@ -91,6 +123,7 @@ export function ManageCategoriesPage(): JSX.Element {
         {categoryTable()}
       </main>
       <Footer />
+      {renameCategoryDialog()}
     </div>
   );
 }

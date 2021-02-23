@@ -11,6 +11,16 @@ export function post<T>(path: string, data: any): Promise<T> {
   });
 }
 
+export function put<T>(path: string, data: any): Promise<T> {
+  return request(path, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+}
+
 export function get<T>(path: string): Promise<T> {
   return request(path, { method: "GET" });
 }
