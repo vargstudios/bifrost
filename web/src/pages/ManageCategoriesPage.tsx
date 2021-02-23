@@ -75,7 +75,7 @@ export function ManageCategoriesPage(): JSX.Element {
   }
 
   return (
-    <div className="layout">
+    <div className="layout fullscreen">
       <Header />
       <ConfigSidebar />
       <main className="import">

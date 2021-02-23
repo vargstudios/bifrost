@@ -27,7 +27,7 @@ export function ElementsPage(): JSX.Element {
   }, []);
 
   return (
-    <div className="layout">
+    <div className="layout fullscreen">
       <Header />
       <ElementsSidebar categories={categories} />
       <main className="elements-page">

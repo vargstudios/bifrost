@@ -73,7 +73,7 @@ export function ElementDetailsPage(): JSX.Element {
   }
 
   return (
-    <div className="layout">
+    <div className="layout fullscreen">
       <Header />
       <aside className="sidebar">
         <div className="heading">ELEMENT</div>

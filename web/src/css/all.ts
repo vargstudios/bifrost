@@ -17,6 +17,8 @@ import "./selectbox.css";
 import "./progressbar.css";
 import "./preview.css";
 import "./table.css";
+import "./dialog.css";
+import "./fullscreen.css";
 
 // Pages
 import "./elements.css";
