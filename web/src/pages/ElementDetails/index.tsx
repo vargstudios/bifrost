@@ -27,7 +27,7 @@ export function ElementDetailsPage(): JSX.Element {
   const [state, setState] = useState<State>({ type: "Loading" });
   const { id } = useParams<{ id: string }>();
 
-  useEffect(loadElement, []);
+  useEffect(loadElement, [id]);
 
   function loadElement() {
     getElement(id)
@@ -54,7 +54,25 @@ export function ElementDetailsPage(): JSX.Element {
   function renderElement(element: Element): JSX.Element {
     return (
       <>
-        <div className="title">{element.name}</div>
+        <div className="title">
+          {element.name}
+          <span style={{ marginLeft: "var(--size-2)" }}>
+            <IconButton
+              size="small"
+              title="Rename"
+              icon={faPencilAlt}
+              onClick={() => setState({ type: "Rename", element: element })}
+            />
+          </span>
+          <span style={{ marginLeft: "var(--size-1)" }}>
+            <IconButton
+              size="small"
+              title="Delete"
+              icon={faTrash}
+              onClick={() => setState({ type: "Delete", element: element })}
+            />
+          </span>
+        </div>
         <ElementPreview element={element} />
         <div className="details">
           {element.framecount} Frames, {element.framerate} FPS,{" "}
@@ -63,20 +81,6 @@ export function ElementDetailsPage(): JSX.Element {
         {renderVersionTable(
           element.versions.filter((version) => version.name !== "Preview")
         )}
-        <div>
-          <IconButton
-            size="small"
-            title="Rename"
-            icon={faPencilAlt}
-            onClick={() => setState({ type: "Rename", element: element })}
-          />
-          <IconButton
-            size="small"
-            title="Delete"
-            icon={faTrash}
-            onClick={() => setState({ type: "Delete", element: element })}
-          />
-        </div>
       </>
     );
   }
@@ -118,6 +122,19 @@ export function ElementDetailsPage(): JSX.Element {
     );
   }
 
+  function renderDynamic(): JSX.Element {
+    switch (state.type) {
+      case "Loading":
+        return <div>Loading...</div>;
+      case "Details":
+      case "Rename":
+      case "Delete":
+        return renderElement(state.element);
+      case "Failed":
+        return <div>Error: {state.error}</div>;
+    }
+  }
+
   function renameDialog(): JSX.Element | null {
     if (state.type !== "Rename") {
       return null;
@@ -153,9 +170,7 @@ export function ElementDetailsPage(): JSX.Element {
         <div className="heading">ELEMENT</div>
         <NavLink to={`/elements/${id}`}>Details</NavLink>
       </aside>
-      <main className="element-details">
-        {state.type == "Details" ? renderElement(state.element) : "Not found"}
-      </main>
+      <main className="element-details">{renderDynamic()}</main>
       <Footer />
       {renameDialog()}
       {deleteDialog()}
