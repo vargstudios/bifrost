@@ -2,7 +2,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { HashRouter, Redirect, Route, Switch } from "react-router-dom";
 import { ElementsPage } from "./pages/ElementsPage";
-import { ElementDetailsPage } from "./pages/ElementDetailsPage";
+import { ElementDetailsPage } from "./pages/ElementDetails";
 import { ImportElementPage } from "./pages/ImportElement";
 import { ManageCategoriesPage } from "./pages/ManageCategoriesPage";
 import { ManageWorkersPage } from "./pages/ManageWorkersPage";

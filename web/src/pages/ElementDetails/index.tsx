@@ -1,23 +1,43 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { Element, ElementVersion, getElement } from "../api/elements";
-import { Header } from "../components/Header";
-import { Footer } from "../components/Footer";
+import {
+  Element,
+  ElementVersion,
+  getElement,
+  renameElement,
+} from "../../api/elements";
+import { Header } from "../../components/Header";
+import { Footer } from "../../components/Footer";
 import { NavLink, useParams } from "react-router-dom";
-import { ElementPreview } from "../components/ElementPreview";
-import { IconButton } from "../components/IconButton";
-import { faCopy } from "@fortawesome/free-solid-svg-icons";
-import { copyToClipboard } from "../utils/ClipboardUtils";
+import { ElementPreview } from "../../components/ElementPreview";
+import { IconButton } from "../../components/IconButton";
+import { faCopy, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
+import { copyToClipboard } from "../../utils/ClipboardUtils";
+import { State } from "./state";
+import { Error } from "../../api/error";
+import { RenameDialog } from "../../components/RenameDialog";
 
 export function ElementDetailsPage(): JSX.Element {
-  const [element, setElement] = useState<Element | null>(null);
+  const [state, setState] = useState<State>({ type: "Loading" });
   const { id } = useParams<{ id: string }>();
 
-  useEffect(() => {
+  useEffect(loadElement, []);
+
+  function loadElement() {
     getElement(id)
-      .then(setElement)
-      .catch(() => alert("Failed to get element")); // TODO
-  }, []);
+      .then((element: Element) =>
+        setState({ type: "Details", element: element })
+      )
+      .catch((error: Error) =>
+        setState({ type: "Failed", error: error.details })
+      );
+  }
+
+  function onRenameClicked(id: string, name: string): void {
+    renameElement(id, name)
+      .then(loadElement)
+      .catch((error: Error) => alert("Rename error: " + error.details));
+  }
 
   function renderElement(element: Element): JSX.Element {
     return (
@@ -31,6 +51,12 @@ export function ElementDetailsPage(): JSX.Element {
         {renderVersionTable(
           element.versions.filter((version) => version.name !== "Preview")
         )}
+        <IconButton
+          size="small"
+          title="Rename"
+          icon={faPencilAlt}
+          onClick={() => setState({ type: "Rename", element: element })}
+        />
       </>
     );
   }
@@ -72,6 +98,23 @@ export function ElementDetailsPage(): JSX.Element {
     );
   }
 
+  function renameDialog(): JSX.Element | null {
+    if (state.type !== "Rename") {
+      return null;
+    }
+    return (
+      <RenameDialog
+        title="RENAME ELEMENT"
+        name={state.element.name}
+        onRename={(name) => {
+          onRenameClicked(state.element.id, name);
+          loadElement();
+        }}
+        onCancel={() => setState({ type: "Details", element: state.element })}
+      />
+    );
+  }
+
   return (
     <div className="layout fullscreen">
       <Header />
@@ -80,9 +123,10 @@ export function ElementDetailsPage(): JSX.Element {
         <NavLink to={`/elements/${id}`}>Details</NavLink>
       </aside>
       <main className="element-details">
-        {element ? renderElement(element) : "Not found"}
+        {state.type == "Details" ? renderElement(state.element) : "Not found"}
       </main>
       <Footer />
+      {renameDialog()}
     </div>
   );
 }
