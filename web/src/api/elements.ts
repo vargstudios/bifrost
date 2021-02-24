@@ -1,4 +1,4 @@
-import { get, post, put, request } from "./request";
+import { del, get, post, put, request } from "./request";
 
 export type CreateElement = {
   categoryId: string;
@@ -50,6 +50,10 @@ export function createElement(element: CreateElement): Promise<Element> {
 
 export function renameElement(id: string, name: string): Promise<void> {
   return put("/api/v1/elements/" + id + "/name", { value: name });
+}
+
+export function deleteElement(id: string): Promise<void> {
+  return del("/api/v1/elements/" + id);
 }
 
 export function importFrame(

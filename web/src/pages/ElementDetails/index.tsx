@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 import {
+  deleteElement,
   Element,
   ElementVersion,
   getElement,
@@ -11,11 +12,16 @@ import { Footer } from "../../components/Footer";
 import { NavLink, useParams } from "react-router-dom";
 import { ElementPreview } from "../../components/ElementPreview";
 import { IconButton } from "../../components/IconButton";
-import { faCopy, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCopy,
+  faPencilAlt,
+  faTrash,
+} from "@fortawesome/free-solid-svg-icons";
 import { copyToClipboard } from "../../utils/ClipboardUtils";
 import { State } from "./state";
 import { Error } from "../../api/error";
 import { RenameDialog } from "../../components/RenameDialog";
+import { DeleteDialog } from "../../components/DeleteDialog";
 
 export function ElementDetailsPage(): JSX.Element {
   const [state, setState] = useState<State>({ type: "Loading" });
@@ -39,6 +45,12 @@ export function ElementDetailsPage(): JSX.Element {
       .catch((error: Error) => alert("Rename error: " + error.details));
   }
 
+  function onDeleteClicked(id: string): void {
+    deleteElement(id)
+      .then(loadElement)
+      .catch((error: Error) => alert("Delete error: " + error.details));
+  }
+
   function renderElement(element: Element): JSX.Element {
     return (
       <>
@@ -51,12 +63,20 @@ export function ElementDetailsPage(): JSX.Element {
         {renderVersionTable(
           element.versions.filter((version) => version.name !== "Preview")
         )}
-        <IconButton
-          size="small"
-          title="Rename"
-          icon={faPencilAlt}
-          onClick={() => setState({ type: "Rename", element: element })}
-        />
+        <div>
+          <IconButton
+            size="small"
+            title="Rename"
+            icon={faPencilAlt}
+            onClick={() => setState({ type: "Rename", element: element })}
+          />
+          <IconButton
+            size="small"
+            title="Delete"
+            icon={faTrash}
+            onClick={() => setState({ type: "Delete", element: element })}
+          />
+        </div>
       </>
     );
   }
@@ -106,10 +126,21 @@ export function ElementDetailsPage(): JSX.Element {
       <RenameDialog
         title="RENAME ELEMENT"
         name={state.element.name}
-        onRename={(name) => {
-          onRenameClicked(state.element.id, name);
-          loadElement();
-        }}
+        onRename={(name) => onRenameClicked(state.element.id, name)}
+        onCancel={() => setState({ type: "Details", element: state.element })}
+      />
+    );
+  }
+
+  function deleteDialog(): JSX.Element | null {
+    if (state.type !== "Delete") {
+      return null;
+    }
+    return (
+      <DeleteDialog
+        title="DELETE ELEMENT"
+        name={state.element.name}
+        onDelete={() => onDeleteClicked(state.element.id)}
         onCancel={() => setState({ type: "Details", element: state.element })}
       />
     );
@@ -127,6 +158,7 @@ export function ElementDetailsPage(): JSX.Element {
       </main>
       <Footer />
       {renameDialog()}
+      {deleteDialog()}
     </div>
   );
 }
