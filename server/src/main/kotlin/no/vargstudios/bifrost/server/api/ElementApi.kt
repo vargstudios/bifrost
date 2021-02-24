@@ -105,7 +105,7 @@ class ElementApi(
     @GET
     @Path("/{elementId}")
     fun getElement(@PathParam("elementId") elementId: String): Element {
-        val element = elementDao.get(elementId) ?: throw NotFoundException()
+        val element = elementDao.get(elementId) ?: throw NotFoundException("Element not found")
         val versions = elementVersionDao.listForElement(elementId)
         val category = elementCategoryDao.get(element.categoryId)!!
         return mapElement(element, versions, category)
@@ -116,7 +116,7 @@ class ElementApi(
     @Consumes(WILDCARD)
     @Produces("image/jpeg")
     fun getElementPreviewImage(@PathParam("elementId") elementId: String): ByteArray {
-        val element = elementDao.get(elementId) ?: throw NotFoundException()
+        val element = elementDao.get(elementId) ?: throw NotFoundException("Element not found")
         val file = pathResolver.local(element).resolve(previewImageName).toFile()
         if (!file.exists()) {
             logger.warn("Element $elementId has no preview image")
@@ -130,7 +130,7 @@ class ElementApi(
     @Consumes(WILDCARD)
     @Produces("video/mp4")
     fun getElementPreviewVideo(@PathParam("elementId") elementId: String): ByteArray {
-        val element = elementDao.get(elementId) ?: throw NotFoundException()
+        val element = elementDao.get(elementId) ?: throw NotFoundException("Element not found")
         val file = pathResolver.local(element).resolve(previewVideoName).toFile()
         if (!file.exists()) {
             logger.warn("Element $elementId has no preview video")
@@ -142,7 +142,7 @@ class ElementApi(
     @PUT
     @Path("/{elementId}/name")
     fun renameElement(@PathParam("elementId") elementId: String, name: Name) {
-        val element = elementDao.get(elementId) ?: throw NotFoundException()
+        val element = elementDao.get(elementId) ?: throw NotFoundException("Element not found")
         if (!element.previews) {
             throw BadRequestException("Can not rename an element that is not fully imported")
         }
@@ -208,7 +208,7 @@ class ElementApi(
     ) {
         val analysis = AnalysisApi().analyseExr(data)
 
-        val element = elementDao.get(elementId) ?: throw NotFoundException()
+        val element = elementDao.get(elementId) ?: throw NotFoundException("Element not found")
         val version = elementVersionDao.listForElement(elementId)[0] // FIXME: Assumes first is original
 
         if (analysis.channels != element.channels) {

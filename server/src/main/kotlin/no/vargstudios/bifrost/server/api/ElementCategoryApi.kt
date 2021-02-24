@@ -44,7 +44,7 @@ class ElementCategoryApi(val elementCategoryDao: ElementCategoryDao, val element
     @GET
     @Path("/{categoryId}")
     fun getCategory(@PathParam("categoryId") categoryId: String): ElementCategory {
-        val category = elementCategoryDao.get(categoryId) ?: throw NotFoundException()
+        val category = elementCategoryDao.get(categoryId) ?: throw NotFoundException("Category not found")
         return mapCategory(category, elementDao.listForCategory(categoryId).size)
     }
 
@@ -60,7 +60,7 @@ class ElementCategoryApi(val elementCategoryDao: ElementCategoryDao, val element
     @PUT
     @Path("/{categoryId}/name")
     fun renameCategory(@PathParam("categoryId") categoryId: String, name: Name) {
-        val category = elementCategoryDao.get(categoryId) ?: throw NotFoundException()
+        val category = elementCategoryDao.get(categoryId) ?: throw NotFoundException("Category not found")
         if (category.name == name.value) {
             logger.warn("Name unchanged")
             return
