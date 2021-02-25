@@ -11,9 +11,9 @@ import {
   listCategories,
   renameCategory,
 } from "../api/element-categories";
-import { Textbox } from "../components/Textbox";
+import { Textbox } from "../nyx/Textbox";
 import { faPencilAlt, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { Button } from "../components/Button";
+import { Button } from "../nyx/Button";
 import { IconButton } from "../components/IconButton";
 import { Error } from "../api/error";
 import { RenameDialog } from "../components/RenameDialog";

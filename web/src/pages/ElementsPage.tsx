@@ -7,7 +7,7 @@ import { Header } from "../components/Header";
 import { ElementsSidebar } from "../components/ElementsSidebar";
 import { Footer } from "../components/Footer";
 import { useQuery } from "../hooks/useQuery";
-import { Textbox } from "../components/Textbox";
+import { Textbox } from "../nyx/Textbox";
 import { normalize } from "../utils/StringUtils";
 
 export function ElementsPage(): JSX.Element {

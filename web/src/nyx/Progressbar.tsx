@@ -1,4 +1,5 @@
 import * as React from "react";
+import "./Progressbar.css";
 
 type Props = {
   current: number;
@@ -8,7 +9,7 @@ type Props = {
 export function Progressbar(props: Props): JSX.Element {
   const ratio = props.current / props.total;
   return (
-    <div className="progressbar">
+    <div className="nyx progressbar">
       <div className="fill" style={{ width: `${ratio * 100}%` }} />
     </div>
   );

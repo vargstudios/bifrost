@@ -1,4 +1,5 @@
 import * as React from "react";
+import "./Textbox.css";
 
 type Props = {
   id: string;
@@ -10,7 +11,7 @@ type Props = {
 
 export function Textbox(props: Props): JSX.Element {
   return (
-    <div className="textbox">
+    <div className="nyx textbox">
       {props.label ?? <label htmlFor={props.id}>{props.label}</label>}
       <input
         id={props.id}

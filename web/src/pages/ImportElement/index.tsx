@@ -7,13 +7,13 @@ import { Footer } from "../../components/Footer";
 import { toList } from "../../utils/FileUtils";
 import { analyseExr, ExrAnalysis } from "../../api/analysis";
 import { createElement, Element, importFrame } from "../../api/elements";
-import { Textbox } from "../../components/Textbox";
-import { Selectbox } from "../../components/Selectbox";
-import { Progressbar } from "../../components/Progressbar";
+import { Textbox } from "../../nyx/Textbox";
+import { Selectbox } from "../../nyx/Selectbox";
+import { Progressbar } from "../../nyx/Progressbar";
 import { Importing, State } from "./state";
 import { Filename, parseFilename } from "../../utils/FilenameUtils";
 import { isConsecutive, unique } from "../../utils/ArrayUtils";
-import { Button } from "../../components/Button";
+import { Button } from "../../nyx/Button";
 import { Error } from "../../api/error";
 
 export function ImportElementPage(): JSX.Element {

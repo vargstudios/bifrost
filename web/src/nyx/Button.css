@@ -1,4 +1,4 @@
-.button {
+.nyx.button {
   padding: calc(var(--size-1) - 2px) calc(var(--size-3) - 2px);
   border: 2px solid var(--grey-4);
   background: var(--grey-1);
@@ -6,11 +6,11 @@
   cursor: pointer;
 }
 
-.button:hover,
-.button:focus {
+.nyx.button:hover,
+.nyx.button:focus {
   border: 2px solid var(--grey-6);
 }
 
-.button:active {
+.nyx.button:active {
   background: var(--grey-2);
 }

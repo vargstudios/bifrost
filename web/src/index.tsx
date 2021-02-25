@@ -6,6 +6,7 @@ import { ElementDetailsPage } from "./pages/ElementDetails";
 import { ImportElementPage } from "./pages/ImportElement";
 import { ManageCategoriesPage } from "./pages/ManageCategoriesPage";
 import { ManageWorkersPage } from "./pages/ManageWorkersPage";
+import "./nyx/Base";
 import "./css/all";
 
 function Router(): JSX.Element {

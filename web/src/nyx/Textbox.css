@@ -1,9 +1,9 @@
-.textbox label {
+.nyx.textbox label {
   display: block;
   margin-bottom: var(--size-1);
 }
 
-.textbox input {
+.nyx.textbox input {
   display: block;
   width: 100%;
   padding: calc(var(--size-1) - 2px) calc(var(--size-2) - 2px);
@@ -12,11 +12,11 @@
   background: var(--grey-2);
 }
 
-.textbox input:hover,
-.textbox input:focus {
+.nyx.textbox input:hover,
+.nyx.textbox input:focus {
   border: 2px solid var(--grey-6);
 }
 
-.textbox input::placeholder {
+.nyx.textbox input::placeholder {
   color: var(--grey-6);
 }

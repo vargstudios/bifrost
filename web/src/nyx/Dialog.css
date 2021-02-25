@@ -1,4 +1,4 @@
-.dialog {
+.nyx.dialog {
   position: fixed;
   left: 0;
   right: 0;
@@ -7,7 +7,7 @@
   overflow: auto;
 }
 
-.backdrop {
+.nyx.dialog .backdrop {
   z-index: 1;
   position: fixed;
   background: var(--grey-9);
@@ -16,7 +16,7 @@
   height: 100%;
 }
 
-.window {
+.nyx.dialog .window {
   z-index: 2;
   position: relative;
   margin: var(--size-8) auto;

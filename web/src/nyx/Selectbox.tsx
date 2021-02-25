@@ -1,4 +1,5 @@
 import * as React from "react";
+import "./Selectbox.css";
 
 type Option = {
   name: string;
@@ -15,7 +16,7 @@ type Props = {
 
 export function Selectbox(props: Props): JSX.Element {
   return (
-    <div className="selectbox">
+    <div className="nyx selectbox">
       <label htmlFor={props.id}>{props.label}</label>
       <select
         id={props.id}

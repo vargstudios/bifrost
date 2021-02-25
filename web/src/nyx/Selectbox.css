@@ -1,9 +1,9 @@
-.selectbox label {
+.nyx.selectbox label {
   display: block;
   margin-bottom: var(--size-1);
 }
 
-.selectbox select {
+.nyx.selectbox select {
   display: block;
   width: 100%;
   padding: calc(var(--size-1) - 2px) calc(var(--size-2) - 2px);
@@ -20,7 +20,7 @@
   background-position-y: var(--size-1);
 }
 
-.selectbox select:hover,
-.selectbox select:focus {
+.nyx.selectbox select:hover,
+.nyx.selectbox select:focus {
   border: 2px solid var(--grey-6);
 }

@@ -1,8 +1,8 @@
 import * as React from "react";
-import { Dialog } from "./Dialog";
-import { Textbox } from "./Textbox";
 import { useEffect, useState } from "react";
-import { Button } from "./Button";
+import { Dialog } from "../nyx/Dialog";
+import { Textbox } from "../nyx/Textbox";
+import { Button } from "../nyx/Button";
 
 type Props = {
   title: string;
