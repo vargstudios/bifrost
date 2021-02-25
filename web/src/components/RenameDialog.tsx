@@ -19,15 +19,9 @@ export function RenameDialog(props: Props): JSX.Element {
     document.getElementById(id)?.focus();
   }, []);
 
-  function cancelIfEscape(event: React.KeyboardEvent): void {
-    if (event.key === "Escape") {
-      props.onCancel();
-    }
-  }
-
   return (
-    <Dialog>
-      <div className="import" onKeyDown={cancelIfEscape}>
+    <Dialog onEscape={() => props.onCancel()}>
+      <div className="import">
         <div className="title">{props.title}</div>
         <TextBox id={id} label="Name" value={name} onChange={setName} />
         <div>

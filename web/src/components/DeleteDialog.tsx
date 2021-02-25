@@ -17,15 +17,9 @@ export function DeleteDialog(props: Props): JSX.Element {
     document.getElementById(id)?.focus();
   }, []);
 
-  function cancelIfEscape(event: React.KeyboardEvent): void {
-    if (event.key === "Escape") {
-      props.onCancel();
-    }
-  }
-
   return (
-    <Dialog>
-      <div className="import" onKeyDown={cancelIfEscape}>
+    <Dialog onEscape={() => props.onCancel()}>
+      <div className="import">
         <div className="title">{props.title}</div>
         <div>Are you sure you want to delete "{props.name}"?</div>
         <div>
