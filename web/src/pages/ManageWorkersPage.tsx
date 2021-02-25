@@ -14,9 +14,23 @@ import { IconButton } from "../components/IconButton";
 import { faCheckSquare, faSquare } from "@fortawesome/free-regular-svg-icons";
 import { Error } from "../api/error";
 import { baseUrl } from "../api/server";
+import { TextArea } from "../nyx/TextArea";
+import { Link } from "../nyx/Link";
 
 export function ManageWorkersPage(): JSX.Element {
   const [workers, setWorkers] = useState<Worker[]>([]);
+  const [workerCmd, setWorkerCmd] = useState(
+    "docker run \\\n" +
+      "  --detach \\\n" +
+      "  --restart always \\\n" +
+      "  --memory 320m \\\n" +
+      "  --publish 3201:3201 \\\n" +
+      "  --env WORKER_NAME=Unnamed \\\n" +
+      "  --env SERVER_URL=" +
+      baseUrl() +
+      " \\\n" +
+      "  vargstudios/bifrost-worker:latest"
+  );
 
   useEffect(updateWorkers, []);
   useInterval(updateWorkers, 1000);
@@ -98,28 +112,19 @@ export function ManageWorkersPage(): JSX.Element {
       <main className="import">
         <div className="title">ADD WORKER</div>
         <div>Run the following command to start a worker with docker:</div>
-        <textarea
-          spellCheck={false}
-          style={{
-            background: "var(--grey-2)",
-            padding: "var(--size-2)",
-            borderRadius: "var(--size-1)",
-            width: "calc(16 * 24px + 2 * var(--size-2))",
-            height: "calc(8 * 24px + 2 * var(--size-2))",
-          }}
-          defaultValue={
-            "docker run \\\n" +
-            "  --detach \\\n" +
-            "  --restart always \\\n" +
-            "  --memory 320m \\\n" +
-            "  --publish 3201:3201 \\\n" +
-            "  --env WORKER_NAME=Unnamed \\\n" +
-            "  --env SERVER_URL=" +
-            baseUrl() +
-            " \\\n" +
-            "  vargstudios/bifrost-worker:latest"
-          }
+        <TextArea
+          columns={16}
+          lines={8}
+          value={workerCmd}
+          onChange={setWorkerCmd}
         />
+        <div>
+          Alternatively,{" "}
+          <Link
+            href="https://github.com/vargstudios/bifrost/releases"
+            text="download the Windows version from GitHub"
+          />
+        </div>
         <div className="title">MANAGE WORKERS</div>
         {workerTable()}
       </main>

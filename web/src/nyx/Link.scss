@@ -1,0 +1,12 @@
+.nyx.link {
+  border-bottom: 2px solid var(--grey-6);
+
+  &:hover,
+  &:focus {
+    border-bottom: 2px solid var(--grey-8);
+  }
+
+  &:active {
+    border-bottom: 2px solid var(--grey-6);
+  }
+}
