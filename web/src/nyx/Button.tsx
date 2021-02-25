@@ -1,5 +1,5 @@
 import * as React from "react";
-import "./Button.css";
+import "./Button.scss";
 
 type Props = {
   id?: string;

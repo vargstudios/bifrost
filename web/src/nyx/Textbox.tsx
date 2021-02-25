@@ -1,5 +1,5 @@
 import * as React from "react";
-import "./Textbox.css";
+import "./Textbox.scss";
 
 type Props = {
   id: string;

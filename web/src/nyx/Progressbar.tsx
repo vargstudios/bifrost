@@ -1,5 +1,5 @@
 import * as React from "react";
-import "./Progressbar.css";
+import "./Progressbar.scss";
 
 type Props = {
   current: number;

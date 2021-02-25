@@ -1,5 +1,5 @@
 import * as React from "react";
-import "./Dialog.css";
+import "./Dialog.scss";
 
 type Props = {
   children: JSX.Element;

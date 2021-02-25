@@ -4,13 +4,13 @@
   background: var(--grey-1);
   border-radius: var(--size-1);
   cursor: pointer;
-}
 
-.nyx.button:hover,
-.nyx.button:focus {
-  border: 2px solid var(--grey-6);
-}
+  &:hover,
+  &:focus {
+    border: 2px solid var(--grey-6);
+  }
 
-.nyx.button:active {
-  background: var(--grey-2);
+  &:active {
+    background: var(--grey-2);
+  }
 }
