@@ -22,6 +22,7 @@ import { State } from "./state";
 import { Error } from "../../api/error";
 import { RenameDialog } from "../../components/RenameDialog";
 import { DeleteDialog } from "../../components/DeleteDialog";
+import { Layout } from "../../components/Layout";
 
 export function ElementDetailsPage(): JSX.Element {
   const [state, setState] = useState<State>({ type: "Loading" });
@@ -164,7 +165,7 @@ export function ElementDetailsPage(): JSX.Element {
   }
 
   return (
-    <div className="layout fullscreen">
+    <Layout>
       <Header />
       <aside className="sidebar">
         <div className="heading">ELEMENT</div>
@@ -174,6 +175,6 @@ export function ElementDetailsPage(): JSX.Element {
       <Footer />
       {renameDialog()}
       {deleteDialog()}
-    </div>
+    </Layout>
   );
 }

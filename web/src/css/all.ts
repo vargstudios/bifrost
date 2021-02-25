@@ -1,5 +1,4 @@
 // Layout
-import "./layout.css";
 import "./header.css";
 import "./footer.css";
 import "./sidebar.css";
@@ -8,7 +7,6 @@ import "./sidebar.css";
 import "./icon-button.css";
 import "./preview.css";
 import "./table.css";
-import "./fullscreen.css";
 
 // Pages
 import "./elements.css";

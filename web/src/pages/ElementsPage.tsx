@@ -9,6 +9,7 @@ import { Footer } from "../components/Footer";
 import { useQuery } from "../hooks/useQuery";
 import { TextBox } from "../nyx/TextBox";
 import { normalize } from "../utils/StringUtils";
+import { Layout } from "../components/Layout";
 
 export function ElementsPage(): JSX.Element {
   const [categories, setCategories] = useState<ElementCategory[]>([]);
@@ -27,7 +28,7 @@ export function ElementsPage(): JSX.Element {
   }, []);
 
   return (
-    <div className="layout fullscreen">
+    <Layout>
       <Header />
       <ElementsSidebar categories={categories} />
       <main className="elements-page">
@@ -54,6 +55,6 @@ export function ElementsPage(): JSX.Element {
         </div>
       </main>
       <Footer />
-    </div>
+    </Layout>
   );
 }

@@ -17,6 +17,7 @@ import { Button } from "../nyx/Button";
 import { IconButton } from "../components/IconButton";
 import { Error } from "../api/error";
 import { RenameDialog } from "../components/RenameDialog";
+import { Layout } from "../components/Layout";
 
 export function ManageCategoriesPage(): JSX.Element {
   const [categories, setCategories] = useState<ElementCategory[]>([]);
@@ -107,7 +108,7 @@ export function ManageCategoriesPage(): JSX.Element {
   }
 
   return (
-    <div className="layout fullscreen">
+    <Layout>
       <Header />
       <ConfigSidebar />
       <main className="import">
@@ -124,6 +125,6 @@ export function ManageCategoriesPage(): JSX.Element {
       </main>
       <Footer />
       {renameCategoryDialog()}
-    </div>
+    </Layout>
   );
 }

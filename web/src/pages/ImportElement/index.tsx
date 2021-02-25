@@ -15,6 +15,7 @@ import { Filename, parseFilename } from "../../utils/FilenameUtils";
 import { isConsecutive, unique } from "../../utils/ArrayUtils";
 import { Button } from "../../nyx/Button";
 import { Error } from "../../api/error";
+import { Layout } from "../../components/Layout";
 
 export function ImportElementPage(): JSX.Element {
   const fileRef = useRef<HTMLInputElement>(null);
@@ -242,7 +243,7 @@ export function ImportElementPage(): JSX.Element {
   }
 
   return (
-    <div className="layout fullscreen">
+    <Layout>
       <Header />
       <ConfigSidebar />
       <main className="import">
@@ -250,6 +251,6 @@ export function ImportElementPage(): JSX.Element {
         {renderDynamic()}
       </main>
       <Footer />
-    </div>
+    </Layout>
   );
 }

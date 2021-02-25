@@ -1,0 +1,44 @@
+.layout {
+  /* fullscreen */
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  overflow: auto;
+
+  /* layout */
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas:
+    "header header"
+    "aside main"
+    "aside footer";
+  background: var(--grey-3);
+
+  > header {
+    grid-area: header;
+    background: var(--grey-1);
+  }
+
+  > aside {
+    grid-area: aside;
+    background: var(--grey-2);
+  }
+
+  > main {
+    grid-area: main;
+  }
+
+  > footer {
+    grid-area: footer;
+    padding: var(--size-4);
+  }
+
+  &.x {
+    transform: scaleX(-1);
+  }
+
+  transition: transform 1s;
+}

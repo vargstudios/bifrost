@@ -16,6 +16,7 @@ import { Error } from "../api/error";
 import { baseUrl } from "../api/server";
 import { TextArea } from "../nyx/TextArea";
 import { Link } from "../nyx/Link";
+import { Layout } from "../components/Layout";
 
 export function ManageWorkersPage(): JSX.Element {
   const [workers, setWorkers] = useState<Worker[]>([]);
@@ -106,7 +107,7 @@ export function ManageWorkersPage(): JSX.Element {
   }
 
   return (
-    <div className="layout fullscreen">
+    <Layout>
       <Header />
       <ConfigSidebar />
       <main className="import">
@@ -129,6 +130,6 @@ export function ManageWorkersPage(): JSX.Element {
         {workerTable()}
       </main>
       <Footer />
-    </div>
+    </Layout>
   );
 }
