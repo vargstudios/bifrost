@@ -1,5 +1,5 @@
 import * as React from "react";
-import "./Selectbox.scss";
+import "./SelectBox.scss";
 
 type Option = {
   name: string;
@@ -14,7 +14,7 @@ type Props = {
   onChange: (value: string) => void;
 };
 
-export function Selectbox(props: Props): JSX.Element {
+export function SelectBox(props: Props): JSX.Element {
   return (
     <div className="nyx selectbox">
       <label htmlFor={props.id}>{props.label}</label>

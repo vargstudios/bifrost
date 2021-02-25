@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { Dialog } from "../nyx/Dialog";
-import { Textbox } from "../nyx/Textbox";
+import { TextBox } from "../nyx/TextBox";
 import { Button } from "../nyx/Button";
 
 type Props = {
@@ -29,7 +29,7 @@ export function RenameDialog(props: Props): JSX.Element {
     <Dialog>
       <div className="import" onKeyDown={cancelIfEscape}>
         <div className="title">{props.title}</div>
-        <Textbox id={id} label="Name" value={name} onChange={setName} />
+        <TextBox id={id} label="Name" value={name} onChange={setName} />
         <div>
           <Button label="Rename" onClick={() => props.onRename(name)} />
           <Button label="Cancel" onClick={() => props.onCancel()} />

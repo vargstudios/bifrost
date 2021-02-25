@@ -7,7 +7,7 @@ import { Header } from "../components/Header";
 import { ElementsSidebar } from "../components/ElementsSidebar";
 import { Footer } from "../components/Footer";
 import { useQuery } from "../hooks/useQuery";
-import { Textbox } from "../nyx/Textbox";
+import { TextBox } from "../nyx/TextBox";
 import { normalize } from "../utils/StringUtils";
 
 export function ElementsPage(): JSX.Element {
@@ -31,7 +31,7 @@ export function ElementsPage(): JSX.Element {
       <Header />
       <ElementsSidebar categories={categories} />
       <main className="elements-page">
-        <Textbox
+        <TextBox
           id="search"
           placeholder="Search"
           value={search}

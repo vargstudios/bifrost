@@ -1,5 +1,5 @@
 import * as React from "react";
-import "./Textbox.scss";
+import "./TextBox.scss";
 
 type Props = {
   id: string;
@@ -9,7 +9,7 @@ type Props = {
   onChange: (value: string) => void;
 };
 
-export function Textbox(props: Props): JSX.Element {
+export function TextBox(props: Props): JSX.Element {
   return (
     <div className="nyx textbox">
       {props.label ?? <label htmlFor={props.id}>{props.label}</label>}

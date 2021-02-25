@@ -1,12 +1,12 @@
 import * as React from "react";
-import "./Progressbar.scss";
+import "./ProgressBar.scss";
 
 type Props = {
   current: number;
   total: number;
 };
 
-export function Progressbar(props: Props): JSX.Element {
+export function ProgressBar(props: Props): JSX.Element {
   const ratio = props.current / props.total;
   return (
     <div className="nyx progressbar">

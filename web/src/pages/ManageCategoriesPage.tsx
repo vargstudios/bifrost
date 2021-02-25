@@ -11,7 +11,7 @@ import {
   listCategories,
   renameCategory,
 } from "../api/element-categories";
-import { Textbox } from "../nyx/Textbox";
+import { TextBox } from "../nyx/TextBox";
 import { faPencilAlt, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "../nyx/Button";
 import { IconButton } from "../components/IconButton";
@@ -112,7 +112,7 @@ export function ManageCategoriesPage(): JSX.Element {
       <ConfigSidebar />
       <main className="import">
         <div className="title">CREATE CATEGORY</div>
-        <Textbox
+        <TextBox
           id="name"
           label="Name"
           value={state.name}

@@ -7,9 +7,9 @@ import { Footer } from "../../components/Footer";
 import { toList } from "../../utils/FileUtils";
 import { analyseExr, ExrAnalysis } from "../../api/analysis";
 import { createElement, Element, importFrame } from "../../api/elements";
-import { Textbox } from "../../nyx/Textbox";
-import { Selectbox } from "../../nyx/Selectbox";
-import { Progressbar } from "../../nyx/Progressbar";
+import { TextBox } from "../../nyx/TextBox";
+import { SelectBox } from "../../nyx/SelectBox";
+import { ProgressBar } from "../../nyx/ProgressBar";
 import { Importing, State } from "./state";
 import { Filename, parseFilename } from "../../utils/FilenameUtils";
 import { isConsecutive, unique } from "../../utils/ArrayUtils";
@@ -171,13 +171,13 @@ export function ImportElementPage(): JSX.Element {
       case "DefineElement":
         return (
           <>
-            <Textbox
+            <TextBox
               id="name"
               label="Name"
               value={state.name}
               onChange={(value) => setState({ ...state, name: value })}
             />
-            <Selectbox
+            <SelectBox
               id="category"
               label="Category"
               options={categories.map((category) => ({
@@ -210,7 +210,7 @@ export function ImportElementPage(): JSX.Element {
             <div>
               Importing frame {state.currentFrame + 1} / {state.totalFrames}
             </div>
-            <Progressbar
+            <ProgressBar
               current={state.currentFrame}
               total={state.totalFrames}
             />
