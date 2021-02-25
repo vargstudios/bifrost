@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useState } from "react";
+import { useKeyDown } from "../hooks/useKeyDown";
 import "./Layout.scss";
 
 type Props = {
@@ -10,7 +11,7 @@ type Props = {
 export function Layout(props: Props): JSX.Element {
   const [count, setCount] = useState(0);
 
-  function handleX(event: React.KeyboardEvent): void {
+  function handleX(event: KeyboardEvent): void {
     if (event.key === "x" || event.key === "X") {
       setCount(count + 1);
     } else {
@@ -18,9 +19,9 @@ export function Layout(props: Props): JSX.Element {
     }
   }
 
+  useKeyDown(handleX);
+
   return (
-    <div className={"layout" + (count >= 3 ? " x" : "")} onKeyDown={handleX}>
-      {props.children}
-    </div>
+    <div className={"layout" + (count >= 3 ? " x" : "")}>{props.children}</div>
   );
 }
