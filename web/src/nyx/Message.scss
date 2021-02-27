@@ -1,0 +1,21 @@
+.nyx.message {
+  display: flex;
+  align-items: center;
+
+  .text {
+    margin-left: var(--size-1);
+  }
+
+  &.error {
+    color: var(--red-7);
+  }
+  &.warn {
+    color: var(--yellow-7);
+  }
+  &.info {
+    color: var(--blue-7);
+  }
+  &.success {
+    color: var(--green-7);
+  }
+}

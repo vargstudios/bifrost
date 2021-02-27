@@ -52,6 +52,12 @@ html {
   --grey-3: rgb(72, 72, 72);
   --grey-2: rgb(49, 49, 49);
   --grey-1: rgb(28, 28, 28);
+
+  /* Munsell: Chroma 8 */
+  --red-7: rgb(237, 149, 152); /* 2.5R */
+  --yellow-7: rgb(209, 168, 72); /* 2.5Y */
+  --green-7: rgb(98, 193, 131); /* 2.5G */
+  --blue-7: rgb(119, 179, 228); /* 2.5PB */
 }
 
 /* Basics */
