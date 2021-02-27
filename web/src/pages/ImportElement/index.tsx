@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ElementCategory, listCategories } from "../../api/element-categories";
 import { Header } from "../../components/Header";
 import { ConfigSidebar } from "../../components/ConfigSidebar";
@@ -19,17 +19,25 @@ import { Layout } from "../../components/Layout";
 
 export function ImportElementPage(): JSX.Element {
   const fileRef = useRef<HTMLInputElement>(null);
-  const [state, setState] = useState<State>({ type: "SelectFiles" });
-  const [categories, setCategories] = useState<ElementCategory[]>([]);
+  const [state, setState] = useState<State>({ type: "Loading" });
 
-  useEffect(() => {
+  useEffect(load, []);
+
+  function load() {
     listCategories()
-      .then(setCategories)
-      .catch(() => alert("Failed to list categories")); // TODO
-  }, []);
+      .then((categories: ElementCategory[]) => {
+        if (categories.length < 1) {
+          setState({ type: "LoadingError", error: "No categories exist" });
+        } else {
+          setState({ type: "SelectFiles", categories: categories });
+        }
+      })
+      .catch((error: Error) =>
+        setState({ type: "LoadingError", error: error.details })
+      );
+  }
 
-  function onFileInputChanged(e: ChangeEvent<HTMLInputElement>): void {
-    const files = toList(e.target.files);
+  function onFilesChanged(categories: ElementCategory[], files: File[]): void {
     if (files.length < 1) {
       return;
     }
@@ -39,6 +47,7 @@ export function ImportElementPage(): JSX.Element {
     if (maybeFilenames.some((filename) => filename == null)) {
       return setState({
         type: "AnalysisError",
+        categories: categories,
         error: "Unsupported filename pattern. Try <name>.<sequence_number>.exr",
       });
     }
@@ -51,6 +60,7 @@ export function ImportElementPage(): JSX.Element {
     if (uniqueNames.length != 1) {
       return setState({
         type: "AnalysisError",
+        categories: categories,
         error: "Multiple names: " + JSON.stringify(uniqueNames),
       });
     }
@@ -60,27 +70,31 @@ export function ImportElementPage(): JSX.Element {
     if (!sequence.every(isConsecutive)) {
       return setState({
         type: "AnalysisError",
+        categories: categories,
         error: "Non-consecutive sequence: " + JSON.stringify(sequence),
       });
     }
 
     setState({
       type: "Analysing",
+      categories: categories,
       files: files,
     });
     analyseExr(files[0])
       .then((analysis: ExrAnalysis) => {
         setState({
           type: "DefineElement",
+          categories: categories,
           files: files,
           analysis: analysis,
           name: uniqueNames[0],
-          categoryId: categories[0].id, // TODO
+          categoryId: categories[0].id, // TODO: Find most likely
         });
       })
       .catch((error: Error) =>
         setState({
           type: "AnalysisError",
+          categories: categories,
           error: error.details,
         })
       );
@@ -108,6 +122,7 @@ export function ImportElementPage(): JSX.Element {
       .then((element: Element) =>
         setState({
           type: "Success",
+          categories: state.categories,
           name: state.name,
           elementId: element.id,
         })
@@ -145,6 +160,10 @@ export function ImportElementPage(): JSX.Element {
 
   function renderDynamic(): JSX.Element {
     switch (state.type) {
+      case "Loading":
+        return <></>;
+      case "LoadingError":
+        return <div>Loading error: {state.error}</div>;
       case "SelectFiles":
       case "Analysing":
       case "AnalysisError":
@@ -160,7 +179,9 @@ export function ImportElementPage(): JSX.Element {
               accept=".exr"
               multiple
               ref={fileRef}
-              onChange={onFileInputChanged}
+              onChange={(e) =>
+                onFilesChanged(state.categories, toList(e.target.files))
+              }
               style={{ display: "none" }}
             />
             {state.type === "Analysing" && <div>Analysing...</div>}
@@ -181,7 +202,7 @@ export function ImportElementPage(): JSX.Element {
             <SelectBox
               id="category"
               label="Category"
-              options={categories.map((category) => ({
+              options={state.categories.map((category) => ({
                 value: category.id,
                 name: category.name,
               }))}
@@ -197,7 +218,12 @@ export function ImportElementPage(): JSX.Element {
               <Button label="Import element" onClick={onImportClicked} />
               <Button
                 label="Cancel"
-                onClick={() => setState({ type: "SelectFiles" })}
+                onClick={() =>
+                  setState({
+                    type: "SelectFiles",
+                    categories: state.categories,
+                  })
+                }
               />
             </div>
           </>
@@ -234,7 +260,12 @@ export function ImportElementPage(): JSX.Element {
             <div>
               <Button
                 label="Import another"
-                onClick={() => setState({ type: "SelectFiles" })}
+                onClick={() =>
+                  setState({
+                    type: "SelectFiles",
+                    categories: state.categories,
+                  })
+                }
               />
             </div>
           </>
