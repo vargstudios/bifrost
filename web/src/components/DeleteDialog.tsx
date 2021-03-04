@@ -18,7 +18,7 @@ export function DeleteDialog(props: Props): JSX.Element {
   }, []);
 
   return (
-    <Dialog onEscape={() => props.onCancel()}>
+    <Dialog onDismiss={() => props.onCancel()}>
       <div className="import">
         <div className="title">{props.title}</div>
         <div>Are you sure you want to delete "{props.name}"?</div>

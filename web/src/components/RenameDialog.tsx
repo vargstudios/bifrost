@@ -20,7 +20,7 @@ export function RenameDialog(props: Props): JSX.Element {
   }, []);
 
   return (
-    <Dialog onEscape={() => props.onCancel()}>
+    <Dialog onDismiss={() => props.onCancel()}>
       <div className="import">
         <div className="title">{props.title}</div>
         <TextBox id={id} label="Name" value={name} onChange={setName} />

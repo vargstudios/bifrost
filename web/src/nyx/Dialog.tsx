@@ -5,16 +5,20 @@ import { getFocusableChildren } from "../utils/FocusUtils";
 import "./Dialog.scss";
 
 type Props = {
-  onEscape?: () => void;
+  onDismiss?: () => void;
   children: JSX.Element;
 };
 
 export function Dialog(props: Props): JSX.Element {
   const dialog = useRef<HTMLDivElement | null>(null);
 
+  function handleBackdropClick(): void {
+    props.onDismiss?.();
+  }
+
   function handleEscape(event: KeyboardEvent): void {
     if (event.key === "Escape") {
-      props.onEscape?.();
+      props.onDismiss?.();
     }
   }
 
@@ -45,7 +49,7 @@ export function Dialog(props: Props): JSX.Element {
 
   return (
     <div className="nyx dialog" ref={dialog}>
-      <div className="backdrop" />
+      <div className="backdrop" onMouseDown={handleBackdropClick} />
       <div className="window">{props.children}</div>
     </div>
   );
