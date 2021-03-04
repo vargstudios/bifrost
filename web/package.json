@@ -10,28 +10,28 @@
     "test": "mocha -r ts-node/register src/**/*.test.ts"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^1.2.34",
-    "@fortawesome/free-regular-svg-icons": "^5.15.2",
-    "@fortawesome/free-solid-svg-icons": "^5.15.2",
-    "@fortawesome/react-fontawesome": "^0.1.14",
-    "fontsource-ubuntu": "^3.0.9",
-    "react": "^16.14.0",
-    "react-dom": "^16.14.0",
-    "react-router-dom": "^5.2.0"
+    "@fontsource/ubuntu": "^4.2.2",
+    "@fortawesome/fontawesome-svg-core": "1.2.34",
+    "@fortawesome/free-regular-svg-icons": "5.15.2",
+    "@fortawesome/free-solid-svg-icons": "5.15.2",
+    "@fortawesome/react-fontawesome": "0.1.14",
+    "react": "17.0.1",
+    "react-dom": "17.0.1",
+    "react-router-dom": "5.2.0"
   },
   "devDependencies": {
-    "@types/chai": "^4.2.14",
-    "@types/mocha": "^8.2.0",
-    "@types/react": "^16.9.56",
-    "@types/react-dom": "^16.9.9",
-    "@types/react-router-dom": "^5.1.6",
-    "chai": "^4.2.0",
-    "mocha": "^8.2.1",
-    "parcel-bundler": "^1.12.4",
-    "prettier": "^2.1.2",
-    "rimraf": "^3.0.2",
-    "sass": "^1.32.8",
-    "ts-node": "^9.1.1",
-    "typescript": "^4.0.5"
+    "@types/chai": "4.2.15",
+    "@types/mocha": "8.2.1",
+    "@types/react": "17.0.2",
+    "@types/react-dom": "17.0.1",
+    "@types/react-router-dom": "5.1.7",
+    "chai": "4.3.3",
+    "mocha": "8.3.0",
+    "parcel-bundler": "1.12.3",
+    "prettier": "2.2.1",
+    "rimraf": "3.0.2",
+    "sass": "1.32.8",
+    "ts-node": "9.1.1",
+    "typescript": "4.2.2"
   }
 }
