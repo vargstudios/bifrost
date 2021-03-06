@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useKeyDown } from "../hooks/useKeyDown";
 import { getFocusableChildren } from "../utils/FocusUtils";
 import "./Dialog.scss";
@@ -43,6 +43,13 @@ export function Dialog(props: Props): JSX.Element {
       event.preventDefault();
     }
   }
+
+  function focusFirst() {
+    const focusable = getFocusableChildren(dialog.current!);
+    focusable[0]?.focus();
+  }
+
+  useEffect(focusFirst, []);
 
   useKeyDown(handleEscape);
   useKeyDown(handleFocus);

@@ -4,6 +4,10 @@ export type CreateElementCategory = {
   name: string;
 };
 
+export type UpdateElementCategory = {
+  name: string;
+};
+
 export type ElementCategory = {
   id: string;
   name: string;
@@ -20,8 +24,11 @@ export function createCategory(
   return post("/api/v1/element-categories", category);
 }
 
-export function renameCategory(id: string, name: string): Promise<void> {
-  return put("/api/v1/element-categories/" + id + "/name", { value: name });
+export function updateCategory(
+  id: string,
+  category: UpdateElementCategory
+): Promise<void> {
+  return put("/api/v1/element-categories/" + id, category);
 }
 
 export function deleteCategory(id: string): Promise<void> {

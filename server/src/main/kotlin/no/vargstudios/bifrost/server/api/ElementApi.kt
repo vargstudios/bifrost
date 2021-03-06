@@ -45,7 +45,8 @@ class ElementApi(
         return elementDao.list()
             .map { element ->
                 val versions = elementVersionDao.listForElement(element.id)
-                val category = elementCategoryDao.get(element.categoryId) ?: throw IllegalStateException("Element has non-existing category")
+                val category = elementCategoryDao.get(element.categoryId)
+                    ?: throw IllegalStateException("Element has non-existing category")
                 mapElement(element, versions, category)
             }
     }
@@ -140,39 +141,38 @@ class ElementApi(
     }
 
     @PUT
-    @Path("/{elementId}/name")
-    fun renameElement(@PathParam("elementId") elementId: String, name: Name) {
+    @Path("/{elementId}")
+    fun updateElement(@PathParam("elementId") elementId: String, updateElement: UpdateElement) {
         val element = elementDao.get(elementId) ?: throw NotFoundException("Element not found")
         if (!element.previews) {
-            throw BadRequestException("Can not rename an element that is not fully imported")
+            throw BadRequestException("Can not update an element during import")
         }
-        if (element.name == name.value) {
-            logger.warn("Name unchanged")
-            return
+        if (element.categoryId != updateElement.categoryId) {
+            logger.info("Changing category from '${element.categoryId}' to '${updateElement.categoryId}' on element ${element.id}")
+            elementDao.setCategory(element.id, updateElement.categoryId);
         }
-        val versions = elementVersionDao.listForElement(elementId)
-        val frames = elementFrameDao.listForElement(elementId)
+        if (element.name != updateElement.name) {
+            logger.info("Changing name from '${element.name}' to '${updateElement.name}' on element ${element.id}")
+            val versions = elementVersionDao.listForElement(elementId)
+            val frames = elementFrameDao.listForElement(elementId)
 
-        logger.info("Changing name from '${element.name}' to '${name.value}' on element ${element.id} ")
-        val renamedElement = element.copy(name = name.value)
+            val renamedElement = element.copy(name = updateElement.name)
+            val oldPaths = filePaths(element, versions, frames)
+            val newPaths = filePaths(renamedElement, versions, frames)
+            val changedPaths = oldPaths.zip(newPaths).filter { (old, new) -> old != new }
 
-        val oldPaths = filePaths(element, versions, frames)
-        val newPaths = filePaths(renamedElement, versions, frames)
-        val changedPaths = oldPaths.zip(newPaths).filter { (old, new) -> old != new }
+            logger.info("Linking ${changedPaths.size} files")
+            changedPaths.forEach { (old, new) ->
+                Files.createDirectories(new.parent)
+                Files.createLink(new, old)
+            }
 
-        logger.info("Linking ${changedPaths.size} files")
-        changedPaths.forEach { (old, new) ->
-            Files.createDirectories(new.parent)
-            Files.createLink(new, old)
+            logger.info("Updating database")
+            elementDao.setName(element.id, updateElement.name)
+
+            logger.info("Deleting ${changedPaths.size} files")
+            deleteFiles(changedPaths.map { (old, _) -> old })
         }
-
-        logger.info("Updating database")
-        elementDao.setName(element.id, name.value)
-
-        logger.info("Deleting ${changedPaths.size} files")
-        deleteFiles(changedPaths.map { (old, _) -> old })
-
-        logger.info("Name change complete")
     }
 
     @DELETE
@@ -180,7 +180,7 @@ class ElementApi(
     fun deleteElement(@PathParam("elementId") elementId: String) {
         val element = elementDao.get(elementId) ?: return
         if (!element.previews) {
-            throw BadRequestException("Can not delete an element that is not fully imported")
+            throw BadRequestException("Can not delete an element during import")
         }
         val versions = elementVersionDao.listForElement(elementId)
         val frames = elementFrameDao.listForElement(elementId)

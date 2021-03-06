@@ -1,5 +1,4 @@
 import * as React from "react";
-import { useEffect } from "react";
 import { Dialog } from "../nyx/Dialog";
 import { Button } from "../nyx/Button";
 
@@ -11,19 +10,13 @@ type Props = {
 };
 
 export function DeleteDialog(props: Props): JSX.Element {
-  const id = "focus-me";
-
-  useEffect(() => {
-    document.getElementById(id)?.focus();
-  }, []);
-
   return (
     <Dialog onDismiss={() => props.onCancel()}>
       <div className="import">
         <div className="title">{props.title}</div>
         <div>Are you sure you want to delete "{props.name}"?</div>
         <div>
-          <Button label="Delete" onClick={() => props.onDelete()} id={id} />
+          <Button label="Delete" onClick={() => props.onDelete()} />
           <Button label="Cancel" onClick={() => props.onCancel()} />
         </div>
       </div>

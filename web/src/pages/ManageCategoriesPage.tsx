@@ -9,46 +9,39 @@ import {
   deleteCategory,
   ElementCategory,
   listCategories,
-  renameCategory,
 } from "../api/element-categories";
 import { TextBox } from "../nyx/TextBox";
 import { faPencilAlt, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "../nyx/Button";
 import { IconButton } from "../components/IconButton";
 import { Error } from "../api/error";
-import { RenameDialog } from "../components/RenameDialog";
 import { Layout } from "../components/Layout";
+import { EditCategoryDialog } from "../components/EditCategoryDialog";
 
 export function ManageCategoriesPage(): JSX.Element {
   const [categories, setCategories] = useState<ElementCategory[]>([]);
   const [state, setState] = useState<CreateElementCategory>({ name: "" });
-  const [renameCat, setRenameCat] = useState<ElementCategory | null>(null);
+  const [editCategory, setEditCategory] = useState<ElementCategory>();
 
-  useEffect(updateCategories, []);
+  useEffect(loadCategories, []);
 
-  function updateCategories(): void {
+  function loadCategories(): void {
     listCategories()
       .then(setCategories)
-      .catch(() => alert("Failed to list categories")); // TODO
+      .catch((error: Error) => alert("Load error: " + error.details));
   }
 
   function onCreateClicked(): void {
     createCategory(state)
-      .then(updateCategories)
       .then(() => setState({ name: "" }))
-      .catch((error: Error) => alert("Creation error: " + error.details));
-  }
-
-  function onRenameClicked(id: string, name: string): void {
-    renameCategory(id, name)
-      .then(updateCategories)
-      .catch((error: Error) => alert("Rename error: " + error.details));
+      .then(loadCategories)
+      .catch((error: Error) => alert("Create error: " + error.details));
   }
 
   function onDeleteClicked(id: string): void {
     deleteCategory(id)
-      .then(updateCategories)
-      .catch((error: Error) => alert("Deletion error: " + error.details));
+      .then(loadCategories)
+      .catch((error: Error) => alert("Delete error: " + error.details));
   }
 
   function categoryTable(): JSX.Element {
@@ -74,7 +67,7 @@ export function ManageCategoriesPage(): JSX.Element {
                   size="small"
                   title="Rename"
                   icon={faPencilAlt}
-                  onClick={() => setRenameCat(category)}
+                  onClick={() => setEditCategory(category)}
                 />
                 <IconButton
                   size="small"
@@ -91,18 +84,17 @@ export function ManageCategoriesPage(): JSX.Element {
   }
 
   function renameCategoryDialog(): JSX.Element | null {
-    if (!renameCat) {
+    if (!editCategory) {
       return null;
     }
     return (
-      <RenameDialog
-        title="RENAME CATEGORY"
-        name={renameCat.name}
-        onRename={(name) => {
-          onRenameClicked(renameCat.id, name);
-          setRenameCat(null);
+      <EditCategoryDialog
+        category={editCategory}
+        onSaved={() => {
+          loadCategories();
+          setEditCategory(undefined);
         }}
-        onCancel={() => setRenameCat(null)}
+        onCancel={() => setEditCategory(undefined)}
       />
     );
   }

@@ -11,6 +11,11 @@ export type CreateElement = {
   alpha: boolean;
 };
 
+export type UpdateElement = {
+  categoryId: string;
+  name: string;
+};
+
 export type Element = {
   id: string;
   name: string;
@@ -48,8 +53,11 @@ export function createElement(element: CreateElement): Promise<Element> {
   return post("/api/v1/elements", element);
 }
 
-export function renameElement(id: string, name: string): Promise<void> {
-  return put("/api/v1/elements/" + id + "/name", { value: name });
+export function updateElement(
+  id: string,
+  element: UpdateElement
+): Promise<void> {
+  return put("/api/v1/elements/" + id, element);
 }
 
 export function deleteElement(id: string): Promise<void> {

@@ -1,6 +1,6 @@
 import { Element } from "../../api/elements";
 
-export type State = Loading | Details | Rename | Delete | Failed;
+export type State = Loading | Details | Edit | Delete | Failed;
 
 export type Loading = {
   type: "Loading";
@@ -11,8 +11,8 @@ export type Details = {
   element: Element;
 };
 
-export type Rename = {
-  type: "Rename";
+export type Edit = {
+  type: "Edit";
   element: Element;
 };
 

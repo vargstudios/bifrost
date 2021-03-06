@@ -5,7 +5,6 @@ import {
   Element,
   ElementVersion,
   getElement,
-  renameElement,
 } from "../../api/elements";
 import { Header } from "../../components/Header";
 import { Footer } from "../../components/Footer";
@@ -20,9 +19,9 @@ import {
 import { copyToClipboard } from "../../utils/ClipboardUtils";
 import { State } from "./state";
 import { Error } from "../../api/error";
-import { RenameDialog } from "../../components/RenameDialog";
 import { DeleteDialog } from "../../components/DeleteDialog";
 import { Layout } from "../../components/Layout";
+import { EditElementDialog } from "../../components/EditElementDialog";
 
 export function ElementDetailsPage(): JSX.Element {
   const [state, setState] = useState<State>({ type: "Loading" });
@@ -31,6 +30,7 @@ export function ElementDetailsPage(): JSX.Element {
   useEffect(loadElement, [id]);
 
   function loadElement() {
+    setState({ type: "Loading" });
     getElement(id)
       .then((element: Element) =>
         setState({ type: "Details", element: element })
@@ -38,12 +38,6 @@ export function ElementDetailsPage(): JSX.Element {
       .catch((error: Error) =>
         setState({ type: "Failed", error: error.details })
       );
-  }
-
-  function onRenameClicked(id: string, name: string): void {
-    renameElement(id, name)
-      .then(loadElement)
-      .catch((error: Error) => alert("Rename error: " + error.details));
   }
 
   function onDeleteClicked(id: string): void {
@@ -62,7 +56,7 @@ export function ElementDetailsPage(): JSX.Element {
               size="small"
               title="Rename"
               icon={faPencilAlt}
-              onClick={() => setState({ type: "Rename", element: element })}
+              onClick={() => setState({ type: "Edit", element: element })}
             />
           </span>
           <span style={{ marginLeft: "var(--size-1)" }}>
@@ -128,7 +122,7 @@ export function ElementDetailsPage(): JSX.Element {
       case "Loading":
         return <div>Loading...</div>;
       case "Details":
-      case "Rename":
+      case "Edit":
       case "Delete":
         return renderElement(state.element);
       case "Failed":
@@ -136,15 +130,14 @@ export function ElementDetailsPage(): JSX.Element {
     }
   }
 
-  function renameDialog(): JSX.Element | null {
-    if (state.type !== "Rename") {
+  function editDialog(): JSX.Element | null {
+    if (state.type !== "Edit") {
       return null;
     }
     return (
-      <RenameDialog
-        title="RENAME ELEMENT"
-        name={state.element.name}
-        onRename={(name) => onRenameClicked(state.element.id, name)}
+      <EditElementDialog
+        element={state.element}
+        onSaved={() => loadElement()}
         onCancel={() => setState({ type: "Details", element: state.element })}
       />
     );
@@ -173,7 +166,7 @@ export function ElementDetailsPage(): JSX.Element {
       </aside>
       <main className="element-details">{renderDynamic()}</main>
       <Footer />
-      {renameDialog()}
+      {editDialog()}
       {deleteDialog()}
     </Layout>
   );

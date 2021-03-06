@@ -40,6 +40,9 @@ interface ElementDao {
     @SqlUpdate("update elements set previews = true where id = :id")
     fun setPreviewsGenerated(id: String)
 
+    @SqlUpdate("update elements set category_id = :categoryId where id = :id")
+    fun setCategory(id: String, categoryId: String)
+
     @SqlUpdate("update elements set name = :name where id = :id")
     fun setName(id: String, name: String)
 
