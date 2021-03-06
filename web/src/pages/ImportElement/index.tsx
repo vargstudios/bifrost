@@ -4,7 +4,6 @@ import { ElementCategory, listCategories } from "../../api/element-categories";
 import { Header } from "../../components/Header";
 import { ConfigSidebar } from "../../components/ConfigSidebar";
 import { Footer } from "../../components/Footer";
-import { toList } from "../../utils/FileUtils";
 import { analyseExr, ExrAnalysis } from "../../api/analysis";
 import { createElement, Element, importFrame } from "../../api/elements";
 import { TextBox } from "../../nyx/TextBox";
@@ -182,7 +181,10 @@ export function ImportElementPage(): JSX.Element {
               multiple
               ref={fileRef}
               onChange={(e) =>
-                onFilesChanged(state.categories, toList(e.target.files))
+                onFilesChanged(
+                  state.categories,
+                  Array.from(e.target.files || [])
+                )
               }
               style={{ display: "none" }}
             />
