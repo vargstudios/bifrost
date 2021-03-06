@@ -23,5 +23,6 @@
 }
 
 .element .preview {
+  margin: var(--size-1) 0;
   padding-bottom: 50%;
 }

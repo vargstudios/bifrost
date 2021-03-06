@@ -6,7 +6,7 @@ import "./Dialog.scss";
 
 type Props = {
   onDismiss?: () => void;
-  children: JSX.Element;
+  children: React.ReactNode;
 };
 
 export function Dialog(props: Props): JSX.Element {

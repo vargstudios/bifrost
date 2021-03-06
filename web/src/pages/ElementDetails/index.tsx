@@ -22,6 +22,7 @@ import { Error } from "../../api/error";
 import { DeleteDialog } from "../../components/DeleteDialog";
 import { Layout } from "../../components/Layout";
 import { EditElementDialog } from "../../components/EditElementDialog";
+import { Column } from "../../nyx/Column";
 
 export function ElementDetailsPage(): JSX.Element {
   const [state, setState] = useState<State>({ type: "Loading" });
@@ -49,7 +50,7 @@ export function ElementDetailsPage(): JSX.Element {
   function renderElement(element: Element): JSX.Element {
     return (
       <>
-        <div className="title">
+        <h2>
           {element.name}
           <span style={{ marginLeft: "var(--size-2)" }}>
             <IconButton
@@ -67,12 +68,12 @@ export function ElementDetailsPage(): JSX.Element {
               onClick={() => setState({ type: "Delete", element: element })}
             />
           </span>
-        </div>
+        </h2>
         <ElementPreview element={element} />
-        <div className="details">
+        <p>
           {element.framecount} Frames, {element.framerate} FPS,{" "}
           {element.channels}
-        </div>
+        </p>
         {renderVersionTable(
           element.versions.filter((version) => version.name !== "Preview")
         )}
@@ -120,13 +121,13 @@ export function ElementDetailsPage(): JSX.Element {
   function renderDynamic(): JSX.Element {
     switch (state.type) {
       case "Loading":
-        return <div>Loading...</div>;
+        return <p>Loading...</p>;
       case "Details":
       case "Edit":
       case "Delete":
         return renderElement(state.element);
       case "Failed":
-        return <div>Error: {state.error}</div>;
+        return <p>Error: {state.error}</p>;
     }
   }
 
@@ -164,7 +165,9 @@ export function ElementDetailsPage(): JSX.Element {
         <div className="heading">ELEMENT</div>
         <NavLink to={`/elements/${id}`}>Details</NavLink>
       </aside>
-      <main className="element-details">{renderDynamic()}</main>
+      <main className="mainlayout element-details">
+        <Column>{renderDynamic()}</Column>
+      </main>
       <Footer />
       {editDialog()}
       {deleteDialog()}

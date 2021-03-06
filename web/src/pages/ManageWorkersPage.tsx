@@ -17,6 +17,7 @@ import { baseUrl } from "../api/server";
 import { TextArea } from "../nyx/TextArea";
 import { Link } from "../nyx/Link";
 import { Layout } from "../components/Layout";
+import { Column } from "../nyx/Column";
 
 export function ManageWorkersPage(): JSX.Element {
   const [workers, setWorkers] = useState<Worker[]>([]);
@@ -112,24 +113,26 @@ export function ManageWorkersPage(): JSX.Element {
     <Layout>
       <Header />
       <ConfigSidebar />
-      <main className="import">
-        <div className="title">ADD WORKER</div>
-        <div>Run the following command to start a worker with docker:</div>
-        <TextArea
-          columns={16}
-          lines={8}
-          value={workerCmd}
-          onChange={setWorkerCmd}
-        />
-        <div>
-          Alternatively,{" "}
-          <Link
-            href="https://github.com/vargstudios/bifrost/releases"
-            text="download the Windows version from GitHub"
+      <main className="mainlayout">
+        <Column>
+          <h2>ADD WORKER</h2>
+          <p>Run the following command to start a worker with docker:</p>
+          <TextArea
+            columns={16}
+            lines={8}
+            value={workerCmd}
+            onChange={setWorkerCmd}
           />
-        </div>
-        <div className="title">MANAGE WORKERS</div>
-        {workerTable()}
+          <p>
+            Alternatively,{" "}
+            <Link
+              href="https://github.com/vargstudios/bifrost/releases"
+              text="download the Windows version from GitHub"
+            />
+          </p>
+          <h2>MANAGE WORKERS</h2>
+          {workerTable()}
+        </Column>
       </main>
       <Footer />
     </Layout>

@@ -16,6 +16,8 @@ import { isConsecutive, unique } from "../../utils/ArrayUtils";
 import { Button } from "../../nyx/Button";
 import { Error } from "../../api/error";
 import { Layout } from "../../components/Layout";
+import { Column } from "../../nyx/Column";
+import { Row } from "../../nyx/Row";
 
 export function ImportElementPage(): JSX.Element {
   const fileRef = useRef<HTMLInputElement>(null);
@@ -163,13 +165,13 @@ export function ImportElementPage(): JSX.Element {
       case "Loading":
         return <></>;
       case "LoadingError":
-        return <div>Loading error: {state.error}</div>;
+        return <p>Loading error: {state.error}</p>;
       case "SelectFiles":
       case "Analysing":
       case "AnalysisError":
         return (
           <>
-            <div>Select a sequence of OpenEXR frames in linear RGB or RGBA</div>
+            <p>Select a sequence of OpenEXR frames in linear RGB or RGBA</p>
             <Button
               label="Select files"
               onClick={() => fileRef.current!.click()}
@@ -186,7 +188,7 @@ export function ImportElementPage(): JSX.Element {
             />
             {state.type === "Analysing" && <div>Analysing...</div>}
             {state.type === "AnalysisError" && (
-              <div>Analysis error: {state.error}</div>
+              <p>Analysis error: {state.error}</p>
             )}
           </>
         );
@@ -211,12 +213,12 @@ export function ImportElementPage(): JSX.Element {
               value={state.categoryId}
               onChange={(value) => setState({ ...state, categoryId: value })}
             />
-            <div>
+            <p>
               {state.files.length} Frames, {state.analysis.framerate} FPS,{" "}
               {state.analysis.channels}, {state.analysis.width}x
               {state.analysis.height} Pixels
-            </div>
-            <div>
+            </p>
+            <Row>
               <Button label="Import element" onClick={onImportClicked} />
               <Button
                 label="Cancel"
@@ -227,7 +229,7 @@ export function ImportElementPage(): JSX.Element {
                   })
                 }
               />
-            </div>
+            </Row>
           </>
         );
       case "Importing":
@@ -236,40 +238,38 @@ export function ImportElementPage(): JSX.Element {
         const remaining = Math.ceil(estimate - elapsed);
         return (
           <>
-            <div>
+            <p>
               Importing frame {state.currentFrame + 1} / {state.totalFrames}
-            </div>
+            </p>
             <ProgressBar
               current={state.currentFrame}
               total={state.totalFrames}
             />
-            <div>{remaining} seconds remaining</div>
+            <p>{remaining} seconds remaining</p>
           </>
         );
       case "ImportError":
         return (
           <>
-            <div>Import failed: {state.error}</div>
+            <p>Import failed: {state.error}</p>
           </>
         );
       case "Success":
         return (
           <>
-            <div>Success! {state.name} has been imported.</div>
-            <div>
+            <p>Success! {state.name} has been imported.</p>
+            <p>
               Previews and other versions will be available in a few minutes.
-            </div>
-            <div>
-              <Button
-                label="Import another"
-                onClick={() =>
-                  setState({
-                    type: "SelectFiles",
-                    categories: state.categories,
-                  })
-                }
-              />
-            </div>
+            </p>
+            <Button
+              label="Import another"
+              onClick={() =>
+                setState({
+                  type: "SelectFiles",
+                  categories: state.categories,
+                })
+              }
+            />
           </>
         );
     }
@@ -279,9 +279,11 @@ export function ImportElementPage(): JSX.Element {
     <Layout>
       <Header />
       <ConfigSidebar />
-      <main className="import">
-        <div className="title">IMPORT ELEMENT</div>
-        {renderDynamic()}
+      <main className="mainlayout">
+        <Column>
+          <h2>IMPORT ELEMENT</h2>
+          {renderDynamic()}
+        </Column>
       </main>
       <Footer />
     </Layout>

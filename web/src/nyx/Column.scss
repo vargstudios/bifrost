@@ -1,0 +1,9 @@
+.nyx.column {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+
+  > *:not(:first-child) {
+    margin-top: var(--size-2);
+  }
+}

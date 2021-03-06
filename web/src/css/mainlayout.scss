@@ -1,0 +1,15 @@
+.mainlayout {
+  padding: var(--size-4);
+
+  h2 {
+    font-size: var(--font-large);
+    font-weight: 500;
+  }
+
+  .textbox,
+  .selectbox,
+  .progressbar {
+    width: 100%;
+    max-width: 360px;
+  }
+}

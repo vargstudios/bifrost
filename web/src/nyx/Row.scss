@@ -1,0 +1,9 @@
+.nyx.row {
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+
+  > *:not(:first-child) {
+    margin-left: var(--size-2);
+  }
+}

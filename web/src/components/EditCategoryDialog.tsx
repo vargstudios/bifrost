@@ -5,6 +5,8 @@ import { TextBox } from "../nyx/TextBox";
 import { Button } from "../nyx/Button";
 import { ElementCategory, updateCategory } from "../api/element-categories";
 import { Error } from "../api/error";
+import { Column } from "../nyx/Column";
+import { Row } from "../nyx/Row";
 
 type Props = {
   category: ElementCategory;
@@ -25,13 +27,15 @@ export function EditCategoryDialog(props: Props): JSX.Element {
 
   return (
     <Dialog onDismiss={props.onCancel}>
-      <div className="import">
-        <div className="title">EDIT CATEGORY</div>
-        <TextBox id="name" label="Name" value={name} onChange={setName} />
-        <div>
-          <Button label="Save" onClick={save} />
-          <Button label="Cancel" onClick={props.onCancel} />
-        </div>
+      <div className="mainlayout">
+        <Column>
+          <h2>EDIT CATEGORY</h2>
+          <TextBox id="name" label="Name" value={name} onChange={setName} />
+          <Row>
+            <Button label="Save" onClick={save} />
+            <Button label="Cancel" onClick={props.onCancel} />
+          </Row>
+        </Column>
       </div>
     </Dialog>
   );

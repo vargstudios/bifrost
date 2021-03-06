@@ -17,6 +17,7 @@ import { IconButton } from "../components/IconButton";
 import { Error } from "../api/error";
 import { Layout } from "../components/Layout";
 import { EditCategoryDialog } from "../components/EditCategoryDialog";
+import { Column } from "../nyx/Column";
 
 export function ManageCategoriesPage(): JSX.Element {
   const [categories, setCategories] = useState<ElementCategory[]>([]);
@@ -105,17 +106,19 @@ export function ManageCategoriesPage(): JSX.Element {
     <Layout>
       <Header />
       <ConfigSidebar />
-      <main className="import">
-        <div className="title">CREATE CATEGORY</div>
-        <TextBox
-          id="name"
-          label="Name"
-          value={state.name}
-          onChange={(value) => setState({ ...state, name: value })}
-        />
-        <Button label="Create" onClick={onCreateClicked} />
-        <div className="title">ALL CATEGORIES</div>
-        {categoryTable()}
+      <main className="mainlayout">
+        <Column>
+          <h2>CREATE CATEGORY</h2>
+          <TextBox
+            id="name"
+            label="Name"
+            value={state.name}
+            onChange={(value) => setState({ ...state, name: value })}
+          />
+          <Button label="Create" onClick={onCreateClicked} />
+          <h2>ALL CATEGORIES</h2>
+          {categoryTable()}
+        </Column>
       </main>
       <Footer />
       {renameCategoryDialog()}
