@@ -202,10 +202,12 @@ export function ImportElementPage(): JSX.Element {
             <SelectBox
               id="category"
               label="Category"
-              options={state.categories.map((category) => ({
-                value: category.id,
-                name: category.name,
-              }))}
+              options={state.categories
+                .sort((a, b) => a.name.localeCompare(b.name))
+                .map((category) => ({
+                  value: category.id,
+                  name: category.name,
+                }))}
               value={state.categoryId}
               onChange={(value) => setState({ ...state, categoryId: value })}
             />

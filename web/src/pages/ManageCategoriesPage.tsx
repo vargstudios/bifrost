@@ -58,26 +58,28 @@ export function ManageCategoriesPage(): JSX.Element {
           </tr>
         </thead>
         <tbody>
-          {categories.map((category) => (
-            <tr key={category.id}>
-              <td>{category.name}</td>
-              <td>{category.elements}</td>
-              <td>
-                <IconButton
-                  size="small"
-                  title="Rename"
-                  icon={faPencilAlt}
-                  onClick={() => setEditCategory(category)}
-                />
-                <IconButton
-                  size="small"
-                  title="Delete"
-                  icon={faTrash}
-                  onClick={() => onDeleteClicked(category.id)}
-                />
-              </td>
-            </tr>
-          ))}
+          {categories
+            .sort((a, b) => a.name.localeCompare(b.name))
+            .map((category) => (
+              <tr key={category.id}>
+                <td>{category.name}</td>
+                <td>{category.elements}</td>
+                <td>
+                  <IconButton
+                    size="small"
+                    title="Rename"
+                    icon={faPencilAlt}
+                    onClick={() => setEditCategory(category)}
+                  />
+                  <IconButton
+                    size="small"
+                    title="Delete"
+                    icon={faTrash}
+                    onClick={() => onDeleteClicked(category.id)}
+                  />
+                </td>
+              </tr>
+            ))}
         </tbody>
       </table>
     );

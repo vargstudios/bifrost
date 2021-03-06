@@ -44,10 +44,12 @@ export function EditElementDialog(props: Props): JSX.Element {
         <SelectBox
           id="category"
           label="Category"
-          options={categories.map((category) => ({
-            value: category.id,
-            name: category.name,
-          }))}
+          options={categories
+            .sort((a, b) => a.name.localeCompare(b.name))
+            .map((category) => ({
+              value: category.id,
+              name: category.name,
+            }))}
           value={categoryId}
           onChange={setCategoryId}
         />
