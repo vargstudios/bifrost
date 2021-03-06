@@ -10,6 +10,7 @@ import { useQuery } from "../hooks/useQuery";
 import { TextBox } from "../nyx/TextBox";
 import { normalize } from "../utils/StringUtils";
 import { Layout } from "../components/Layout";
+import { Error } from "../api/error";
 
 export function ElementsPage(): JSX.Element {
   const [categories, setCategories] = useState<ElementCategory[]>([]);
@@ -21,10 +22,14 @@ export function ElementsPage(): JSX.Element {
   useEffect(() => {
     listCategories()
       .then(setCategories)
-      .catch(() => alert("Failed to list categories")); // TODO
+      .catch((error: Error) =>
+        alert("Failed to list categories: " + error.details)
+      );
     listElements()
       .then(setElements)
-      .catch(() => alert("Failed to list elements")); // TODO
+      .catch((error: Error) =>
+        alert("Failed to list elements: " + error.details)
+      );
   }, []);
 
   return (

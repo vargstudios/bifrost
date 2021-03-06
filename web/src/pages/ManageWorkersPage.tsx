@@ -39,7 +39,9 @@ export function ManageWorkersPage(): JSX.Element {
   function updateWorkers(): void {
     listWorkers()
       .then(setWorkers)
-      .catch(() => alert("Failed to list workers")); // TODO
+      .catch((error: Error) =>
+        alert("Failed to list workers: " + error.details)
+      );
   }
 
   function onEnableClicked(id: string): void {
