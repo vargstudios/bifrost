@@ -1,0 +1,31 @@
+.preview {
+  background: black;
+  position: relative;
+  border-radius: var(--size-1);
+  overflow: hidden;
+
+  > * {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+
+  .center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .progress {
+    background: var(--grey-2);
+    top: auto;
+  }
+
+  .progress .bar {
+    background: var(--grey-4);
+    height: var(--size-1);
+    transition: width 0.1s linear;
+  }
+}

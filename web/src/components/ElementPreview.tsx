@@ -5,6 +5,7 @@ import { Element } from "../api/elements";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCogs } from "@fortawesome/free-solid-svg-icons";
 import { useInterval } from "../hooks/useInterval";
+import "./ElementPreview.scss";
 
 type Props = {
   element: Element;

@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { shuffle } from "../utils/ArrayUtils";
+import "./Footer.scss";
 
 export function Footer(): JSX.Element {
   const [index, setIndex] = useState(0);

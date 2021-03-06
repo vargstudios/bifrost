@@ -2,6 +2,7 @@ import * as React from "react";
 import { faCog } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { IconButtonLink } from "./IconButtonLink";
+import "./Header.scss";
 // @ts-ignore
 import logo from "../logo.svg";
 
