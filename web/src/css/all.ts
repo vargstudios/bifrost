@@ -8,4 +8,3 @@ import "./table.css";
 
 // Pages
 import "./elements.css";
-import "./element-details.css";

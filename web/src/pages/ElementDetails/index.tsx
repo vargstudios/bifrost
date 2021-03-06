@@ -69,7 +69,7 @@ export function ElementDetailsPage(): JSX.Element {
             />
           </span>
         </h2>
-        <ElementPreview element={element} />
+        <ElementPreview resize element={element} />
         <p>
           {element.framecount} Frames, {element.framerate} FPS,{" "}
           {element.channels}
@@ -165,7 +165,7 @@ export function ElementDetailsPage(): JSX.Element {
         <div className="heading">ELEMENT</div>
         <NavLink to={`/elements/${id}`}>Details</NavLink>
       </aside>
-      <main className="mainlayout element-details">
+      <main className="mainlayout">
         <Column>{renderDynamic()}</Column>
       </main>
       <Footer />

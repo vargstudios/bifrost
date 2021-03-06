@@ -8,6 +8,7 @@ import { useInterval } from "../hooks/useInterval";
 import "./ElementPreview.scss";
 
 type Props = {
+  resize?: boolean;
   element: Element;
 };
 
@@ -48,8 +49,19 @@ export function ElementPreview(props: Props): JSX.Element {
   }
 
   function preview(): JSX.Element {
+    // FIXME: Assumes second is preview
+    const previewVersion = props.element.versions[1];
+    const sizeStyle = {
+      width: previewVersion.width + "px",
+      height: previewVersion.height + "px",
+    };
     return (
-      <div className="preview" onMouseEnter={onEnter} onMouseLeave={onLeave}>
+      <div
+        className="preview"
+        style={props.resize ? sizeStyle : {}}
+        onMouseEnter={onEnter}
+        onMouseLeave={onLeave}
+      >
         <div
           style={{
             backgroundImage: `url('${elementUrl}/preview.jpg')`,
