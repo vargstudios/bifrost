@@ -2,9 +2,9 @@ import * as React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCheckCircle,
-  faExclamationCircle,
   faExclamationTriangle,
   faInfoCircle,
+  faTimesCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import "./Message.scss";
 
@@ -17,7 +17,7 @@ export function Message(props: Props): JSX.Element {
   function icon() {
     switch (props.type) {
       case "error":
-        return faExclamationCircle;
+        return faTimesCircle;
       case "warn":
         return faExclamationTriangle;
       case "info":
