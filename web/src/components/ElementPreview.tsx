@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useRef, useState } from "react";
+import { CSSProperties, useRef, useState } from "react";
 import { baseUrl } from "../api/server";
 import { Element } from "../api/elements";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -48,17 +48,23 @@ export function ElementPreview(props: Props): JSX.Element {
     setProgress(0);
   }
 
-  function preview(): JSX.Element {
+  function customStyle(): CSSProperties {
+    if (!props.resize) {
+      return {};
+    }
     // FIXME: Assumes second is preview
     const previewVersion = props.element.versions[1];
-    const sizeStyle = {
+    return {
       width: previewVersion.width + "px",
       height: previewVersion.height + "px",
     };
+  }
+
+  function preview(): JSX.Element {
     return (
       <div
         className="preview"
-        style={props.resize ? sizeStyle : {}}
+        style={customStyle()}
         onMouseEnter={onEnter}
         onMouseLeave={onLeave}
       >
@@ -91,7 +97,7 @@ export function ElementPreview(props: Props): JSX.Element {
 
   function processing(): JSX.Element {
     return (
-      <div className="preview">
+      <div className="preview" style={customStyle()}>
         <div className="center" title="Processing...">
           <FontAwesomeIcon icon={faCogs} size="2x" />
         </div>
