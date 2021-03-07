@@ -1,7 +1,7 @@
 package no.vargstudios.bifrost.server.api.model
 
-data class CreateElement(
-    val categoryId: String,
+data class ScannedElement(
+    val scanId: String,
     val name: String,
     val framecount: Int,
     // From analysis:

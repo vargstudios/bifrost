@@ -4,9 +4,9 @@ export type CreateElement = {
   categoryId: string;
   name: string;
   framecount: number;
-  framerate: number;
   width: number;
   height: number;
+  framerate: number;
   channels: string;
   alpha: boolean;
 };

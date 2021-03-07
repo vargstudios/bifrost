@@ -14,7 +14,7 @@ export function Header(): JSX.Element {
         <span className="text">BIFROST</span>
       </Link>
       <div className="expand" />
-      <IconButtonLink to="/import/element" size="large" icon={faCog} />
+      <IconButtonLink to="/manage/elements/import" size="large" icon={faCog} />
     </header>
   );
 }

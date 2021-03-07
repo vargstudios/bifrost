@@ -4,6 +4,7 @@ import { HashRouter, Redirect, Route, Switch } from "react-router-dom";
 import { ElementsPage } from "./pages/ElementsPage";
 import { ElementDetailsPage } from "./pages/ElementDetails";
 import { ImportElementPage } from "./pages/ImportElement";
+import { BatchImportElementsPage } from "./pages/BatchImportElements";
 import { ManageCategoriesPage } from "./pages/ManageCategoriesPage";
 import { ManageWorkersPage } from "./pages/ManageWorkersPage";
 import "./nyx/Base";
@@ -15,7 +16,16 @@ function Router(): JSX.Element {
       <Switch>
         <Route exact path="/elements" component={ElementsPage} />
         <Route exact path="/elements/:id" component={ElementDetailsPage} />
-        <Route exact path="/import/element" component={ImportElementPage} />
+        <Route
+          exact
+          path="/manage/elements/import"
+          component={ImportElementPage}
+        />
+        <Route
+          exact
+          path="/manage/elements/batch-import"
+          component={BatchImportElementsPage}
+        />
         <Route
           exact
           path="/manage/categories"
