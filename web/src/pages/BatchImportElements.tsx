@@ -11,8 +11,7 @@ import { Column } from "../nyx/Column";
 import { importElements, scanElements, ScannedElement } from "../api/batch";
 import { TextBox } from "../nyx/TextBox";
 import { SelectBox } from "../nyx/SelectBox";
-import { IconButton } from "../components/IconButton";
-import { faCheckSquare, faSquare } from "@fortawesome/free-regular-svg-icons";
+import { CheckBox } from "../nyx/CheckBox";
 
 type ElementRow = {
   selected: boolean;
@@ -92,25 +91,12 @@ export function BatchImportElementsPage(): JSX.Element {
           {elements.map((element, index) => (
             <tr key={element.scanned.scanId}>
               <td>
-                {element.selected ? (
-                  <IconButton
-                    size="small"
-                    title="Deselect"
-                    icon={faCheckSquare}
-                    onClick={() =>
-                      updateElement(index, { ...element, selected: false })
-                    }
-                  />
-                ) : (
-                  <IconButton
-                    size="small"
-                    title="Select"
-                    icon={faSquare}
-                    onClick={() =>
-                      updateElement(index, { ...element, selected: true })
-                    }
-                  />
-                )}
+                <CheckBox
+                  value={element.selected}
+                  onChange={(selected) =>
+                    updateElement(index, { ...element, selected: selected })
+                  }
+                />
               </td>
               <td>
                 <TextBox

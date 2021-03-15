@@ -10,14 +10,13 @@ import {
   Worker,
 } from "../api/workers";
 import { useInterval } from "../hooks/useInterval";
-import { IconButton } from "../components/IconButton";
-import { faCheckSquare, faSquare } from "@fortawesome/free-regular-svg-icons";
 import { Error } from "../api/error";
 import { baseUrl } from "../api/server";
 import { TextArea } from "../nyx/TextArea";
 import { Link } from "../nyx/Link";
 import { Layout } from "../components/Layout";
 import { Column } from "../nyx/Column";
+import { CheckBox } from "../nyx/CheckBox";
 
 export function ManageWorkersPage(): JSX.Element {
   const [workers, setWorkers] = useState<Worker[]>([]);
@@ -82,21 +81,14 @@ export function ManageWorkersPage(): JSX.Element {
             .map((worker) => (
               <tr key={worker.id}>
                 <td>
-                  {worker.enabled ? (
-                    <IconButton
-                      size="small"
-                      title="Disable"
-                      icon={faCheckSquare}
-                      onClick={() => onDisableClicked(worker.id)}
-                    />
-                  ) : (
-                    <IconButton
-                      size="small"
-                      title="Enable"
-                      icon={faSquare}
-                      onClick={() => onEnableClicked(worker.id)}
-                    />
-                  )}
+                  <CheckBox
+                    value={worker.enabled}
+                    onChange={(enabled) =>
+                      enabled
+                        ? onEnableClicked(worker.id)
+                        : onDisableClicked(worker.id)
+                    }
+                  />
                 </td>
                 <td>{worker.name}</td>
                 <td>{worker.ip}</td>

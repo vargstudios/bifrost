@@ -1,0 +1,45 @@
+.nyx.checkbox {
+  position: relative;
+
+  input {
+    position: absolute;
+    cursor: pointer;
+    opacity: 0;
+    width: var(--size-4);
+    height: var(--size-4);
+  }
+
+  .box {
+    display: inline-block;
+    vertical-align: bottom;
+    width: var(--size-4);
+    height: var(--size-4);
+    border-radius: var(--size-1);
+    border: 2px solid var(--grey-4);
+    background: var(--grey-2);
+  }
+
+  input:hover + .box,
+  input:focus + .box {
+    border: 2px solid var(--grey-6);
+  }
+
+  input:checked + .box::after {
+    position: absolute;
+    content: '';
+    top: 3px;
+    left: 1px;
+    border-right: 3px solid var(--grey-7);
+    border-bottom: 3px solid var(--grey-7);
+    width: 9px;
+    height: 15px;
+    transform: rotate(45deg);
+    transform-origin: bottom right;
+    pointer-events: none;
+  }
+
+  label {
+    cursor: pointer;
+    padding-left: var(--size-1);
+  }
+}
