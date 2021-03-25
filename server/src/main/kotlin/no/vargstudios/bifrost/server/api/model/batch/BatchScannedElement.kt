@@ -1,6 +1,6 @@
-package no.vargstudios.bifrost.server.api.model
+package no.vargstudios.bifrost.server.api.model.batch
 
-data class ScannedElement(
+data class BatchScannedElement(
     val scanId: String,
     val name: String,
     val framecount: Int,

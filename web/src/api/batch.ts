@@ -1,6 +1,7 @@
-import { post } from "./request";
+import { get, post } from "./request";
+import { CreateElement } from "./elements";
 
-export type ScannedElement = {
+export type BatchScannedElement = {
   scanId: string;
   name: string;
   framecount: number;
@@ -17,12 +18,47 @@ export type BatchCreateElement = {
   name: string;
 };
 
-export function scanElements(): Promise<ScannedElement[]> {
-  return post("/api/v1/batch/scan-elements", null);
+export type BatchImportElementItem = {
+  element: CreateElement;
+  status: "PENDING" | "SUCCESS" | "FAILURE";
+};
+
+export type BatchImportElementsState =
+  | Scanning
+  | Scanned
+  | Importing
+  | Imported;
+
+type Scanning = {
+  type: "Scanning";
+};
+
+type Scanned = {
+  type: "Scanned";
+  scanned: BatchScannedElement[];
+  time: number;
+};
+
+type Importing = {
+  type: "Importing";
+  scanned: BatchScannedElement[];
+  items: BatchImportElementItem[];
+};
+
+type Imported = {
+  type: "Imported";
+  scanned: BatchScannedElement[];
+  items: BatchImportElementItem[];
+};
+
+export function stateElements(): Promise<BatchImportElementsState> {
+  return get("/api/v1/batch/import-elements/state");
 }
 
-export function importElements(
-  elements: BatchCreateElement[]
-): Promise<ScannedElement[]> {
-  return post("/api/v1/batch/import-elements", elements);
+export function scanElements(): Promise<void> {
+  return post("/api/v1/batch/import-elements/scan", null);
+}
+
+export function importElements(elements: BatchCreateElement[]): Promise<void> {
+  return post("/api/v1/batch/import-elements/import", elements);
 }

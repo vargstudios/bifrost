@@ -261,7 +261,8 @@ export function ImportElementPage(): JSX.Element {
           <>
             <p>Success! {state.name} has been imported.</p>
             <p>
-              Previews and other versions will be available in a few minutes.
+              Sit back and relax while Bifrost creates downscaled versions and
+              previews.
             </p>
             <Button
               label="Import another"

@@ -1,4 +1,4 @@
-package no.vargstudios.bifrost.server.api.model
+package no.vargstudios.bifrost.server.api.model.batch
 
 data class BatchCreateElement(
     val scanId: String,
