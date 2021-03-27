@@ -24,7 +24,7 @@ export function ManageWorkersPage(): JSX.Element {
     "docker run \\\n" +
       "  --detach \\\n" +
       "  --restart always \\\n" +
-      "  --memory 320m \\\n" +
+      "  --memory 480m \\\n" +
       "  --publish 3201:3201 \\\n" +
       "  --env WORKER_NAME=Unnamed \\\n" +
       "  --env SERVER_URL=" +
