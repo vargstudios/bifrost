@@ -155,7 +155,9 @@ class BatchApi(
                         element = createElement,
                         status = createElementStatuses[scanId] ?: FAILURE
                     )
-                })
+                },
+                time = ZonedDateTime.now().toEpochSecond()
+            )
         }
     }
 

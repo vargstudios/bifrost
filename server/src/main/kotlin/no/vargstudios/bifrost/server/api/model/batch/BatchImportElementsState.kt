@@ -20,6 +20,7 @@ sealed class BatchImportElementsState {
     data class Imported(
         val type: String = "Imported",
         val scanned: List<BatchScannedElement>,
-        val items: List<BatchImportElementItem>
+        val items: List<BatchImportElementItem>,
+        val time: Long
     ) : BatchImportElementsState()
 }

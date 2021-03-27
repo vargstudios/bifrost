@@ -49,6 +49,7 @@ type Imported = {
   type: "Imported";
   scanned: BatchScannedElement[];
   items: BatchImportElementItem[];
+  time: number;
 };
 
 export function stateElements(): Promise<BatchImportElementsState> {
