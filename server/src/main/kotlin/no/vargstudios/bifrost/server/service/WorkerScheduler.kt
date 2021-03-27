@@ -83,10 +83,10 @@ class WorkerScheduler(
 
     private fun queueTranscodeTasks() {
         // List untranscoded frames
-        val framesNotTranscoded = elementFrameDao.listNotTranscoded()
+        val frames = elementFrameDao.listReadyForTranscode()
 
         // Fetch necessary data
-        val elementIds = framesNotTranscoded
+        val elementIds = frames
             .map { it.elementId }
             .distinct()
         val elementIdToElement = elementIds
@@ -95,7 +95,7 @@ class WorkerScheduler(
             .associateBy({ it }, { elementVersionDao.listForElement(it) })
 
         // Create task for each frame
-        framesNotTranscoded.forEach { frame ->
+        frames.forEach { frame ->
             val element = elementIdToElement[frame.elementId]!!
             val versions = elementIdToVersions[frame.elementId]!!
             queueTranscodeTask(element, versions, frame)
