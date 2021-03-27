@@ -16,6 +16,8 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.nio.file.DirectoryNotEmptyException
 import java.nio.file.Files
+import java.nio.file.NoSuchFileException
+import java.time.ZonedDateTime
 import javax.ws.rs.*
 import javax.ws.rs.core.MediaType.APPLICATION_JSON
 import javax.ws.rs.core.MediaType.WILDCARD
@@ -179,9 +181,12 @@ class ElementApi(
     @Path("/{elementId}")
     fun deleteElement(@PathParam("elementId") elementId: String) {
         val element = elementDao.get(elementId) ?: return
-        if (!element.previews) {
+
+        val now = ZonedDateTime.now().toEpochSecond();
+        if (!element.previews && now - element.created < 60 * 60) {
             throw BadRequestException("Can not delete an element during import")
         }
+
         val versions = elementVersionDao.listForElement(elementId)
         val frames = elementFrameDao.listForElement(elementId)
 
@@ -280,7 +285,13 @@ class ElementApi(
 
     private fun deleteFiles(paths: List<FilePath>) {
         paths.forEach { path ->
-            Files.delete(path)
+            try {
+                Files.delete(path)
+            } catch (e: NoSuchFileException) {
+                // If it does not exist, we have achieved the goal
+                // (but log a warning since it might be the wrong path)
+                logger.warn("Tried to delete non-existent file {}", path)
+            }
             // Delete parent directory if empty
             try {
                 Files.deleteIfExists(path.parent)
