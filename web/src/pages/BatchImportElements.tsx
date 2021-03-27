@@ -38,14 +38,18 @@ export function BatchImportElementsPage(): JSX.Element {
   const [now, setNow] = useState<number>(Date.now() / 1000);
 
   useEffect(loadCategories, []);
+  useEffect(loadState, [categories]);
   useInterval(() => {
     if (state.type === "Scanning" || state.type === "Importing") {
       loadState();
     }
-  }, 200);
+  }, 500);
   useInterval(() => setNow(Date.now() / 1000), 1000);
 
   function loadState(): void {
+    if (categories.length < 1) {
+      return;
+    }
     stateElements()
       .then((state: BatchImportElementsState) => {
         setState(state);
@@ -56,7 +60,7 @@ export function BatchImportElementsPage(): JSX.Element {
               .map((element) => ({
                 selected: false,
                 name: element.name,
-                categoryId: categories[0].id, // TODO: Handle no categories
+                categoryId: categories[0].id, // TODO: Find most likely
                 scanned: element,
               }))
           );
@@ -64,10 +68,7 @@ export function BatchImportElementsPage(): JSX.Element {
           setElements([]);
         }
       })
-      .catch((error: Error) => {
-        console.log(error);
-        alert("Load error 1: " + error.details);
-      });
+      .catch((error: Error) => alert("Load error: " + error.details));
   }
 
   function loadCategories(): void {
@@ -75,7 +76,7 @@ export function BatchImportElementsPage(): JSX.Element {
       .then((categories: ElementCategory[]) => {
         setCategories(categories.sort((a, b) => a.name.localeCompare(b.name)));
       })
-      .catch((error: Error) => alert("Load error 2: " + error.details));
+      .catch((error: Error) => alert("Load error: " + error.details));
   }
 
   function scanNow(): void {
@@ -195,7 +196,7 @@ export function BatchImportElementsPage(): JSX.Element {
   }
 
   function ago(time: number): string {
-    const seconds = Math.floor(now - time);
+    const seconds = Math.max(Math.floor(now - time), 0);
     if (seconds < 60) {
       return `${seconds} seconds ago`;
     }
@@ -212,6 +213,9 @@ export function BatchImportElementsPage(): JSX.Element {
   }
 
   function renderDynamic(): JSX.Element {
+    if (categories.length < 1) {
+      return <p>No categories exist</p>;
+    }
     switch (state.type) {
       case "Scanning":
         return (
