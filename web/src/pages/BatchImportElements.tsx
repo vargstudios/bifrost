@@ -21,6 +21,7 @@ import { SelectBox } from "../nyx/SelectBox";
 import { CheckBox } from "../nyx/CheckBox";
 import { useInterval } from "../hooks/useInterval";
 import { ProgressBar } from "../nyx/ProgressBar";
+import { asText } from "../utils/TimeUtils";
 
 type ElementRow = {
   selected: boolean;
@@ -195,23 +196,6 @@ export function BatchImportElementsPage(): JSX.Element {
     );
   }
 
-  function ago(time: number): string {
-    const seconds = Math.max(Math.floor(now - time), 0);
-    if (seconds < 60) {
-      return `${seconds} seconds ago`;
-    }
-    const minutes = Math.floor(seconds / 60);
-    if (minutes < 60) {
-      return `${minutes} minutes ago`;
-    }
-    const hours = Math.floor(minutes / 60);
-    if (hours < 24) {
-      return `${hours} hours ago`;
-    }
-    const days = Math.floor(hours / 24);
-    return `${days} hours ago`;
-  }
-
   function renderDynamic(): JSX.Element {
     if (categories.length < 1) {
       return <p>No categories exist</p>;
@@ -228,7 +212,7 @@ export function BatchImportElementsPage(): JSX.Element {
           <>
             <p>
               Found {state.scanned.length} OpenEXR sequences in Bifrost's scan
-              folder ({ago(state.time)})
+              folder ({asText(now - state.time)} ago)
             </p>
             <Button label="Scan now" onClick={scanNow} />
             {state.scanned.length > 0 && (
