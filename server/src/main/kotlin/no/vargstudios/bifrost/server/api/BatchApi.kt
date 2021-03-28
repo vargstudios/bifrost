@@ -27,7 +27,7 @@ class BatchApi(
     val logger: Logger = LoggerFactory.getLogger(this::class.java)
 
     // Cached scanned elements
-    var importElementsState: BatchImportElementsState = Scanned(scanned = listOf(), time = ZonedDateTime.now().toEpochSecond())
+    var importElementsState: BatchImportElementsState = Scanned(scanned = listOf(), time = 0)
     var importElementsFrames: Map<String, List<File>> = emptyMap()
 
     @GET

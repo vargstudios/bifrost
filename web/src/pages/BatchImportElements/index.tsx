@@ -154,10 +154,14 @@ export function BatchImportElementsPage(): JSX.Element {
       case "Scanned":
         return (
           <>
-            <p>
-              Found {batchstate.scanned.length} OpenEXR sequences in Bifrost's
-              scan folder ({asText(now - batchstate.time)} ago)
-            </p>
+            {batchstate.time > 0 ? (
+              <p>
+                Found {batchstate.scanned.length} OpenEXR sequences in Bifrost's
+                scan folder ({asText(now - batchstate.time)} ago)
+              </p>
+            ) : (
+              <p>Scan for OpenEXR sequences in Bifrost's scan folder</p>
+            )}
             <Button label="Scan now" onClick={() => scanNow(categories)} />
             {batchstate.scanned.length > 0 && (
               <>
