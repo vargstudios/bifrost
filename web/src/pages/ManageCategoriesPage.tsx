@@ -8,6 +8,7 @@ import {
   CreateElementCategory,
   deleteCategory,
   ElementCategory,
+  ElementCategoryWithCount,
   listCategories,
 } from "../api/element-categories";
 import { TextBox } from "../nyx/TextBox";
@@ -20,7 +21,7 @@ import { EditCategoryDialog } from "../components/EditCategoryDialog";
 import { Column } from "../nyx/Column";
 
 export function ManageCategoriesPage(): JSX.Element {
-  const [categories, setCategories] = useState<ElementCategory[]>([]);
+  const [categories, setCategories] = useState<ElementCategoryWithCount[]>([]);
   const [state, setState] = useState<CreateElementCategory>({ name: "" });
   const [editCategory, setEditCategory] = useState<ElementCategory>();
 

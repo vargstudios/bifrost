@@ -11,10 +11,15 @@ export type UpdateElementCategory = {
 export type ElementCategory = {
   id: string;
   name: string;
+};
+
+export type ElementCategoryWithCount = {
+  id: string;
+  name: string;
   elements: number;
 };
 
-export function listCategories(): Promise<ElementCategory[]> {
+export function listCategories(): Promise<ElementCategoryWithCount[]> {
   return get("/api/v1/element-categories");
 }
 

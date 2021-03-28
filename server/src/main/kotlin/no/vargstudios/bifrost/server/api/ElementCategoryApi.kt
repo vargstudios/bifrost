@@ -1,8 +1,9 @@
 package no.vargstudios.bifrost.server.api
 
 import no.vargstudios.bifrost.server.api.model.CreateElementCategory
-import no.vargstudios.bifrost.server.api.model.UpdateElementCategory
 import no.vargstudios.bifrost.server.api.model.ElementCategory
+import no.vargstudios.bifrost.server.api.model.ElementCategoryWithCount
+import no.vargstudios.bifrost.server.api.model.UpdateElementCategory
 import no.vargstudios.bifrost.server.db.ElementCategoryDao
 import no.vargstudios.bifrost.server.db.ElementDao
 import no.vargstudios.bifrost.server.db.model.ElementCategoryRow
@@ -19,9 +20,9 @@ class ElementCategoryApi(val elementCategoryDao: ElementCategoryDao, val element
     val logger: Logger = LoggerFactory.getLogger(this::class.java)
 
     @GET
-    fun listCategories(): List<ElementCategory> {
+    fun listCategories(): List<ElementCategoryWithCount> {
         return elementCategoryDao.list().map {
-            mapCategory(it, elementDao.listForCategory(it.id).size)
+            mapCategoryWithCount(it, elementDao.listForCategory(it.id).size)
         }
     }
 
@@ -38,14 +39,14 @@ class ElementCategoryApi(val elementCategoryDao: ElementCategoryDao, val element
         )
         elementCategoryDao.insert(category)
         logger.info("Created category ${category.id}")
-        return mapCategory(category, 0)
+        return mapCategory(category)
     }
 
     @GET
     @Path("/{categoryId}")
     fun getCategory(@PathParam("categoryId") categoryId: String): ElementCategory {
         val category = elementCategoryDao.get(categoryId) ?: throw NotFoundException("Category not found")
-        return mapCategory(category, elementDao.listForCategory(categoryId).size)
+        return mapCategory(category)
     }
 
     @DELETE
@@ -66,8 +67,15 @@ class ElementCategoryApi(val elementCategoryDao: ElementCategoryDao, val element
         }
     }
 
-    private fun mapCategory(category: ElementCategoryRow, elements: Int): ElementCategory {
+    private fun mapCategory(category: ElementCategoryRow): ElementCategory {
         return ElementCategory(
+            id = category.id,
+            name = category.name
+        )
+    }
+
+    private fun mapCategoryWithCount(category: ElementCategoryRow, elements: Int): ElementCategoryWithCount {
+        return ElementCategoryWithCount(
             id = category.id,
             name = category.name,
             elements = elements

@@ -257,8 +257,7 @@ class ElementApi(
     private fun mapCategory(category: ElementCategoryRow): ElementCategory {
         return ElementCategory(
             id = category.id,
-            name = category.name,
-            elements = 0 // TODO
+            name = category.name
         )
     }
 
