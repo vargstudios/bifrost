@@ -15,7 +15,7 @@ import {
   stateElements,
 } from "../../api/batch";
 import { ProgressBar } from "../../nyx/ProgressBar";
-import { asText } from "../../utils/TimeUtils";
+import { durationAsText } from "../../utils/TimeUtils";
 import { EditableElement, Loaded, State } from "./state";
 import { useInterval } from "../../hooks/useInterval";
 import { EditableElementTable } from "./EditableElementTable";
@@ -157,7 +157,7 @@ export function BatchImportElementsPage(): JSX.Element {
             {batchstate.time > 0 ? (
               <p>
                 Found {batchstate.scanned.length} OpenEXR sequences in Bifrost's
-                scan folder ({asText(now - batchstate.time)} ago)
+                scan folder ({durationAsText(now - batchstate.time)} ago)
               </p>
             ) : (
               <p>Scan for OpenEXR sequences in Bifrost's scan folder</p>
@@ -210,7 +210,8 @@ export function BatchImportElementsPage(): JSX.Element {
           <>
             <p>
               Import complete! {success.length}/{batchstate.items.length}{" "}
-              elements were successful ({asText(now - batchstate.time)} ago)
+              elements were successful ({durationAsText(now - batchstate.time)}{" "}
+              ago)
             </p>
             <Button label="Scan now" onClick={() => scanNow(categories)} />
             <BatchItemTable categories={categories} items={batchstate.items} />
