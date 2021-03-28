@@ -12,16 +12,16 @@ import javax.ws.rs.ext.ExceptionMapper
 import javax.ws.rs.ext.Provider
 
 @Provider
-class DefaultExceptionMapper : ExceptionMapper<RuntimeException> {
+class DefaultExceptionMapper : ExceptionMapper<Exception> {
 
     private val logger: Logger = LoggerFactory.getLogger(this::class.java)
 
-    override fun toResponse(e: RuntimeException): Response {
+    override fun toResponse(e: Exception): Response {
         val status = getStatus(e)
         val error = Error(
             code = status.statusCode,
             reason = status.reasonPhrase,
-            details = e.message ?: "Unknown error"
+            details = getMessage(e)
         )
         if (status.family == CLIENT_ERROR) {
             logger.warn("$error")
@@ -38,4 +38,10 @@ class DefaultExceptionMapper : ExceptionMapper<RuntimeException> {
             INTERNAL_SERVER_ERROR
         }
 
+    private fun getMessage(e: Exception): String =
+        if (e is WebApplicationException) {
+            e.message ?: "Unexpected error"
+        } else {
+            "Unexpected error"
+        }
 }
