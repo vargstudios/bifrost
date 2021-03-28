@@ -5,9 +5,7 @@ import io.quarkus.scheduler.Scheduled.ConcurrentExecution.SKIP
 import no.vargstudios.bifrost.server.db.ElementDao
 import no.vargstudios.bifrost.server.db.ElementFrameDao
 import no.vargstudios.bifrost.server.db.ElementVersionDao
-import no.vargstudios.bifrost.server.db.model.ElementFrameRow
-import no.vargstudios.bifrost.server.db.model.ElementRow
-import no.vargstudios.bifrost.server.db.model.ElementVersionRow
+import no.vargstudios.bifrost.server.db.model.*
 import no.vargstudios.bifrost.worker.api.model.*
 import no.vargstudios.bifrost.worker.registry.WorkerPool
 import org.slf4j.Logger
@@ -41,8 +39,7 @@ class WorkerScheduler(
         val elements = elementDao.listReadyForPreviews()
 
         elements.forEach { element ->
-            // FIXME: Assumes names
-            val version = elementVersionDao.listForElement(element.id).find { it.name == "Preview" }!!
+            val version = elementVersionDao.listForElement(element.id).version(PREVIEW)
             val frames = elementFrameDao.listForElement(element.id)
             queuePreviewTask(element, version, frames)
         }
@@ -67,13 +64,12 @@ class WorkerScheduler(
             logger.info("Generating preview for element=${element.id} took ${after - before} ms")
             // TODO: Validate response
 
-            // TODO: Extract contants
             // Store video
-            pathResolver.local(element).resolve("preview.mp4").toFile().writeBytes(video)
+            pathResolver.local(element).resolve(PREVIEW_MP4).toFile().writeBytes(video)
 
             // Copy image
             val image = toFile(element, version, frames.find { it.number == element.framecount/2+1 }!!).readBytes()
-            pathResolver.local(element).resolve("preview.jpg").toFile().writeBytes(image)
+            pathResolver.local(element).resolve(PREVIEW_JPG).toFile().writeBytes(image)
 
             // Mark previews generated
             elementDao.setPreviewsGenerated(element.id)
@@ -103,9 +99,8 @@ class WorkerScheduler(
     }
 
     private fun queueTranscodeTask(element: ElementRow, versions: List<ElementVersionRow>, frame: ElementFrameRow) {
-        // FIXME: Assumes first is original
-        val sourceVersion = versions[0]
-        val targetVersions = versions.drop(1)
+        val sourceVersion = versions.version(ORIGINAL)
+        val targetVersions = versions.exceptVersion(ORIGINAL)
 
         workerPool.addTask { worker, apis ->
             logger.info("Transcoding element=${frame.elementId} frame=${frame.number} on ${worker.url}")

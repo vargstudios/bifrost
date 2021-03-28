@@ -5,10 +5,7 @@ import no.vargstudios.bifrost.server.db.ElementCategoryDao
 import no.vargstudios.bifrost.server.db.ElementDao
 import no.vargstudios.bifrost.server.db.ElementFrameDao
 import no.vargstudios.bifrost.server.db.ElementVersionDao
-import no.vargstudios.bifrost.server.db.model.ElementCategoryRow
-import no.vargstudios.bifrost.server.db.model.ElementFrameRow
-import no.vargstudios.bifrost.server.db.model.ElementRow
-import no.vargstudios.bifrost.server.db.model.ElementVersionRow
+import no.vargstudios.bifrost.server.db.model.*
 import no.vargstudios.bifrost.server.service.PathResolver
 import no.vargstudios.bifrost.worker.api.model.ImageFormat.EXR
 import no.vargstudios.bifrost.worker.api.model.ImageFormat.JPEG
@@ -36,11 +33,6 @@ class ElementApi(
 ) {
 
     val logger: Logger = LoggerFactory.getLogger(this::class.java)
-
-    val originalName = "Original"
-    val previewName = "Preview"
-    val previewImageName = "preview.jpg"
-    val previewVideoName = "preview.mp4"
 
     @GET
     fun listElements(): List<Element> {
@@ -70,14 +62,14 @@ class ElementApi(
         val versions = mutableListOf(
             ElementVersionRow(
                 elementId = element.id,
-                name = originalName,
+                name = ORIGINAL,
                 width = createElement.width,
                 height = createElement.height,
                 filetype = EXR.extension
             ),
             ElementVersionRow(
                 elementId = element.id,
-                name = previewName,
+                name = PREVIEW,
                 width = 480 * createElement.width / max(createElement.width, createElement.height),
                 height = 480 * createElement.height / max(createElement.width, createElement.height),
                 filetype = JPEG.extension
@@ -120,7 +112,7 @@ class ElementApi(
     @Produces("image/jpeg")
     fun getElementPreviewImage(@PathParam("elementId") elementId: String): ByteArray {
         val element = elementDao.get(elementId) ?: throw NotFoundException("Element not found")
-        val file = pathResolver.local(element).resolve(previewImageName).toFile()
+        val file = pathResolver.local(element).resolve(PREVIEW_JPG).toFile()
         if (!file.exists()) {
             logger.warn("Element $elementId has no preview image")
             throw NotFoundException()
@@ -134,7 +126,7 @@ class ElementApi(
     @Produces("video/mp4")
     fun getElementPreviewVideo(@PathParam("elementId") elementId: String): ByteArray {
         val element = elementDao.get(elementId) ?: throw NotFoundException("Element not found")
-        val file = pathResolver.local(element).resolve(previewVideoName).toFile()
+        val file = pathResolver.local(element).resolve(PREVIEW_MP4).toFile()
         if (!file.exists()) {
             logger.warn("Element $elementId has no preview video")
             throw NotFoundException()
@@ -151,7 +143,7 @@ class ElementApi(
         }
         if (element.categoryId != updateElement.categoryId) {
             logger.info("Changing category from '${element.categoryId}' to '${updateElement.categoryId}' on element ${element.id}")
-            elementDao.setCategory(element.id, updateElement.categoryId);
+            elementDao.setCategory(element.id, updateElement.categoryId)
         }
         if (element.name != updateElement.name) {
             logger.info("Changing name from '${element.name}' to '${updateElement.name}' on element ${element.id}")
@@ -182,7 +174,7 @@ class ElementApi(
     fun deleteElement(@PathParam("elementId") elementId: String) {
         val element = elementDao.get(elementId) ?: return
 
-        val now = ZonedDateTime.now().toEpochSecond();
+        val now = ZonedDateTime.now().toEpochSecond()
         if (!element.previews && now - element.created < 60 * 60) {
             throw BadRequestException("Can not delete an element during import")
         }
@@ -214,7 +206,7 @@ class ElementApi(
         val analysis = AnalysisApi().analyseExr(data)
 
         val element = elementDao.get(elementId) ?: throw NotFoundException("Element not found")
-        val version = elementVersionDao.listForElement(elementId)[0] // FIXME: Assumes first is original
+        val version = elementVersionDao.listForElement(elementId).version(ORIGINAL)
 
         if (analysis.channels != element.channels) {
             throw BadRequestException("Channels ${analysis.channels} do not match ${element.channels}")
@@ -277,7 +269,7 @@ class ElementApi(
                 pathResolver.local(element, version, frame)
             }
         }
-        val previewPaths = listOf(previewImageName, previewVideoName).map { file ->
+        val previewPaths = listOf(PREVIEW_JPG, PREVIEW_MP4).map { file ->
             pathResolver.local(element).resolve(file)
         }
         return (framePaths + previewPaths)
