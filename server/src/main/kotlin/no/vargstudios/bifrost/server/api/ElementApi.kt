@@ -18,6 +18,7 @@ import java.time.ZonedDateTime
 import javax.ws.rs.*
 import javax.ws.rs.core.MediaType.APPLICATION_JSON
 import javax.ws.rs.core.MediaType.WILDCARD
+import javax.ws.rs.core.Response.Status.CONFLICT
 import kotlin.math.max
 import java.nio.file.Path as FilePath
 
@@ -208,11 +209,20 @@ class ElementApi(
         val element = elementDao.get(elementId) ?: throw NotFoundException("Element not found")
         val version = elementVersionDao.listForElement(elementId).version(ORIGINAL)
 
+        if (element.previews) {
+            throw BadRequestException("Can not add frames to a completely imported element")
+        }
+
         if (analysis.channels != element.channels) {
             throw BadRequestException("Channels ${analysis.channels} do not match ${element.channels}")
         }
         if (analysis.width != version.width || analysis.height != version.height) {
             throw BadRequestException("Size ${analysis.width}x${analysis.height} does not match ${version.width}x${version.height}")
+        }
+
+        val frames = elementFrameDao.listForElement(element.id)
+        if (frames.any { it.number == frameNumber }) {
+            throw ClientErrorException("Frame $frameNumber already imported for element ${element.id}", CONFLICT)
         }
 
         val frame = ElementFrameRow(
