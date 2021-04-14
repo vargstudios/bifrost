@@ -4,7 +4,6 @@ import { useKeyDown } from "../hooks/useKeyDown";
 import "./Layout.scss";
 
 type Props = {
-  onEscape?: () => void;
   children: React.ReactNode;
 };
 
