@@ -3,7 +3,6 @@ import "./sidebar.css";
 import "./mainlayout.scss";
 
 // Components
-import "./icon-button.css";
 import "./table.css";
 
 // Pages
