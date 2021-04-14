@@ -1,0 +1,22 @@
+.nyx.table {
+  th {
+    font-weight: 500;
+    border-bottom: 2px solid var(--grey-7);
+    padding: var(--size-1) var(--size-1);
+  }
+
+  td {
+    border-bottom: 2px solid var(--grey-5);
+    padding: var(--size-1) var(--size-1);
+  }
+
+  th:first-child,
+  td:first-child {
+    padding-left: var(--size-2);
+  }
+
+  th:last-child,
+  td:last-child {
+    padding-right: var(--size-2);
+  }
+}

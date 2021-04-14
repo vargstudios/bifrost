@@ -4,6 +4,7 @@ import { ElementCategory } from "../../api/element-categories";
 import { CheckBox } from "../../nyx/CheckBox";
 import { TextBox } from "../../nyx/TextBox";
 import { SelectBox } from "../../nyx/SelectBox";
+import { Table } from "../../nyx/Table";
 
 type Props = {
   categories: ElementCategory[];
@@ -13,8 +14,8 @@ type Props = {
 
 export function EditableElementTable(props: Props): JSX.Element {
   return (
-    <table>
-      <thead>
+    <Table
+      head={
         <tr>
           <th title="Selected">Sel</th>
           <th>Name</th>
@@ -25,46 +26,44 @@ export function EditableElementTable(props: Props): JSX.Element {
           <th>Framerate</th>
           <th>Channels</th>
         </tr>
-      </thead>
-      <tbody>
-        {props.elements.map((element, index) => (
-          <tr key={element.scanned.scanId}>
-            <td>
-              <CheckBox
-                value={element.selected}
-                onChange={(selected) =>
-                  props.onChange(index, { ...element, selected: selected })
-                }
-              />
-            </td>
-            <td>
-              <TextBox
-                value={element.name}
-                onChange={(value) =>
-                  props.onChange(index, { ...element, name: value })
-                }
-              />
-            </td>
-            <td>
-              <SelectBox
-                options={props.categories.map((category) => ({
-                  value: category.id,
-                  name: category.name,
-                }))}
-                value={element.categoryId}
-                onChange={(value) =>
-                  props.onChange(index, { ...element, categoryId: value })
-                }
-              />
-            </td>
-            <td>{element.scanned.framecount} Frames</td>
-            <td>{element.scanned.width}</td>
-            <td>{element.scanned.height}</td>
-            <td>{element.scanned.framerate} FPS</td>
-            <td>{element.scanned.channels}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+      }
+      body={props.elements.map((element, index) => (
+        <tr key={element.scanned.scanId}>
+          <td>
+            <CheckBox
+              value={element.selected}
+              onChange={(selected) =>
+                props.onChange(index, { ...element, selected: selected })
+              }
+            />
+          </td>
+          <td>
+            <TextBox
+              value={element.name}
+              onChange={(value) =>
+                props.onChange(index, { ...element, name: value })
+              }
+            />
+          </td>
+          <td>
+            <SelectBox
+              options={props.categories.map((category) => ({
+                value: category.id,
+                name: category.name,
+              }))}
+              value={element.categoryId}
+              onChange={(value) =>
+                props.onChange(index, { ...element, categoryId: value })
+              }
+            />
+          </td>
+          <td>{element.scanned.framecount} Frames</td>
+          <td>{element.scanned.width}</td>
+          <td>{element.scanned.height}</td>
+          <td>{element.scanned.framerate} FPS</td>
+          <td>{element.scanned.channels}</td>
+        </tr>
+      ))}
+    />
   );
 }

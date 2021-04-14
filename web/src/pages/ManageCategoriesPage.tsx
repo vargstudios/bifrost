@@ -19,6 +19,7 @@ import { Error } from "../api/error";
 import { Layout } from "../components/Layout";
 import { EditCategoryDialog } from "../components/EditCategoryDialog";
 import { Column } from "../nyx/Column";
+import { Table } from "../nyx/Table";
 
 export function ManageCategoriesPage(): JSX.Element {
   const [categories, setCategories] = useState<ElementCategoryWithCount[]>([]);
@@ -51,39 +52,37 @@ export function ManageCategoriesPage(): JSX.Element {
       return <div>No categories</div>;
     }
     return (
-      <table>
-        <thead>
+      <Table
+        head={
           <tr>
             <th>Name</th>
             <th>Elements</th>
             <th>Actions</th>
           </tr>
-        </thead>
-        <tbody>
-          {categories
-            .sort((a, b) => a.name.localeCompare(b.name))
-            .map((category) => (
-              <tr key={category.id}>
-                <td>{category.name}</td>
-                <td>{category.elements}</td>
-                <td>
-                  <IconButton
-                    size="small"
-                    title="Rename"
-                    icon={faPencilAlt}
-                    onClick={() => setEditCategory(category)}
-                  />
-                  <IconButton
-                    size="small"
-                    title="Delete"
-                    icon={faTrash}
-                    onClick={() => onDeleteClicked(category.id)}
-                  />
-                </td>
-              </tr>
-            ))}
-        </tbody>
-      </table>
+        }
+        body={categories
+          .sort((a, b) => a.name.localeCompare(b.name))
+          .map((category) => (
+            <tr key={category.id}>
+              <td>{category.name}</td>
+              <td>{category.elements}</td>
+              <td>
+                <IconButton
+                  size="small"
+                  title="Rename"
+                  icon={faPencilAlt}
+                  onClick={() => setEditCategory(category)}
+                />
+                <IconButton
+                  size="small"
+                  title="Delete"
+                  icon={faTrash}
+                  onClick={() => onDeleteClicked(category.id)}
+                />
+              </td>
+            </tr>
+          ))}
+      />
     );
   }
 

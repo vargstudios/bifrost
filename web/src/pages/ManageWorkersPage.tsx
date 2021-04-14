@@ -17,6 +17,7 @@ import { Link } from "../nyx/Link";
 import { Layout } from "../components/Layout";
 import { Column } from "../nyx/Column";
 import { CheckBox } from "../nyx/CheckBox";
+import { Table } from "../nyx/Table";
 
 export function ManageWorkersPage(): JSX.Element {
   const [workers, setWorkers] = useState<Worker[]>([]);
@@ -65,8 +66,8 @@ export function ManageWorkersPage(): JSX.Element {
       return <div>No workers</div>;
     }
     return (
-      <table>
-        <thead>
+      <Table
+        head={
           <tr>
             <th title="Enabled">Enbl</th>
             <th>Name</th>
@@ -74,30 +75,28 @@ export function ManageWorkersPage(): JSX.Element {
             <th>Port</th>
             <th>State</th>
           </tr>
-        </thead>
-        <tbody>
-          {workers
-            .sort((a, b) => a.name.localeCompare(b.name))
-            .map((worker) => (
-              <tr key={worker.id}>
-                <td>
-                  <CheckBox
-                    value={worker.enabled}
-                    onChange={(enabled) =>
-                      enabled
-                        ? onEnableClicked(worker.id)
-                        : onDisableClicked(worker.id)
-                    }
-                  />
-                </td>
-                <td>{worker.name}</td>
-                <td>{worker.ip}</td>
-                <td>{worker.port}</td>
-                <td>{worker.state}</td>
-              </tr>
-            ))}
-        </tbody>
-      </table>
+        }
+        body={workers
+          .sort((a, b) => a.name.localeCompare(b.name))
+          .map((worker) => (
+            <tr key={worker.id}>
+              <td>
+                <CheckBox
+                  value={worker.enabled}
+                  onChange={(enabled) =>
+                    enabled
+                      ? onEnableClicked(worker.id)
+                      : onDisableClicked(worker.id)
+                  }
+                />
+              </td>
+              <td>{worker.name}</td>
+              <td>{worker.ip}</td>
+              <td>{worker.port}</td>
+              <td>{worker.state}</td>
+            </tr>
+          ))}
+      />
     );
   }
 

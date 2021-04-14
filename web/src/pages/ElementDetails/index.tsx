@@ -23,6 +23,7 @@ import { DeleteDialog } from "../../components/DeleteDialog";
 import { Layout } from "../../components/Layout";
 import { EditElementDialog } from "../../components/EditElementDialog";
 import { Column } from "../../nyx/Column";
+import { Table } from "../../nyx/Table";
 
 export function ElementDetailsPage(): JSX.Element {
   const [state, setState] = useState<State>({ type: "Loading" });
@@ -86,8 +87,8 @@ export function ElementDetailsPage(): JSX.Element {
       return <div>No versions</div>;
     }
     return (
-      <table>
-        <thead>
+      <Table
+        head={
           <tr>
             <th>Version</th>
             <th>Width</th>
@@ -95,26 +96,24 @@ export function ElementDetailsPage(): JSX.Element {
             <th>Location</th>
             <th />
           </tr>
-        </thead>
-        <tbody>
-          {versions.map((version) => (
-            <tr key={version.id}>
-              <td>{version.name}</td>
-              <td>{version.width}</td>
-              <td>{version.height}</td>
-              <td>{version.url}</td>
-              <td>
-                <IconButton
-                  size="small"
-                  title="Copy"
-                  icon={faCopy}
-                  onClick={() => copyToClipboard(version.url)}
-                />
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+        }
+        body={versions.map((version) => (
+          <tr key={version.id}>
+            <td>{version.name}</td>
+            <td>{version.width}</td>
+            <td>{version.height}</td>
+            <td>{version.url}</td>
+            <td>
+              <IconButton
+                size="small"
+                title="Copy"
+                icon={faCopy}
+                onClick={() => copyToClipboard(version.url)}
+              />
+            </td>
+          </tr>
+        ))}
+      />
     );
   }
 
